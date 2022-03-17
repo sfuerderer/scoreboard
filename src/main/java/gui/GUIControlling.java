@@ -35,104 +35,104 @@ import java.util.List;
 
 public class GUIControlling extends Application {
 
-	private static Settings sSettings;
-	private MainScoreboard mainScoreboard;
-	private ControlFrame controlFrame;
-	private List<OtherScoreboards> lOtherFrames = new ArrayList<OtherScoreboards>();
-	private Match match;
+    private static Settings sSettings;
+    private MainScoreboard mainScoreboard;
+    private ControlFrame controlFrame;
+    private List<OtherScoreboards> lOtherFrames = new ArrayList<OtherScoreboards>();
+    private Match match;
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
 
-		controlFrame = new ControlFrame(sSettings, this);
-		primaryStage = controlFrame;
+        controlFrame = new ControlFrame(sSettings, this);
+        primaryStage = controlFrame;
 
-		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			@Override
-			public void handle(WindowEvent event) {
-				Platform.exit();
-				System.exit(0);
-			}
-		});
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
 
-		primaryStage.show();
-		mainScoreboard = new MainScoreboard(sSettings.mainFrame, sSettings, match);
+        primaryStage.show();
+        mainScoreboard = new MainScoreboard(sSettings.mainFrame, sSettings, match);
 
-		for (Frame frame : sSettings.otherFrames) {
-			lOtherFrames.add(new OtherScoreboards(frame, frame.otherFrameFunction.getOtherFrameFunction()));
-		}
+        for (Frame frame : sSettings.otherFrames) {
+            lOtherFrames.add(new OtherScoreboards(frame, frame.otherFrameFunction.getOtherFrameFunction()));
+        }
 
-		showAllFrames();
-		ErrorMsg.setBGuiStarted(true);
-		InfoMsg.setBGuiStarted(true);
-	}
+        showAllFrames();
+        ErrorMsg.setBGuiStarted(true);
+        InfoMsg.setBGuiStarted(true);
+    }
 
-	public void startNewMatch(Team teamHome, Team teamGuest) {
-		match = new Match(teamHome, teamGuest, sSettings.iHalftime1Length, sSettings.iHalftime2Length, sSettings.iHalftime3Length, sSettings.iHalftime4Length);
-		Main.setMatch(match);
-		controlFrame.changeState(new ControlFrameStateMatch());
-		changeMainScoreboardPane(new PaneLaunchGame(getRootPaneMainScoreboard(), controlFrame));
-	}
+    public void startNewMatch(Team teamHome, Team teamGuest) {
+        match = new Match(teamHome, teamGuest, sSettings.iHalftime1Length, sSettings.iHalftime2Length, sSettings.iHalftime3Length, sSettings.iHalftime4Length);
+        Main.setMatch(match);
+        controlFrame.changeState(new ControlFrameStateMatch());
+        changeMainScoreboardPane(new PaneLaunchGame(getRootPaneMainScoreboard(), controlFrame));
+    }
 
-	public void showAllFrames() {
-		mainScoreboard.show();
-		for (OtherScoreboards otherScoreboard : lOtherFrames)
-			otherScoreboard.show();
-	}
+    public void showAllFrames() {
+        mainScoreboard.show();
+        for (OtherScoreboards otherScoreboard : lOtherFrames)
+            otherScoreboard.show();
+    }
 
-	public void setSettings(Settings sSettings) {
-		GUIControlling.sSettings = sSettings;
-	}
+    public void setSettings(Settings sSettings) {
+        GUIControlling.sSettings = sSettings;
+    }
 
-	public static Settings getSettings() {
-		return GUIControlling.sSettings;
-	}
+    public static Settings getSettings() {
+        return GUIControlling.sSettings;
+    }
 
-	public void menuClicked(Menus menu) {
-		switch (menu) {
-			case FILE_SETTINGS:
-				new SettingsFrame(sSettings, this).show();
-				break;
-			case FOOTBALL_LEAGUES:
-				new LeagueFrame(sSettings, this).show();
-				break;
-			case MATCH_LINEUP:
-				new LineupFrame(sSettings, this).show();
-				break;
-			case MATCH_RESULT:
-				new ResultFrame(sSettings, this).show();
-				break;
-			case MATCH_PLAYTIME:
-				new PlaytimeFrame(sSettings, this).show();
-				break;
-			default:
-		}
-	}
+    public void menuClicked(Menus menu) {
+        switch (menu) {
+            case FILE_SETTINGS:
+                new SettingsFrame(sSettings, this).show();
+                break;
+            case FOOTBALL_LEAGUES:
+                new LeagueFrame(sSettings, this).show();
+                break;
+            case MATCH_LINEUP:
+                new LineupFrame(sSettings, this).show();
+                break;
+            case MATCH_RESULT:
+                new ResultFrame(sSettings, this).show();
+                break;
+            case MATCH_PLAYTIME:
+                new PlaytimeFrame(sSettings, this).show();
+                break;
+            default:
+        }
+    }
 
-	public void updateScoreboards() {
-		mainScoreboard.updatePosition(sSettings.mainFrame);
-		int index = 0;
-		for (Frame frame : sSettings.otherFrames) {
-			lOtherFrames.get(index).updatePosition(frame);
-			index++;
-		}
+    public void updateScoreboards() {
+        mainScoreboard.updatePosition(sSettings.mainFrame);
+        int index = 0;
+        for (Frame frame : sSettings.otherFrames) {
+            lOtherFrames.get(index).updatePosition(frame);
+            index++;
+        }
 
-	}
+    }
 
-	public void changeMainScoreboardPane(PaneMainScoreboard newPane) {
-		mainScoreboard.changePane(newPane);
-	}
+    public void changeMainScoreboardPane(PaneMainScoreboard newPane) {
+        mainScoreboard.changePane(newPane);
+    }
 
-	public Pane getRootPaneMainScoreboard() {
-		return mainScoreboard.getRootPane();
-	}
+    public Pane getRootPaneMainScoreboard() {
+        return mainScoreboard.getRootPane();
+    }
 
-	public ControlFrame getControlFrame() {
-		return controlFrame;
-	}
+    public ControlFrame getControlFrame() {
+        return controlFrame;
+    }
 
-	public void start() {
-		launch();
-	}
+    public void start() {
+        launch();
+    }
 
 }
