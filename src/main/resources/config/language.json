@@ -1,0 +1,557 @@
+{
+  "version": "1.0.1",
+  "hmTexts": {
+    "einstellungen": {
+      "hmText": {
+        "ENGLISH": "Settings",
+        "GERMAN": "Einstellungen"
+      }
+    },
+    "datei": {
+      "hmText": {
+        "ENGLISH": "File",
+        "GERMAN": "Datei"
+      }
+    },
+    "fussball": {
+      "hmText": {
+        "ENGLISH": "Football",
+        "GERMAN": "Fußball"
+      }
+    },
+    "ligen": {
+      "hmText": {
+        "ENGLISH": "Leagues",
+        "GERMAN": "Ligen"
+      }
+    },
+    "liga": {
+      "hmText": {
+        "ENGLISH": "League",
+        "GERMAN": "Liga"
+      }
+    },
+    "starteSpiel": {
+      "hmText": {
+        "ENGLISH": "Start a new Match",
+        "GERMAN": "Starte ein neues Spiel"
+      }
+    },
+    "sprache": {
+      "hmText": {
+        "ENGLISH": "Language",
+        "GERMAN": "Sprache"
+      }
+    },
+    "anzeigetafel": {
+      "hmText": {
+        "ENGLISH": "Scoreboard",
+        "GERMAN": "Anzeigetafel"
+      }
+    },
+    "speichern": {
+      "hmText": {
+        "ENGLISH": "Save",
+        "GERMAN": "Speichern"
+      }
+    },
+    "reset": {
+      "hmText": {
+        "ENGLISH": "Reset",
+        "GERMAN": "Zurücksetzen"
+      }
+    },
+    "breite": {
+      "hmText": {
+        "ENGLISH": "Width",
+        "GERMAN": "Breite"
+      }
+    },
+    "höhe": {
+      "hmText": {
+        "ENGLISH": "Height",
+        "GERMAN": "Höhe"
+      }
+    },
+    "startX": {
+      "hmText": {
+        "ENGLISH": "Start position X",
+        "GERMAN": "Start Position X"
+      }
+    },
+    "startY": {
+      "hmText": {
+        "ENGLISH": "Start position Y",
+        "GERMAN": "Start Position Y"
+      }
+    },
+    "andereFenster": {
+      "hmText": {
+        "ENGLISH": "Other Frames visible",
+        "GERMAN": "Andere sichtbare Fenster"
+      }
+    },
+    "funktion": {
+      "hmText": {
+        "ENGLISH": "Function",
+        "GERMAN": "Funktion"
+      }
+    },
+    "restoreDefault": {
+      "hmText": {
+        "ENGLISH": "Restore Default Values",
+        "GERMAN": "Standartwerte laden"
+      }
+    },
+    "langChanged": {
+      "hmText": {
+        "ENGLISH": "To update the language in the software you have to restart it.",
+        "GERMAN": "Damit die Sprache im der gesamte Software geupdated wird muss die Software neu gestartet werden."
+      }
+    },
+    "info": {
+      "hmText": {
+        "ENGLISH": "Information",
+        "GERMAN": "Information"
+      }
+    },
+    "ligaName": {
+      "hmText": {
+        "ENGLISH": "Name of the League",
+        "GERMAN": "Name der Liga"
+      }
+    },
+    "hinzufuegen": {
+      "hmText": {
+        "ENGLISH": "Add",
+        "GERMAN": "Hinzufügen"
+      }
+    },
+    "team": {
+      "hmText": {
+        "ENGLISH": "Teamname",
+        "GERMAN": "Teamname"
+      }
+    },
+	"mannschaft": {
+      "hmText": {
+        "ENGLISH": "Team",
+        "GERMAN": "Mannschaft"
+      }
+    },
+	"spieler": {
+      "hmText": {
+        "ENGLISH": "Player",
+        "GERMAN": "Spieler"
+      }
+    },
+	"vorname": {
+      "hmText": {
+        "ENGLISH": "Prename",
+        "GERMAN": "Vorname"
+      }
+    },
+	"nachname": {
+      "hmText": {
+        "ENGLISH": "Lastname",
+        "GERMAN": "Nachname"
+      }
+    },
+	"nummer": {
+      "hmText": {
+        "ENGLISH": "Number",
+        "GERMAN": "Nummer"
+      }
+    },
+	"lade_bild": {
+      "hmText": {
+        "ENGLISH": "Load Image",
+        "GERMAN": "Bild laden"
+      }
+    },
+	"loeschen_spieler": {
+      "hmText": {
+        "ENGLISH": "Delete Player",
+        "GERMAN": "Spieler Löschen"
+      }
+    },
+	"loeschen_trainer": {
+      "hmText": {
+        "ENGLISH": "Delete Coach",
+        "GERMAN": "Trainer Löschen"
+      }
+    },
+	"logo": {
+      "hmText": {
+        "ENGLISH": "Logo",
+        "GERMAN": "Logo"
+      }
+    },
+	"neues_spiel": {
+      "hmText": {
+        "ENGLISH": "New Match",
+        "GERMAN": "Neues Spiel"
+      }
+    },
+	"waehle_heim": {
+      "hmText": {
+        "ENGLISH": "Choose the home team",
+        "GERMAN": "Wähle bitte das Heimteam aus"
+      }
+    },
+	"waehle_gast": {
+      "hmText": {
+        "ENGLISH": "Choose the guest team",
+        "GERMAN": "Wähle bitte das Gastteam aus"
+      }
+    },
+	"start_hz_1": {
+      "hmText": {
+        "ENGLISH": "Start first half",
+        "GERMAN": "Starte 1. Halbzeit"
+      }
+    },
+	"start_hz_2": {
+      "hmText": {
+        "ENGLISH": "Start second half",
+        "GERMAN": "Starte 2. Halbzeit"
+      }
+    },
+	"start_hz_3": {
+      "hmText": {
+        "ENGLISH": "Start third half",
+        "GERMAN": "Starte 3. Halbzeit"
+      }
+    },
+	"start_hz_4": {
+      "hmText": {
+        "ENGLISH": "Start fourth half",
+        "GERMAN": "Starte 4. Halbzeit"
+      }
+    },
+	"willkommen": {
+      "hmText": {
+        "ENGLISH": "Welcome",
+        "GERMAN": "Willkommen"
+      }
+    },
+	"ueber": {
+      "hmText": {
+        "ENGLISH": "About",
+        "GERMAN": "Über"
+      }
+    },
+	"werbung": {
+      "hmText": {
+        "ENGLISH": "Advertisment",
+        "GERMAN": "Werbung"
+      }
+    },
+	"werbung_stop": {
+      "hmText": {
+        "ENGLISH": "Stop Advertisment",
+        "GERMAN": "Werbung Stop"
+      }
+    },
+	"schwarz": {
+      "hmText": {
+        "ENGLISH": "Black",
+        "GERMAN": "Schwarz"
+      }
+    },
+	"karte": {
+      "hmText": {
+        "ENGLISH": "Card",
+        "GERMAN": "Karte"
+      }
+    },
+	"welche_karte": {
+      "hmText": {
+        "ENGLISH": "Which Card?",
+        "GERMAN": "Welche Karte?"
+      }
+    },
+	"gelbe_karte": {
+      "hmText": {
+        "ENGLISH": "Yellow Card",
+        "GERMAN": "Gelbe Karte"
+      }
+    },
+	"rote_karte": {
+      "hmText": {
+        "ENGLISH": "Red Card",
+        "GERMAN": "Rote Karte"
+      }
+    },
+	"gelb-rote_karte": {
+      "hmText": {
+        "ENGLISH": "Yellow Red Card",
+        "GERMAN": "Gelbrote Karte"
+      }
+    },
+	"wechsel": {
+      "hmText": {
+        "ENGLISH": "Change",
+        "GERMAN": "Auswechslung"
+      }
+    },
+	"tor_heim": {
+      "hmText": {
+        "ENGLISH": "Goal Home",
+        "GERMAN": "Tor Heim"
+      }
+    },
+	"tor_gast": {
+      "hmText": {
+        "ENGLISH": "Goal Guest",
+        "GERMAN": "Tor Gast"
+      }
+    },
+	"aufstellung": {
+      "hmText": {
+        "ENGLISH": "Lineup",
+        "GERMAN": "Aufstellung"
+      }
+    },
+	"main": {
+      "hmText": {
+        "ENGLISH": "Main",
+        "GERMAN": "Main"
+      }
+    },
+	"bild_anzeigen": {
+      "hmText": {
+        "ENGLISH": "Show Image",
+        "GERMAN": "Bild anzeigen"
+      }
+    },
+	"video_anzeigen": {
+      "hmText": {
+        "ENGLISH": "Show Movie",
+        "GERMAN": "Video anzeigen"
+      }
+    },
+	"media_anzeigen": {
+      "hmText": {
+        "ENGLISH": "Show Media",
+        "GERMAN": "Media anzeigen"
+      }
+    },
+	"statistik": {
+      "hmText": {
+        "ENGLISH": "Statistic",
+        "GERMAN": "Statistik"
+      }
+    },
+	"spiel": {
+      "hmText": {
+        "ENGLISH": "Match",
+        "GERMAN": "Spiel"
+      }
+    },
+	"heimmannschaft": {
+      "hmText": {
+        "ENGLISH": "Home team",
+        "GERMAN": "Heimmannschaft"
+      }
+    },
+	"gastmannschaft": {
+      "hmText": {
+        "ENGLISH": "Guest team",
+        "GERMAN": "Gastmannschaft"
+      }
+    },
+	"startaufstellung": {
+      "hmText": {
+        "ENGLISH": "Starting grid",
+        "GERMAN": "Startaufstellung"
+      }
+    },
+	"ersatzbank": {
+      "hmText": {
+        "ENGLISH": "Replacement Bank",
+        "GERMAN": "Ersatzbank"
+      }
+    },
+	"anzeigen": {
+      "hmText": {
+        "ENGLISH": "Show",
+        "GERMAN": "Anzeigen"
+      }
+    },
+	"einwecheln": {
+      "hmText": {
+        "ENGLISH": "Exchange",
+        "GERMAN": "Einwechseln"
+      }
+    },
+	"auswechseln": {
+      "hmText": {
+        "ENGLISH": "Replace",
+        "GERMAN": "Auswechseln"
+      }
+    },
+	"stop_zeit": {
+      "hmText": {
+        "ENGLISH": "Stop Time",
+        "GERMAN": "Stoppe Zeit"
+      }
+    },
+	"waehle_torschuetze": {
+      "hmText": {
+        "ENGLISH": "Choose scoreer",
+        "GERMAN": "Wähle den Torschütze"
+      }
+    },
+	"ecken": {
+      "hmText": {
+        "ENGLISH": "Corners",
+        "GERMAN": "Ecken"
+      }
+    },
+	"welcome_line_1": {
+      "hmText": {
+        "ENGLISH": "Welcome to",
+        "GERMAN": "Herzlich Willkommen"
+      }
+    },
+	"welcome_line_2": {
+      "hmText": {
+        "ENGLISH": "at SC Sand",
+        "GERMAN": "beim SC Sand"
+      }
+    },
+	"zeit": {
+      "hmText": {
+        "ENGLISH": "Playtime",
+        "GERMAN": "Spielzeit"
+      }
+    },
+	"ergebnis": {
+      "hmText": {
+        "ENGLISH": "Result",
+        "GERMAN": "Ergebnis"
+      }
+    },
+	"allgemein": {
+      "hmText": {
+        "ENGLISH": "General",
+        "GERMAN": "Allgemein"
+      }
+    },
+	"boards": {
+      "hmText": {
+        "ENGLISH": "Boards",
+        "GERMAN": "Boards"
+      }
+    },
+	"halbzeit_1_laenge": {
+      "hmText": {
+        "ENGLISH": "1. Halftime length",
+        "GERMAN": "1. Halbzeitlänge"
+      }
+    },
+	"halbzeit_2_laenge": {
+      "hmText": {
+        "ENGLISH": "2. Halftime length",
+        "GERMAN": "2. Halbzeitlänge"
+      }
+    },
+	"halbzeit_3_laenge": {
+      "hmText": {
+        "ENGLISH": "3. Halftime length",
+        "GERMAN": "3. Halbzeitlänge"
+      }
+    },
+	"halbzeit_4_laenge": {
+      "hmText": {
+        "ENGLISH": "4. Halftime length",
+        "GERMAN": "4. Halbzeitlänge"
+      }
+    },
+	"time_between_ad": {
+      "hmText": {
+        "ENGLISH": "Time between two advertisings",
+        "GERMAN": "Zeit zwischen 2 Werbungen"
+      }
+    },
+	"time_between_replacement": {
+      "hmText": {
+        "ENGLISH": "Time between the replacements",
+        "GERMAN": "Zeit zwischen den Auswechlungen"
+      }
+    },
+	"time_go_back_to_main": {
+      "hmText": {
+        "ENGLISH": "Time until switch back to the main screen",
+        "GERMAN": "Zeit biss nach Main zurück gewechselt wird"
+      }
+    },
+	"komplette_aufstellung": {
+      "hmText": {
+        "ENGLISH": "Complete Lineup",
+        "GERMAN": "Komplette Aufstellung"
+      }
+    },
+	"zuschauer": {
+      "hmText": {
+        "ENGLISH": "Visitors",
+        "GERMAN": "Zuschauer"
+	  }
+	},
+	"trainer": {
+      "hmText": {
+        "ENGLISH": "Coach",
+        "GERMAN": "Trainer"
+      }
+    },
+	"reset_image": {
+      "hmText": {
+        "ENGLISH": "Reset Image",
+        "GERMAN": "Bild zurücksetzen"
+      }
+    },
+	"spieler_gespeichert": {
+      "hmText": {
+        "ENGLISH": "Player has been saved",
+        "GERMAN": "Spieler wurde gespeichert"
+      }
+    },
+	"trainer_gespeichert": {
+      "hmText": {
+        "ENGLISH": "Coach has been saved",
+        "GERMAN": "Trainer wurde gespeichert"
+      }
+    },
+	"trainer_anzeigen": {
+      "hmText": {
+        "ENGLISH": "Show Coach",
+        "GERMAN": "Trainer anzeigen"
+      }
+    },
+	"co_trainer": {
+      "hmText": {
+        "ENGLISH": "Co-Trainer",
+        "GERMAN": "Co-Trainer"
+      }
+    },
+	"torwart_trainer": {
+      "hmText": {
+        "ENGLISH": "Goalkeeper Coach",
+        "GERMAN": "Torwarttrainer"
+      }
+    },
+	"trainer_art": {
+      "hmText": {
+        "ENGLISH": "Coach Type",
+        "GERMAN": "Trainer Art"
+      }
+    },
+	"is_snowing": {
+      "hmText": {
+        "ENGLISH": "Activate Snow Falling",
+        "GERMAN": "Schneefall aktivieren"
+      }
+    }
+  }
+}

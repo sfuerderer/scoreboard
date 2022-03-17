@@ -1,0 +1,19 @@
+.sf-label-headline{
+  -fx-font-size: 18pt;
+  -fx-font-weight: bold;
+}
+
+.sf-label-subheadline{
+  -fx-font-size: 14pt;
+  -fx-font-weight: bold;
+}
+
+.sf-text-otherFrames{
+  -fx-fill: #fff;
+  -fx-font-size: 11;
+}
+
+.sf-label-title{
+  -fx-font-size: 14pt;
+  -fx-font-weight: bold;
+}
