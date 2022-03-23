@@ -4,6 +4,7 @@
  ************************************************/
 package gui;
 
+import com.sun.javafx.css.StyleManager;
 import football.Team;
 import football.match.Match;
 import gui.frames.ControlFrame;
@@ -32,6 +33,7 @@ import system.settings.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GUIControlling extends Application {
 
@@ -43,6 +45,7 @@ public class GUIControlling extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
 
         controlFrame = new ControlFrame(sSettings, this);
         primaryStage = controlFrame;
@@ -62,6 +65,23 @@ public class GUIControlling extends Application {
             lOtherFrames.add(new OtherScoreboards(frame, frame.otherFrameFunction.getOtherFrameFunction()));
         }
 
+        Application.setUserAgentStylesheet(null);
+        switch (sSettings.theme) {
+
+            case DEFAULT:
+//                StyleManager.getInstance().setDefaultUserAgentStylesheet();
+                break;
+            case MODERN:
+                StyleManager.getInstance().addUserAgentStylesheet(Objects.requireNonNull(getClass().getResource("/style/customTheme.css")).toExternalForm());
+                break;
+        }
+
+
+//        ObservableList<String> stylesheets = primaryStage.getScene().getStylesheets();
+//        stylesheets.clear();
+//        stylesheets.add(Objects.requireNonNull(getClass().getResource("/style/customTheme.css")).toExternalForm());
+
+
         showAllFrames();
         ErrorMsg.setBGuiStarted(true);
         InfoMsg.setBGuiStarted(true);
@@ -72,6 +92,20 @@ public class GUIControlling extends Application {
         Main.setMatch(match);
         controlFrame.changeState(new ControlFrameStateMatch());
         changeMainScoreboardPane(new PaneLaunchGame(getRootPaneMainScoreboard(), controlFrame));
+    }
+
+    public void settingsChanged() {
+        Application.setUserAgentStylesheet(null);
+        switch (sSettings.theme) {
+
+            case DEFAULT:
+                StyleManager.getInstance().removeUserAgentStylesheet(Objects.requireNonNull(getClass().getResource("/style/customTheme.css")).toExternalForm());
+//                StyleManager.getInstance().setDefaultUserAgentStylesheet();
+                break;
+            case MODERN:
+                StyleManager.getInstance().addUserAgentStylesheet(Objects.requireNonNull(getClass().getResource("/style/customTheme.css")).toExternalForm());
+                break;
+        }
     }
 
     public void showAllFrames() {

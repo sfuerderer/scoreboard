@@ -4,129 +4,127 @@
  ************************************************/
 package football.person;
 
-import java.util.Date;
-
 import com.google.gson.annotations.Expose;
-
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 
-public class Player extends Person implements Comparable<Player>{
-	private SimpleIntegerProperty siNumber;
-	@Expose
-	private int iNumber;
-	@Expose
-	private Position ePosition;
-	@Expose
-	private String sImagePath;
-	
-	public Player(String sFirstname, String sLastname, int iNumber, Position ePosition) {
-		this(sFirstname, sLastname, iNumber, ePosition, null);
-	}
-	
-	public Player(String sFirstname, String sLastname, int iNumber, Position ePosition, Date dBirthday) {
-		super(sFirstname, sLastname, dBirthday);
-		this.siNumber = new SimpleIntegerProperty(iNumber);
-		this.iNumber = iNumber;
-		this.ePosition = ePosition;
-		sImagePath = null;
-	}
+import java.util.Date;
 
-	/**
-	 * Returns the sFirstname.
-	 *
-	 * @return the sFirstname
-	 */
-	public int getsiNumber() {
-		if(siNumber == null)
-			this.siNumber = new SimpleIntegerProperty(iNumber);
-		return siNumber.get();
-	}
+public class Player extends Person implements Comparable<Player> {
+    private SimpleIntegerProperty siNumber;
+    @Expose
+    private int iNumber;
+    @Expose
+    private Position ePosition;
+    @Expose
+    private String sImagePath;
 
-	/**
-	 * Sets the sFirstname to the new value.
-	 *
-	 * @param sFirstname the sFirstname to set
-	 */
-	public void setsiNumber(int iNumber) {
-		this.siNumber.set(iNumber);
-		this.iNumber = iNumber;
-	}
-	
-	/**
-	 * Returns the iNumber.
-	 *
-	 * @return the iNumber
-	 */
-	public int getiNumber() {
-		return iNumber;
-	}
+    public Player(String sFirstname, String sLastname, int iNumber, Position ePosition) {
+        this(sFirstname, sLastname, iNumber, ePosition, null);
+    }
 
-	/**
-	 * Sets the iNumber to the new value.
-	 *
-	 * @param iNumber the iNumber to set
-	 */
-	public void setiNumber(int iNumber) {
-		this.siNumber.set(iNumber);
-		this.iNumber = iNumber;
-	}
+    public Player(String sFirstname, String sLastname, int iNumber, Position ePosition, Date dBirthday) {
+        super(sFirstname, sLastname, dBirthday);
+        this.siNumber = new SimpleIntegerProperty(iNumber);
+        this.iNumber = iNumber;
+        this.ePosition = ePosition;
+        sImagePath = null;
+    }
 
-	/**
-	 * Returns the ePosition.
-	 *
-	 * @return the ePosition
-	 */
-	public Position getePosition() {
-		return ePosition;
-	}
+    /**
+     * Returns the sFirstname.
+     *
+     * @return the sFirstname
+     */
+    public int getsiNumber() {
+        if (siNumber == null)
+            this.siNumber = new SimpleIntegerProperty(iNumber);
+        return siNumber.get();
+    }
 
-	/**
-	 * Sets the ePosition to the new value.
-	 *
-	 * @param ePosition the ePosition to set
-	 */
-	public void setePosition(Position ePosition) {
-		this.ePosition = ePosition;
-	}
+    /**
+     * Sets the sFirstname to the new value.
+     *
+     * @param iNumber the sFirstname to set
+     */
+    public void setsiNumber(int iNumber) {
+        this.siNumber.set(iNumber);
+        this.iNumber = iNumber;
+    }
 
-	/**
-	 * Returns the sImagePath.
-	 *
-	 * @return the sImagePath
-	 */
-	public String getsImagePath() {
-		return sImagePath;
-	}
+    /**
+     * Returns the iNumber.
+     *
+     * @return the iNumber
+     */
+    public int getiNumber() {
+        return iNumber;
+    }
 
-	/**
-	 * Sets the sImagePath to the new value.
-	 *
-	 * @param sImagePath the sImagePath to set
-	 */
-	public void setsImagePath(String sImagePath) {
-		this.sImagePath = sImagePath;
-	}
-	
-	public IntegerProperty siNumberProperty() {
+    /**
+     * Sets the iNumber to the new value.
+     *
+     * @param iNumber the iNumber to set
+     */
+    public void setiNumber(int iNumber) {
+        this.siNumber.set(iNumber);
+        this.iNumber = iNumber;
+    }
+
+    /**
+     * Returns the ePosition.
+     *
+     * @return the ePosition
+     */
+    public Position getePosition() {
+        return ePosition;
+    }
+
+    /**
+     * Sets the ePosition to the new value.
+     *
+     * @param ePosition the ePosition to set
+     */
+    public void setePosition(Position ePosition) {
+        this.ePosition = ePosition;
+    }
+
+    /**
+     * Returns the sImagePath.
+     *
+     * @return the sImagePath
+     */
+    public String getsImagePath() {
+        return sImagePath;
+    }
+
+    /**
+     * Sets the sImagePath to the new value.
+     *
+     * @param sImagePath the sImagePath to set
+     */
+    public void setsImagePath(String sImagePath) {
+        this.sImagePath = sImagePath;
+    }
+
+    public IntegerProperty siNumberProperty() {
         return siNumber;
     }
-	
-	@Override
-	public String toString() {
-		return iNumber+" - "+sFirstnameGson+" "+sLastnameGson;
-	}
 
-	@Override
-	public int compareTo(Player otherPerson) {
-		if(iNumber == otherPerson.getiNumber())
-			return 0;
-		return iNumber > otherPerson.getiNumber()?1:-1;
-	}
-	
-	public void callAfterDeserialization() {
-		super.callAfterDeserialization();
-		this.siNumber = new SimpleIntegerProperty(iNumber);
-	}
+    @Override
+    public String toString() {
+        return iNumber + " - " + sFirstnameGson + " " + sLastnameGson;
+    }
+
+    @Override
+    public int compareTo(Player otherPerson) {
+        if (iNumber == otherPerson.getiNumber())
+            return 0;
+        return iNumber > otherPerson.getiNumber() ? 1 : -1;
+    }
+
+    public void callAfterDeserialization() {
+        super.callAfterDeserialization();
+        this.siNumber = new SimpleIntegerProperty(iNumber);
+    }
 }

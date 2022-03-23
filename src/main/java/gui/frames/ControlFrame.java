@@ -16,12 +16,13 @@ import gui.menu.Menus;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import language.Language;
 import system.Main;
 import system.settings.Settings;
 
@@ -40,9 +41,12 @@ public class ControlFrame extends Stage {
         this.guiControlling = guiControlling;
         setX(sSettings.mainFrame.iStartXPosition + sSettings.mainFrame.iWidth + 10);
         setY(0);
+        setTitle(Language.getText("anzeigetafel"));
+
         MenuBar menuBar = new ControlMenuBar(this);
 
-        Text tCopyright = new Text("© " + new GregorianCalendar().get(Calendar.YEAR) + " Sebastian Fürderer (v." + Main.VERSION + ")");
+        Label tCopyright = new Label("© " + new GregorianCalendar().get(Calendar.YEAR) + " Sebastian Fürderer (v." + Main.VERSION + ")");
+        tCopyright.getStyleClass().add("text--white");
 
         // Create a box for the bottom of the panel
         HBox bottomHBox = new HBox();
@@ -56,14 +60,16 @@ public class ControlFrame extends Stage {
         mainPane.setCenter(cfsCurrentState.buildButtons(this));
         mainPane.setBottom(bottomHBox);
 
-        setScene(new Scene(mainPane, 300, 150));
+        Scene main = new Scene(mainPane, 300, 150);
+        setScene(main);
+
     }
 
     public void changeState(ControlFrameState newState) {
         cfsCurrentState = newState;
         mainPane.setCenter(cfsCurrentState.buildButtons(this));
         if (cfsCurrentState instanceof ControlFrameStateMatch || cfsCurrentState instanceof ControlFrameStateTimeRunning)
-            setHeight(550);
+            setHeight(650);
         else
             setHeight(150);
     }
