@@ -67,6 +67,15 @@ public class PaneVideo extends PaneMainScoreboard {
 		if (mediaPlayer != null) {
 
 			mediaPlayer.stop();
+		}
+	}
+
+	@Override
+	public void paneDidDisappear() {
+		super.paneDidDisappear();
+		// Frees the native decoder and buffers, stop() alone keeps them
+		if (mediaPlayer != null) {
+			mediaPlayer.dispose();
 			mediaPlayer = null;
 		}
 	}

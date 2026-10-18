@@ -18,6 +18,7 @@ import system.settings.Settings;
 public abstract class PaneMainScoreboard extends Pane {
 	protected final int I_PADDING = 20;
 	protected boolean paneSupportSnowing;
+	private SnowflakeAnimation snow;
 
 	public PaneMainScoreboard(Pane rootPane) {
 		this(rootPane,true);
@@ -43,7 +44,7 @@ public abstract class PaneMainScoreboard extends Pane {
 	public void paneWillAppear() {
 		Settings settings = GUIControlling.getSettings();
 		if (paneSupportSnowing && settings.bSnowing) {
-			SnowflakeAnimation snow = new SnowflakeAnimation(this, settings);
+			snow = new SnowflakeAnimation(this, settings);
 			snow.animate();
 		}
 	}
@@ -57,6 +58,10 @@ public abstract class PaneMainScoreboard extends Pane {
 	}
 
 	public void paneDidDisappear() {
-
+		// Snowflake animations run endlessly, so they have to be stopped explicitly
+		if (snow != null) {
+			snow.stop();
+			snow = null;
+		}
 	}
 }

@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import exceptions.FileNotCreatedException;
 import football.Team;
@@ -18,6 +20,8 @@ import javafx.scene.image.Image;
 
 public class Images {
 	private static Images images;
+	// Images from the JAR never change, so they are decoded only once
+	private final Map<String, Image> resourceCache = new ConcurrentHashMap<String, Image>();
 	
 	private Images() {
 		
@@ -30,7 +34,8 @@ public class Images {
 	}
 
 	public Image loadImageFromResource(String sImageName, String sFileExtension) {
-		return new Image(Images.class.getResource("/images/"+sImageName+"."+sFileExtension).toExternalForm(),true);
+		return resourceCache.computeIfAbsent(sImageName + "." + sFileExtension, key -> new Image(
+				Images.class.getResource("/images/" + sImageName + "." + sFileExtension).toExternalForm(), true));
 	}
 	
 	public Image loadImageFromPath(String sPathToImage) throws MalformedURLException {
@@ -38,6 +43,15 @@ public class Images {
 		Image img = new Image(image.toURI().toURL().toString(),false);
 		image = null;
 		return img;
+	}
+
+	/**
+	 * Loads the image scaled down to fit into the given size (keeping the ratio).
+	 * Saves memory and decoding time for large pictures such as advertisements.
+	 */
+	public Image loadImageFromPath(String sPathToImage, double dMaxWidth, double dMaxHeight) throws MalformedURLException {
+		File image = new File(sPathToImage);
+		return new Image(image.toURI().toURL().toString(), dMaxWidth, dMaxHeight, true, true, false);
 	}
 	
 	/**

@@ -5,7 +5,7 @@ import system.settings.Settings;
 
 public class SnowflakeAnimation {
 	private static final int COUNT_OF_SNOWFLAKES = 200;
-	private static Snowflake flakes[] = new Snowflake[COUNT_OF_SNOWFLAKES];
+	private final Snowflake flakes[] = new Snowflake[COUNT_OF_SNOWFLAKES];
 
 	public SnowflakeAnimation(Pane rootPane, Settings settings) {
 
@@ -18,6 +18,12 @@ public class SnowflakeAnimation {
 	public void animate() {
 		for (int i = 0; i < COUNT_OF_SNOWFLAKES; i++) {
 			flakes[i].animate();
+		}
+	}
+
+	public void stop() {
+		for (int i = 0; i < COUNT_OF_SNOWFLAKES; i++) {
+			flakes[i].stop();
 		}
 	}
 }

@@ -6,6 +6,7 @@ package gui.frames.panes;
 
 import java.net.MalformedURLException;
 
+import gui.GUIControlling;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -15,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import message.ErrorMsg;
 import system.Images;
+import system.settings.Frame;
 
 public class PaneImage extends PaneMainScoreboard {
 
@@ -27,7 +29,10 @@ public class PaneImage extends PaneMainScoreboard {
 		wrapperPane.prefHeightProperty().bind(this.heightProperty());
 
 		try {
-			myBI = new BackgroundImage(Images.getImages().loadImageFromPath(sPathToImage), BackgroundRepeat.NO_REPEAT,
+			Frame mainFrame = GUIControlling.getSettings().mainFrame;
+			myBI = new BackgroundImage(
+					Images.getImages().loadImageFromPath(sPathToImage, mainFrame.iWidth, mainFrame.iHeight),
+					BackgroundRepeat.NO_REPEAT,
 					BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
 					new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, true, false));
 			wrapperPane.setBackground(new Background(myBI));
