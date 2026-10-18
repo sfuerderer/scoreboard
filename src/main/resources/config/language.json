@@ -558,6 +558,12 @@
         "ENGLISH": "Theme",
         "GERMAN": "Theme"
       }
+    },
+    "goal_animation": {
+      "hmText": {
+        "ENGLISH": "Goal Animation",
+        "GERMAN": "Tor Animation"
+      }
     }
   }
 }

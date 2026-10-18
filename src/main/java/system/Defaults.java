@@ -4,6 +4,7 @@
  ************************************************/
 package system;
 
+import system.settings.GoalAnimation;
 import system.settings.Themes;
 
 public class Defaults {
@@ -26,6 +27,7 @@ public class Defaults {
     public static final int TIME_UNTIL_GO_TO_MAIN_IN_MILISECONDS = 5000;
     public static final boolean IS_SNOWING = false;
     public static final Themes THEME = Themes.DEFAULT;
+    public static final GoalAnimation GOAL_ANIMATION = GoalAnimation.ANIMATION_2;
 
     public static final boolean OTHER_FRAME_1_ACTIVATED = true;
     public static final int OTHER_FRAME_1_WIDTH = 65;

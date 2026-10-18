@@ -47,6 +47,8 @@ public class Settings {
     @Expose
     public boolean bSnowing;
     @Expose
+    public GoalAnimation sGoalAnimation;
+    @Expose
     public Themes theme;
     @Expose
     public String version;
@@ -54,16 +56,16 @@ public class Settings {
     public Settings(String version, Frame mainFrame, Languages eSystemLanguage, Animations animation,
                     int iHalftime1Length, int iHalftime2Length, int iHalftime3Length, int iHalftime4Length,
                     int iTimeBetweenAdvertisingInMiliseconds, int iTimeBetweenReplacementInMiliseconds,
-                    int iTimeUntilGoToMainInMiliseconds, boolean bSnowing, Themes theme) {
+                    int iTimeUntilGoToMainInMiliseconds, boolean bSnowing, Themes theme, GoalAnimation sGoalAnimation) {
         this(version, mainFrame, null, eSystemLanguage, animation, iHalftime1Length, iHalftime2Length, iHalftime3Length,
                 iHalftime4Length, iTimeBetweenAdvertisingInMiliseconds, iTimeBetweenReplacementInMiliseconds,
-                iTimeUntilGoToMainInMiliseconds, bSnowing, theme);
+                iTimeUntilGoToMainInMiliseconds, bSnowing, theme, sGoalAnimation);
     }
 
     public Settings(String version, Frame mainFrame, Frame[] otherFrames, Languages eSystemLanguage,
                     Animations animation, int iHalftime1Length, int iHalftime2Length, int iHalftime3Length,
                     int iHalftime4Length, int iTimeBetweenAdvertisingInMiliseconds, int iTimeBetweenReplacementInMiliseconds,
-                    int iTimeUntilGoToMainInMiliseconds, boolean bSnowing, Themes theme) {
+                    int iTimeUntilGoToMainInMiliseconds, boolean bSnowing, Themes theme, GoalAnimation sGoalAnimation) {
         this.version = version;
         this.mainFrame = mainFrame;
         this.otherFrames = otherFrames;
@@ -78,6 +80,7 @@ public class Settings {
         this.iTimeUntilGoToMainInMiliseconds = iTimeUntilGoToMainInMiliseconds;
         this.bSnowing = bSnowing;
         this.theme = theme;
+        this.sGoalAnimation = sGoalAnimation;
     }
 
     /**
@@ -109,6 +112,10 @@ public class Settings {
         }
         if (sSystemLanguage == null) {
             sSystemLanguage = Languages.GERMAN;
+            update = true;
+        }
+        if (sGoalAnimation == null) {
+            sGoalAnimation = GoalAnimation.ANIMATION_2;
             update = true;
         }
         if (theme == null) {
