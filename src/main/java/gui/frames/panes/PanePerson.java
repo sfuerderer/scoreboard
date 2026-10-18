@@ -93,7 +93,6 @@ public class PanePerson extends PaneMainScoreboard {
 		if (ivPersonImage != null) {
 			imgPerson = null;
 			ivPersonImage.setImage(null);
-			System.gc();
 		}
 	}
 
