@@ -89,7 +89,7 @@ public class GUIControlling extends Application {
 
     public void startNewMatch(Team teamHome, Team teamGuest) {
         match = new Match(teamHome, teamGuest, sSettings.iHalftime1Length, sSettings.iHalftime2Length, sSettings.iHalftime3Length, sSettings.iHalftime4Length);
-        Main.setMatch(match);
+        Main.setMatch(match, controlFrame::halftimeEnded);
         controlFrame.changeState(new ControlFrameStateMatch());
         changeMainScoreboardPane(new PaneLaunchGame(getRootPaneMainScoreboard(), controlFrame));
     }

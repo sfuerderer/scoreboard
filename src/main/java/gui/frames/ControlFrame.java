@@ -74,6 +74,25 @@ public class ControlFrame extends Stage {
             setHeight(150);
     }
 
+    /**
+     * Shows the buttons to start the next halftime, if the time was running.
+     * Other states (e.g. advertisement) are kept, so their stop button stays visible.
+     */
+    public void halftimeEnded() {
+        if (cfsCurrentState instanceof ControlFrameStateTimeRunning)
+            changeState(new ControlFrameStateMatch());
+    }
+
+    /**
+     * Returns to the match buttons that fit the playtime (running or not).
+     */
+    public void showMatchState() {
+        if (Main.getMatch() != null && Main.getMatch().isbPlaytimeRunning())
+            changeState(new ControlFrameStateTimeRunning());
+        else
+            changeState(new ControlFrameStateMatch());
+    }
+
     public void menuClicked(Menus menu) {
         guiControlling.menuClicked(menu);
     }

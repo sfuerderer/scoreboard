@@ -5,9 +5,8 @@
 package background.tasks;
 
 import football.match.Match;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
-import message.ErrorMsg;
-import system.Main;
 
 /**
  * A class for displaying the current playtime.
@@ -16,16 +15,21 @@ import system.Main;
  * @version 1.0.0
  */
 public class TaskPlaytime extends Task<Void> {
-//    private final ControlFrame controlFrame;
+    private final Match match;
+    private final Runnable onHalftimeEnded;
 
-//    public TaskPlaytime(ControlFrame controlFrame) {
-//        this.controlFrame = controlFrame;
-//    }
+    /**
+     * @param match           the match whose playtime is displayed
+     * @param onHalftimeEnded called on the JavaFX thread when a halftime ended, may be null
+     */
+    public TaskPlaytime(Match match, Runnable onHalftimeEnded) {
+        this.match = match;
+        this.onHalftimeEnded = onHalftimeEnded;
+    }
 
     @Override
     public Void call() {
-        Match match = Main.getMatch();
-        while (true) {
+        while (!isCancelled()) {
             if (match.isbPlaytimeRunning()) {
                 long currentMilliseconds = System.currentTimeMillis();
                 long diff = currentMilliseconds - match.getlStartTimeMillis();
@@ -34,7 +38,8 @@ public class TaskPlaytime extends Task<Void> {
                 if (diff >= match.getiHalftimeLength() * 60L) {
                     match.stop();
                     match.nextHalf();
-//                    Platform.runLater(() -> controlFrame.changeState(new ControlFrameStateMatch()));
+                    if (onHalftimeEnded != null)
+                        Platform.runLater(onHalftimeEnded);
                 } else {
                     int minute = (int) (diff / 60
                             + (match.getTimePassedToHalftime()));
@@ -48,8 +53,11 @@ public class TaskPlaytime extends Task<Void> {
             try {
                 Thread.sleep(99);
             } catch (InterruptedException e) {
-                ErrorMsg.showErrorMessage(113, e.getMessage());
+                // cancel() interrupts the sleep; the loop condition ends the task
+                if (isCancelled())
+                    break;
             }
         }
+        return null;
     }
 }

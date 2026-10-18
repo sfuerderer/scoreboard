@@ -25,12 +25,23 @@ public class Main {
     }
 
 
-    public static void setMatch(Match newMatch) {
+    /**
+     * Sets the current match and starts its playtime. The playtime and observer of a
+     * previous match are stopped, so only one playtime thread is running at a time.
+     * Has to be called on the JavaFX thread.
+     *
+     * @param onHalftimeEnded called on the JavaFX thread when a halftime ended, may be null
+     */
+    public static void setMatch(Match newMatch, Runnable onHalftimeEnded) {
+        if (servicePlaytime != null)
+            servicePlaytime.cancel();
+        if (match != null)
+            subject.removeObserver(match);
+
         match = newMatch;
         subject.addObserver(match);
 
-        servicePlaytime = new ServicePlaytime();
-//        if (servicePlaytime.getState() == Worker.State.READY)
+        servicePlaytime = new ServicePlaytime(match, onHalftimeEnded);
         servicePlaytime.start();
     }
 

@@ -9,6 +9,7 @@ import gui.frames.ControlFrame;
 import gui.frames.control.ControlFrameStateAdvertisment;
 import javafx.event.ActionEvent;
 import language.Language;
+import message.ErrorMsg;
 import system.Main;
 
 public class ButtonAdvertisment extends ControlButton{
@@ -19,8 +20,12 @@ public class ButtonAdvertisment extends ControlButton{
 	@Override
 	public void handle(ActionEvent event) {
 		if(event.getSource() == this) {
-			controlFrame.changeState(new ControlFrameStateAdvertisment());
 			AdvertismentThread adThread = new AdvertismentThread(controlFrame,controlFrame.getSettings());
+			if (!adThread.hasAdvertisments()) {
+				ErrorMsg.showErrorMessage(212);
+				return;
+			}
+			controlFrame.changeState(new ControlFrameStateAdvertisment());
 			Main.setAdThread(adThread);
 			adThread.start();
 		}

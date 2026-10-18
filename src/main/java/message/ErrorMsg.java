@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
@@ -49,6 +50,7 @@ public class ErrorMsg {
 		ERRORS.put(209, "Es wurde kein Spieler oder keine Karte ausgewählt.");
 		ERRORS.put(210, "Zu dieser Mannschaft wurde noch kein Trainer angelegt.");
 		ERRORS.put(211, "Du kannst nur einen Haupttrainer anlegen.");
+		ERRORS.put(212, "Im Ordner \"advertisment\" wurden keine Bilder (jpg, png) oder Videos (mp4) gefunden.");
 	}
 
 	public static void setBGuiStarted(boolean bGuiStarted) {
@@ -71,6 +73,12 @@ public class ErrorMsg {
 
 		if (!bGuiStarted) {
 			showErrorMessageSwing(sMessage);
+			if (exit) {
+				System.exit(0);
+			}
+		} else if (!Platform.isFxApplicationThread()) {
+			// Dialogs may only be created on the JavaFX thread (e.g. errors from background tasks)
+			Platform.runLater(() -> showErrorMessage(iErrorCode, sMoreInformation, exit));
 		} else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Fehler");

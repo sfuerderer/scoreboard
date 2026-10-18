@@ -20,7 +20,6 @@ import message.ErrorMsg;
 import system.FileHandling;
 
 public class ButtonStartMatch extends ControlButton{
-	private TeamWrapper selectedTeam;
 	public ButtonStartMatch(ControlFrame controlFrame) {
 		super(Language.getText("starteSpiel"), controlFrame);
 	}
@@ -48,9 +47,8 @@ public class ButtonStartMatch extends ControlButton{
 	
 	public Team askForTeam(String sHeaderText) throws IOException {
 		Optional<Pair<League, TeamWrapper>> result = new DialogNewMatch(sHeaderText, controlFrame.getSettings()).showAndWait();
-		result.ifPresent(selected -> {
-			selectedTeam = selected.getValue();
-		});
+		// Local variable: a cancelled dialog must not return the team of the previous dialog
+		TeamWrapper selectedTeam = result.map(Pair::getValue).orElse(null);
 		
 		if(selectedTeam == null)
 			return null;
