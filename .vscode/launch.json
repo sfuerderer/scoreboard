@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Anzeigetafel starten",
+            "request": "launch",
+            "mainClass": "system.Main",
+            "projectName": "Anzeigetafel",
+            "cwd": "${workspaceFolder}",
+            "vmArgs": "-Dfile.encoding=UTF-8"
+        }
+    ]
+}

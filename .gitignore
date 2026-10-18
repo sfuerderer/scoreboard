@@ -1,0 +1,43 @@
+# --- Build ---
+/target/
+
+# --- Laufzeitdaten der App (lokal / vereinsspezifisch) ---
+/advertisment/
+/configuration/
+/leagues/
+/media/
+
+# --- JVM-Crashlogs ---
+hs_err_pid*.log
+replay_pid*.log
+
+# --- IntelliJ ---
+.idea/
+*.iml
+out/
+
+# --- Eclipse ---
+.classpath
+.project
+.settings/
+bin/
+
+# --- VS Code (launch.json wird geteilt, Rest ist maschinenspezifisch) ---
+.vscode/*
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# --- Claude Code (Team-Settings geteilt, persönliche nicht) ---
+.claude/settings.local.json
+
+# --- Maven-Wrapper: JAR wird bei Bedarf heruntergeladen ---
+.mvn/wrapper/maven-wrapper.jar
+
+# --- Betriebssystem ---
+.DS_Store
+Thumbs.db
+
+# --- Sonstiges ---
+*.log
+*.tmp
+*.swp
