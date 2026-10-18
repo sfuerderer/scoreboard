@@ -9,10 +9,14 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Type;
+import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
 
 import exceptions.FileDidNotExistException;
 import exceptions.FileNotCreatedException;
@@ -56,6 +60,11 @@ public class FileHandling {
 		return file;
 	}
 
+	/**
+	 * Saves the object as JSON. The data is first written to a temporary file in
+	 * the same folder and then moved over the target, so a crash while writing
+	 * never leaves a half written file behind.
+	 */
 	public <T> void saveTToFile(T object, String sFilename) throws FileNotCreatedException, IOException {
 
 		File file;
@@ -65,28 +74,34 @@ public class FileHandling {
 			file = createFile(sFilename);
 		}
 
-		Writer writer = Files.newBufferedWriter(file.toPath());
-
-		gson.toJson(object, writer);
-
-		writer.close();
+		Path target = file.toPath();
+		Path tempFile = Files.createTempFile(target.toAbsolutePath().getParent(), file.getName(), ".tmp");
+		try {
+			try (Writer writer = Files.newBufferedWriter(tempFile)) {
+				gson.toJson(object, writer);
+			}
+			try {
+				Files.move(tempFile, target, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+			} catch (AtomicMoveNotSupportedException e) {
+				Files.move(tempFile, target, StandardCopyOption.REPLACE_EXISTING);
+			}
+		} finally {
+			Files.deleteIfExists(tempFile);
+		}
 	}
 
 	public <T> T loadTFromFile(String sFilename, Class<T> type) throws IOException, FileDidNotExistException {
-
-		File settingsFile = FileHandling.getFileHandling().loadFile(sFilename);
-		Reader reader = Files.newBufferedReader(settingsFile.toPath());
-
-		return gson.fromJson(reader, type);
-
+		return loadTFromFile(sFilename, (Type) type);
 	}
 
 	public <T> T loadTFromFile(String sFilename, Type type) throws IOException, FileDidNotExistException {
 
 		File settingsFile = FileHandling.getFileHandling().loadFile(sFilename);
-		Reader reader = Files.newBufferedReader(settingsFile.toPath());
-
-		return gson.fromJson(reader, type);
+		try (Reader reader = Files.newBufferedReader(settingsFile.toPath())) {
+			return gson.fromJson(reader, type);
+		} catch (JsonParseException e) {
+			throw new IOException("Invalid JSON in " + sFilename, e);
+		}
 
 	}
 
