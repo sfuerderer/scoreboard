@@ -4,6 +4,9 @@
  ************************************************/
 package gui.frames.panes;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
@@ -12,10 +15,9 @@ import javafx.scene.media.Media;
 
 @SuppressWarnings("restriction")
 public class PaneVideo extends PaneMainScoreboard {
-	// TODO besser Lösung finden
-	private static final long WAIT_TIMEOUT = 200;
+	private static final long WAIT_TIMEOUT_SECONDS = 10;
 	private MediaPlayer mediaPlayer;
-	private boolean ready = false;
+	private final CountDownLatch ready = new CountDownLatch(1);
 
 	public PaneVideo(Pane rootPane, Media video) {
 		this(rootPane, video, true);
@@ -33,7 +35,7 @@ public class PaneVideo extends PaneMainScoreboard {
 
 			@Override
 			public void run() {
-				ready = true;
+				ready.countDown();
 			}
 
 		});
@@ -48,26 +50,13 @@ public class PaneVideo extends PaneMainScoreboard {
 		getChildren().add(mediaView);
 
 		if (waitForLoad) {
-			Thread dummy = new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					while (!ready) {
-						try {
-							Thread.sleep(WAIT_TIMEOUT);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-
-			});
-
+			// Wait until the duration of the video is known. Must not be called on the JavaFX
+			// thread, because onReady is called there. Gives up if the video cannot be loaded.
+			mediaPlayer.setOnError(ready::countDown);
 			try {
-				dummy.start();
-				dummy.join();
+				ready.await(WAIT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				Thread.currentThread().interrupt();
 			}
 		}
 	}

@@ -5,7 +5,6 @@
 package gui.frames.control.buttons;
 
 import gui.frames.ControlFrame;
-import gui.frames.control.ControlFrameStateMatch;
 import javafx.event.ActionEvent;
 import language.Language;
 import system.Main;
@@ -18,8 +17,8 @@ public class ButtonAdvertismentStop extends ControlButton{
 	@Override
 	public void handle(ActionEvent event) {
 		if(event.getSource() == this) {
-			controlFrame.changeState(new ControlFrameStateMatch());
 			Main.getAdThread().stopThread();
+			controlFrame.showMatchState();
 		}
 	}
 }

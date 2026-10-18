@@ -26,13 +26,14 @@ public class Match implements Observer {
     private int iVisitors;
     private int iCornersHome;
     private int iCornersGuest;
-    private long lStartTimeMillis;
+    // read by the playtime thread
+    private volatile long lStartTimeMillis;
     private Statistic sStatistic;
-    private Halftime eWhichHalftime;
+    private volatile Halftime eWhichHalftime;
     private Lineup lLineup;
     public StringProperty sResult;
     public StringProperty sCorners;
-    private boolean bPlaytimeRunning;
+    private volatile boolean bPlaytimeRunning;
 
     public Match(Team tTeamHome, Team tTeamGuest, int iHalftime1Length, int iHalftime2Length, int iHalftime3Length,
                  int iHalftime4Length) {

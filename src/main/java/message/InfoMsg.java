@@ -6,6 +6,7 @@ package message;
 
 import javax.swing.JOptionPane;
 
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
@@ -28,6 +29,8 @@ public class InfoMsg {
 	public static void showMessage(String sInfoMessage, String sMoreInformation) {
 		if (!bGuiStarted) {
 			showMessageSwing(sInfoMessage);
+		} else if (!Platform.isFxApplicationThread()) {
+			Platform.runLater(() -> showMessage(sInfoMessage, sMoreInformation));
 		} else {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Fehler");
