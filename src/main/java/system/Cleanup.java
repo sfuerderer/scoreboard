@@ -6,11 +6,8 @@ package system;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.io.FileUtils;
 
 import exceptions.FileNotCreatedException;
 import football.League;
@@ -43,37 +40,26 @@ public class Cleanup {
 		}
 	}
 
+	/**
+	 * Removes leagues from the leagues file whose folder no longer exists.
+	 * Folders that are not listed in the leagues file are never deleted, because
+	 * a missing or broken leagues file would otherwise wipe all league data.
+	 */
 	public void cleanLeagueFolder() throws IOException, FileNotCreatedException {
 		List<League> leagues = Load.getLoad().loadLeagues();
-		List<League> leaguesExisting = new ArrayList<League>();
+		if (leagues.isEmpty())
+			return;
 
-		Files.list(new File("leagues").toPath()).forEach(path -> {
-			File file = path.toFile();
-			if (file.isDirectory()) {
-				boolean leagueExist = false;
-				for (League league : leagues) {
-					if (file.getName().equals(league.getsFolderName())) {
-						leaguesExisting.add(league);
-						leagueExist = true;
-						break;
-					}
-				}
-				if (!leagueExist)
-					try {
-						FileUtils.deleteDirectory(file);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			}
-		});
-		
 		List<League> leaguesToRemove = new ArrayList<League>();
-		for(League league: leagues) {
-			if(!leaguesExisting.contains(league)) {
+		for (League league : leagues) {
+			File leagueFolder = new File("leagues/" + league.getsFolderName());
+			if (league.getsFolderName() == null || !leagueFolder.isDirectory())
 				leaguesToRemove.add(league);
-			}
 		}
+
+		if (leaguesToRemove.isEmpty())
+			return;
+
 		leagues.removeAll(leaguesToRemove);
 		FileHandling.getFileHandling().saveTToFile(leagues, Defaults.S_LEAGUES_FILE_NAME);
 	}
@@ -83,6 +69,8 @@ public class Cleanup {
 		if (!playerFolder.exists())
 			return;
 		File[] allFiles = playerFolder.listFiles();
+		if (allFiles == null)
+			return;
 		for (File currentFile : allFiles)
 			currentFile.delete();
 	}

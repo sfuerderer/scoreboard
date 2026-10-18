@@ -6,14 +6,9 @@ package gui.frames;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import com.google.gson.reflect.TypeToken;
-
-import exceptions.FileDidNotExistException;
 import exceptions.FileNotCreatedException;
 import exceptions.LeagueNotCreatedException;
 import football.League;
@@ -41,6 +36,7 @@ import message.ErrorMsg;
 import system.Cleanup;
 import system.Defaults;
 import system.FileHandling;
+import system.Load;
 import system.settings.Settings;
 
 public class LeagueFrame extends BasicFrame {
@@ -54,11 +50,12 @@ public class LeagueFrame extends BasicFrame {
 	@Override
 	protected Pane buildCenterPane(Object defaultParams) {
 		try {
-			List<League> leagues = getLeagues();
+			// Clean up first, so the list below matches what is saved on disk
+			Cleanup.getCleanup().cleanLeagueFolder();
+			List<League> leagues = Load.getLoad().loadLeagues();
 			List<TeamWrapper> teams = new ArrayList<TeamWrapper>();
 			for (League league : leagues)
 				league.callAfterDeserialization();
-			Cleanup.getCleanup().cleanLeagueFolder();
 
 			ObservableList<League> tableDataLeagues = FXCollections.observableArrayList(leagues);
 			ObservableList<TeamWrapper> tableDataTeams = FXCollections.observableArrayList(teams);
@@ -189,7 +186,7 @@ public class LeagueFrame extends BasicFrame {
 
 	private void addNewLeague(ObservableList<League> tableDataLeagues,List<League> leagues) {
 		try {
-			League newLeague = createNewLeague(tfNewLeagueName.getText());
+			League newLeague = createNewLeague(tfNewLeagueName.getText(), leagues);
 			leagues.add(newLeague);
 			saveLeagues(leagues);
 			tableDataLeagues.add(newLeague);
@@ -225,25 +222,17 @@ public class LeagueFrame extends BasicFrame {
 		}
 	}
 
-	private List<League> getLeagues() throws IOException, FileNotCreatedException {
-		try {
-			Type collectionType = new TypeToken<Collection<League>>() {
-			}.getType();
-			return FileHandling.getFileHandling().loadTFromFile(Defaults.S_LEAGUES_FILE_NAME, collectionType);
-		} catch (FileDidNotExistException e1) {
-
-			List<League> newLeague = new ArrayList<League>();
-
-			FileHandling.getFileHandling().saveTToFile(newLeague, Defaults.S_LEAGUES_FILE_NAME);
-			return newLeague;
-		}
-	}
-
-	private League createNewLeague(String sLeagueName) throws LeagueNotCreatedException {
+	private League createNewLeague(String sLeagueName, List<League> leagues) throws LeagueNotCreatedException {
 		String folderName = sLeagueName.replaceAll("\\W+", "");
-		File fullPath = new File("leagues/" + folderName);
+		if (folderName.isEmpty())
+			throw new LeagueNotCreatedException();
+		for (League league : leagues)
+			if (folderName.equals(league.getsFolderName()))
+				throw new LeagueNotCreatedException();
 
-		if (!fullPath.mkdirs())
+		// An existing folder that belongs to no league is reused (it is no longer deleted on startup)
+		File fullPath = new File("leagues/" + folderName);
+		if (!fullPath.mkdirs() && !fullPath.isDirectory())
 			throw new LeagueNotCreatedException();
 
 		return new League(sLeagueName, folderName);

@@ -21,8 +21,8 @@ wie Datum/Uhrzeit) werden auf der LED-Wand dargestellt.
 java -jar target/Anzeigetafel-*.jar   # App starten (aus dem Repo-Root!)
 ```
 
-- Es gibt **noch keine Tests** (`src/test/java` ist leer). Neue Logik außerhalb der GUI (z. B. `football.*`,
-  `system.settings.*`) bitte mit JUnit-Tests absichern, wenn sinnvoll – JUnit 5 dann in `pom.xml` ergänzen.
+- Tests: JUnit 5 unter `src/test/java` (laufen mit `./mvnw -B verify`). Neue Logik außerhalb der GUI
+  (z. B. `football.*`, `system.settings.*`) bitte mit Tests absichern, wenn sinnvoll.
 - Die App ist eine GUI. Ein Agent kann das Ergebnis nicht sehen: nach UI-Änderungen mindestens `./mvnw -B verify`
   laufen lassen und den Menschen bitten, die App manuell zu prüfen.
 

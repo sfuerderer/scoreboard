@@ -33,7 +33,9 @@ public class Load {
         try {
             Type collectionType = new TypeToken<Collection<League>>() {
             }.getType();
-            return FileHandling.getFileHandling().loadTFromFile(Defaults.S_LEAGUES_FILE_NAME, collectionType);
+            List<League> leagues = FileHandling.getFileHandling().loadTFromFile(Defaults.S_LEAGUES_FILE_NAME, collectionType);
+            // An empty file is parsed as null
+            return leagues == null ? new ArrayList<League>() : leagues;
         } catch (FileDidNotExistException e1) {
 
             List<League> newLeague = new ArrayList<League>();
