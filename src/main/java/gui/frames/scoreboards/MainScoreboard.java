@@ -12,8 +12,11 @@ import javafx.animation.Animation;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import system.Defaults;
 import system.settings.Frame;
 import system.settings.Settings;
 
@@ -21,6 +24,7 @@ public class MainScoreboard extends Stage{
 	private Scene mainScene;
 	private Settings settings;
 	private StackPane rootPane;
+	private Pane windowPane;
 	private PaneMainScoreboard currentPane;
 	private Animation runningAnimation;
 	private Runnable finishAnimation;
@@ -28,7 +32,20 @@ public class MainScoreboard extends Stage{
 	public MainScoreboard(Frame mainFrame, Settings settings, Match match) {
 		this.settings = settings;
 		
+		// The panes are always laid out in the resolution of the LED wall and then stretched to the
+		// window size, so the wall shows the same picture regardless of the configured window size.
 		rootPane = new StackPane();
+		rootPane.setMinSize(Defaults.SCOREBOARD_DESIGN_WIDTH, Defaults.SCOREBOARD_DESIGN_HEIGHT);
+		rootPane.setPrefSize(Defaults.SCOREBOARD_DESIGN_WIDTH, Defaults.SCOREBOARD_DESIGN_HEIGHT);
+		rootPane.setMaxSize(Defaults.SCOREBOARD_DESIGN_WIDTH, Defaults.SCOREBOARD_DESIGN_HEIGHT);
+
+		windowPane = new Pane(rootPane);
+		windowPane.setStyle("-fx-background-color: #000000;");
+		Scale scale = new Scale();
+		scale.xProperty().bind(windowPane.widthProperty().divide(Defaults.SCOREBOARD_DESIGN_WIDTH));
+		scale.yProperty().bind(windowPane.heightProperty().divide(Defaults.SCOREBOARD_DESIGN_HEIGHT));
+		rootPane.getTransforms().add(scale);
+
 		initStyle(StageStyle.UNDECORATED);
 		setAlwaysOnTop(true);
 		setX(mainFrame.iStartXPosition);
@@ -39,7 +56,7 @@ public class MainScoreboard extends Stage{
 		currentPane.paneWillAppear();
 		rootPane.getChildren().add(currentPane);
 		
-		mainScene = new Scene(rootPane, mainFrame.iWidth, mainFrame.iHeight);
+		mainScene = new Scene(windowPane, mainFrame.iWidth, mainFrame.iHeight, Color.BLACK);
 		setScene(mainScene);
 	}
 
@@ -48,8 +65,6 @@ public class MainScoreboard extends Stage{
 		setY(mainFrame.iStartYPosition);
 		setWidth(mainFrame.iWidth);
 		setHeight(mainFrame.iHeight);
-		rootPane.setPrefWidth(mainFrame.iWidth);
-		rootPane.setPrefHeight(mainFrame.iHeight);
 	}
 	
 	public void changePane(PaneMainScoreboard newPane) {

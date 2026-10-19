@@ -5,6 +5,7 @@
 package system;
 
 import gui.animation.Animations;
+import system.settings.GoalAnimation;
 import system.settings.Themes;
 
 public class Defaults {
@@ -17,6 +18,10 @@ public class Defaults {
     public static final int FRAME_HEIGHT = 280;
     public static final int FRAME_START_X = 0;
     public static final int FRAME_START_Y = 10;
+    // Resolution of the LED wall. All scoreboard panes are laid out for this size and
+    // stretched to the configured window size (the wall's receiver scales the signal back).
+    public static final int SCOREBOARD_DESIGN_WIDTH = 514;
+    public static final int SCOREBOARD_DESIGN_HEIGHT = 280;
 
     public static final int HALFTIME_1_LENGTH = 45;
     public static final int HALFTIME_2_LENGTH = 45;
@@ -27,6 +32,7 @@ public class Defaults {
     public static final int TIME_UNTIL_GO_TO_MAIN_IN_MILISECONDS = 5000;
     public static final boolean IS_SNOWING = false;
     public static final Themes THEME = Themes.DEFAULT;
+    public static final GoalAnimation GOAL_ANIMATION = GoalAnimation.ANIMATION_2;
     public static final Animations ANIMATION = Animations.FADE;
     public static final String ANIMATION_WIPE_COLOR = "#0057b8";
 
