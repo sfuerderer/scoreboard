@@ -7,6 +7,7 @@ import javafx.animation.TranslateTransition;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
+import system.Defaults;
 import system.settings.Settings;
 
 public class Snowflake extends Circle {
@@ -16,9 +17,9 @@ public class Snowflake extends Circle {
 	private TranslateTransition fallAnimation;
 
 	public Snowflake(Settings settings) {
-		super(random.nextInt(settings.mainFrame.iWidth), random.nextInt(OFFSET), random.nextDouble() * 3);
+		super(random.nextInt(Defaults.SCOREBOARD_DESIGN_WIDTH), random.nextInt(OFFSET), random.nextDouble() * 3);
 		this.settings = settings;
-		setCenterX(random.nextInt(settings.mainFrame.iWidth));
+		setCenterX(random.nextInt(Defaults.SCOREBOARD_DESIGN_WIDTH));
 
 		Color color = Color.rgb(255, 255, 255, random.nextDouble());
 		setFill(color);
@@ -29,7 +30,7 @@ public class Snowflake extends Circle {
 		fallAnimation = new TranslateTransition(Duration.millis(duration), this);
         fallAnimation.setFromY(-OFFSET);
 		fallAnimation.setByY(50);
-		fallAnimation.setToY(settings.mainFrame.iHeight);
+		fallAnimation.setToY(Defaults.SCOREBOARD_DESIGN_HEIGHT);
 		fallAnimation.setByX(random.nextDouble() * getCenterX());
 		fallAnimation.setCycleCount(Timeline.INDEFINITE);
 		fallAnimation.play();
