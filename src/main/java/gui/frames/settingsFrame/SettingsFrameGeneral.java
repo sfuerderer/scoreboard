@@ -8,12 +8,14 @@ import language.Language;
 import language.Languages;
 import message.ErrorMsg;
 import system.Defaults;
+import system.settings.GoalAnimation;
 import system.settings.Settings;
 import system.settings.Themes;
 
 public class SettingsFrameGeneral extends SettingsComponent {
     private ChoiceBox<Languages> cbLangSelection;
     private ChoiceBox<Themes> cbThemeSelection;
+    private ChoiceBox<GoalAnimation> cbGoalAnimation;
     private TextField tfHalftime1Length, tfHalftime2Length, tfHalftime3Length, tfHalftime4Length, tfTimeBetweenAd, tfTimeBetweenReplacement, tfTimeUntilBackMain;
     private CheckBox cbIsSnowing;
 
@@ -38,6 +40,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         Label lbTimeUntilBackMain = new Label(Language.getText("time_go_back_to_main") + " (in ms)");
         Label lbIsSnowing = new Label(Language.getText("is_snowing"));
         Label lbTheme = new Label(Language.getText("theme") + " (Beta)");
+        Label lbGoalAnimation = new Label((Language.getText("goal_animation")));
 
         // Language selection
         cbLangSelection = new ChoiceBox<Languages>();
@@ -47,6 +50,10 @@ public class SettingsFrameGeneral extends SettingsComponent {
         cbThemeSelection = new ChoiceBox<Themes>();
         cbThemeSelection.getItems().setAll(Themes.values());
         cbThemeSelection.getSelectionModel().clearAndSelect(sSettings.theme.getIId());
+
+        cbGoalAnimation = new ChoiceBox<GoalAnimation>();
+        cbGoalAnimation.getItems().setAll(GoalAnimation.values());
+        cbGoalAnimation.getSelectionModel().clearAndSelect(sSettings.sGoalAnimation.getiId());
 
         tfHalftime1Length = new TextField(sSettings.iHalftime1Length + "");
         tfHalftime2Length = new TextField(sSettings.iHalftime2Length + "");
@@ -90,6 +97,9 @@ public class SettingsFrameGeneral extends SettingsComponent {
         centerPane.add(lbTheme, 0, 10);
         centerPane.add(cbThemeSelection, 1, 10);
 
+        centerPane.add(lbGoalAnimation, 0, 11);
+        centerPane.add(cbGoalAnimation, 1, 11);
+
         scrollPaneCenter.setContent(centerPane);
 
         getChildren().addAll(scrollPaneCenter);
@@ -99,6 +109,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
     public void saveToSettings() {
 //		boolean langChanged = sSettings.sSystemLanguage != cbLangSelection.getSelectionModel().getSelectedItem();
         sSettings.sSystemLanguage = cbLangSelection.getSelectionModel().getSelectedItem();
+        sSettings.sGoalAnimation = cbGoalAnimation.getSelectionModel().getSelectedItem();
         sSettings.bSnowing = cbIsSnowing.isSelected();
         sSettings.theme = cbThemeSelection.getSelectionModel().getSelectedItem();
         try {

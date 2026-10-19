@@ -65,7 +65,7 @@ public class Load {
 
             Settings newSettings = new Settings(Main.VERSION, mainFrame, otherFrames, Languages.GERMAN, Animations.FADE,
                     Defaults.HALFTIME_1_LENGTH, Defaults.HALFTIME_2_LENGTH, Defaults.HALFTIME_3_LENGTH, Defaults.HALFTIME_4_LENGTH, Defaults.TIME_BETWEEN_ADVERTISING_IN_MILISECONDS,
-                    Defaults.TIME_BETWEEN_REPLACEMENT_IN_MILISECONDS, Defaults.TIME_UNTIL_GO_TO_MAIN_IN_MILISECONDS, Defaults.IS_SNOWING, Defaults.THEME);
+                    Defaults.TIME_BETWEEN_REPLACEMENT_IN_MILISECONDS, Defaults.TIME_UNTIL_GO_TO_MAIN_IN_MILISECONDS, Defaults.IS_SNOWING, Defaults.THEME, Defaults.GOAL_ANIMATION);
 
             FileHandling.getFileHandling().saveTToFile(newSettings, Defaults.S_SETTINGS_FILE_NAME);
             return newSettings;
