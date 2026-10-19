@@ -4,7 +4,6 @@ import com.google.gson.reflect.TypeToken;
 import exceptions.FileDidNotExistException;
 import exceptions.FileNotCreatedException;
 import football.League;
-import gui.animation.Animations;
 import gui.frames.frameFunctions.OtherFramesFunctions;
 import language.Languages;
 import system.settings.Frame;
@@ -63,7 +62,7 @@ public class Load {
                     Defaults.OTHER_FRAME_2_HEIGHT, Defaults.OTHER_FRAME_2_START_X, Defaults.OTHER_FRAME_2_START_Y,
                     OtherFramesFunctions.CURRENT_TIME);
 
-            Settings newSettings = new Settings(Main.VERSION, mainFrame, otherFrames, Languages.GERMAN, Animations.FADE,
+            Settings newSettings = new Settings(Main.VERSION, mainFrame, otherFrames, Languages.GERMAN, Defaults.ANIMATION,
                     Defaults.HALFTIME_1_LENGTH, Defaults.HALFTIME_2_LENGTH, Defaults.HALFTIME_3_LENGTH, Defaults.HALFTIME_4_LENGTH, Defaults.TIME_BETWEEN_ADVERTISING_IN_MILISECONDS,
                     Defaults.TIME_BETWEEN_REPLACEMENT_IN_MILISECONDS, Defaults.TIME_UNTIL_GO_TO_MAIN_IN_MILISECONDS, Defaults.IS_SNOWING, Defaults.THEME);
 

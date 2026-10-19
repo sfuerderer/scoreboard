@@ -1,9 +1,11 @@
 package gui.frames.settingsFrame;
 
+import gui.animation.Animations;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.GridPane;
+import javafx.util.StringConverter;
 import language.Language;
 import language.Languages;
 import message.ErrorMsg;
@@ -14,6 +16,7 @@ import system.settings.Themes;
 public class SettingsFrameGeneral extends SettingsComponent {
     private ChoiceBox<Languages> cbLangSelection;
     private ChoiceBox<Themes> cbThemeSelection;
+    private ChoiceBox<Animations> cbAnimationSelection;
     private TextField tfHalftime1Length, tfHalftime2Length, tfHalftime3Length, tfHalftime4Length, tfTimeBetweenAd, tfTimeBetweenReplacement, tfTimeUntilBackMain;
     private CheckBox cbIsSnowing;
 
@@ -38,6 +41,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         Label lbTimeUntilBackMain = new Label(Language.getText("time_go_back_to_main") + " (in ms)");
         Label lbIsSnowing = new Label(Language.getText("is_snowing"));
         Label lbTheme = new Label(Language.getText("theme") + " (Beta)");
+        Label lbAnimation = new Label(Language.getText("animation"));
 
         // Language selection
         cbLangSelection = new ChoiceBox<Languages>();
@@ -47,6 +51,21 @@ public class SettingsFrameGeneral extends SettingsComponent {
         cbThemeSelection = new ChoiceBox<Themes>();
         cbThemeSelection.getItems().setAll(Themes.values());
         cbThemeSelection.getSelectionModel().clearAndSelect(sSettings.theme.getIId());
+
+        cbAnimationSelection = new ChoiceBox<Animations>();
+        cbAnimationSelection.getItems().setAll(Animations.values());
+        cbAnimationSelection.setConverter(new StringConverter<Animations>() {
+            @Override
+            public String toString(Animations animation) {
+                return animation == null ? "" : Language.getText(animation.getsLanguageKey());
+            }
+
+            @Override
+            public Animations fromString(String sText) {
+                return null;
+            }
+        });
+        cbAnimationSelection.getSelectionModel().select(sSettings.animation);
 
         tfHalftime1Length = new TextField(sSettings.iHalftime1Length + "");
         tfHalftime2Length = new TextField(sSettings.iHalftime2Length + "");
@@ -90,6 +109,9 @@ public class SettingsFrameGeneral extends SettingsComponent {
         centerPane.add(lbTheme, 0, 10);
         centerPane.add(cbThemeSelection, 1, 10);
 
+        centerPane.add(lbAnimation, 0, 11);
+        centerPane.add(cbAnimationSelection, 1, 11);
+
         scrollPaneCenter.setContent(centerPane);
 
         getChildren().addAll(scrollPaneCenter);
@@ -101,6 +123,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         sSettings.sSystemLanguage = cbLangSelection.getSelectionModel().getSelectedItem();
         sSettings.bSnowing = cbIsSnowing.isSelected();
         sSettings.theme = cbThemeSelection.getSelectionModel().getSelectedItem();
+        sSettings.animation = cbAnimationSelection.getSelectionModel().getSelectedItem();
         try {
             sSettings.iHalftime1Length = Integer.parseInt(tfHalftime1Length.getText());
             sSettings.iHalftime2Length = Integer.parseInt(tfHalftime2Length.getText());
@@ -123,6 +146,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         tfTimeBetweenAd.setText(sSettings.iTimeBetweenAdvertisingInMiliseconds + "");
         tfTimeBetweenReplacement.setText(sSettings.iTimeBetweenReplacementInMiliseconds + "");
         tfTimeUntilBackMain.setText(sSettings.iTimeUntilGoToMainInMiliseconds + "");
+        cbAnimationSelection.getSelectionModel().select(sSettings.animation);
     }
 
     @Override
@@ -134,6 +158,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         tfTimeBetweenAd.setText(Defaults.TIME_BETWEEN_ADVERTISING_IN_MILISECONDS + "");
         tfTimeBetweenReplacement.setText(Defaults.TIME_BETWEEN_REPLACEMENT_IN_MILISECONDS + "");
         tfTimeUntilBackMain.setText(Defaults.TIME_UNTIL_GO_TO_MAIN_IN_MILISECONDS + "");
+        cbAnimationSelection.getSelectionModel().select(Defaults.ANIMATION);
     }
 
     @Override
