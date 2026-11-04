@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 import language.Language;
 import language.Languages;
@@ -19,6 +20,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
     private ChoiceBox<Themes> cbThemeSelection;
     private ChoiceBox<GoalAnimation> cbGoalAnimation;
     private ChoiceBox<Animations> cbAnimationSelection;
+    private ColorPicker cpWipeColor;
     private TextField tfHalftime1Length, tfHalftime2Length, tfHalftime3Length, tfHalftime4Length, tfTimeBetweenAd, tfTimeBetweenReplacement, tfTimeUntilBackMain;
     private CheckBox cbIsSnowing;
 
@@ -45,6 +47,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         Label lbTheme = new Label(Language.getText("theme") + " (Beta)");
         Label lbGoalAnimation = new Label((Language.getText("goal_animation")));
         Label lbAnimation = new Label(Language.getText("animation"));
+        Label lbWipeColor = new Label(Language.getText("animation_wipe_color"));
 
         // Language selection
         cbLangSelection = new ChoiceBox<Languages>();
@@ -72,6 +75,8 @@ public class SettingsFrameGeneral extends SettingsComponent {
             }
         });
         cbAnimationSelection.getSelectionModel().select(sSettings.animation);
+        cpWipeColor = new ColorPicker(Color.web(sSettings.sWipeColor));
+        cpWipeColor.disableProperty().bind(cbAnimationSelection.valueProperty().isNotEqualTo(Animations.WIPE));
 
         tfHalftime1Length = new TextField(sSettings.iHalftime1Length + "");
         tfHalftime2Length = new TextField(sSettings.iHalftime2Length + "");
@@ -119,6 +124,8 @@ public class SettingsFrameGeneral extends SettingsComponent {
         centerPane.add(cbGoalAnimation, 1, 11);
         centerPane.add(lbAnimation, 0, 12);
         centerPane.add(cbAnimationSelection, 1, 12);
+        centerPane.add(lbWipeColor, 0, 13);
+        centerPane.add(cpWipeColor, 1, 13);
 
         scrollPaneCenter.setContent(centerPane);
 
@@ -133,6 +140,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         sSettings.bSnowing = cbIsSnowing.isSelected();
         sSettings.theme = cbThemeSelection.getSelectionModel().getSelectedItem();
         sSettings.animation = cbAnimationSelection.getSelectionModel().getSelectedItem();
+        sSettings.sWipeColor = cpWipeColor.getValue().toString();
         try {
             sSettings.iHalftime1Length = Integer.parseInt(tfHalftime1Length.getText());
             sSettings.iHalftime2Length = Integer.parseInt(tfHalftime2Length.getText());
@@ -156,6 +164,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         tfTimeBetweenReplacement.setText(sSettings.iTimeBetweenReplacementInMiliseconds + "");
         tfTimeUntilBackMain.setText(sSettings.iTimeUntilGoToMainInMiliseconds + "");
         cbAnimationSelection.getSelectionModel().select(sSettings.animation);
+        cpWipeColor.setValue(Color.web(sSettings.sWipeColor));
     }
 
     @Override
@@ -168,6 +177,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         tfTimeBetweenReplacement.setText(Defaults.TIME_BETWEEN_REPLACEMENT_IN_MILISECONDS + "");
         tfTimeUntilBackMain.setText(Defaults.TIME_UNTIL_GO_TO_MAIN_IN_MILISECONDS + "");
         cbAnimationSelection.getSelectionModel().select(Defaults.ANIMATION);
+        cpWipeColor.setValue(Color.web(Defaults.ANIMATION_WIPE_COLOR));
     }
 
     @Override
