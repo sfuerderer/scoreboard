@@ -8,6 +8,7 @@ import football.match.Match;
 import gui.animation.IAnimation;
 import gui.frames.panes.PaneAbout;
 import gui.frames.panes.PaneMainScoreboard;
+import javafx.animation.Animation;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -25,7 +26,9 @@ public class MainScoreboard extends Stage{
 	private StackPane rootPane;
 	private Pane windowPane;
 	private PaneMainScoreboard currentPane;
-	
+	private Animation runningAnimation;
+	private Runnable finishAnimation;
+
 	public MainScoreboard(Frame mainFrame, Settings settings, Match match) {
 		this.settings = settings;
 		
@@ -65,11 +68,37 @@ public class MainScoreboard extends Stage{
 	}
 	
 	public void changePane(PaneMainScoreboard newPane) {
-		currentPane.paneWillDisappear();
-		newPane.paneWillAppear();
+		// A new pane can be shown while the last transition is still running (e.g. goal video and
+		// scorer), so the running one is finished first. Otherwise both would remove panes at the end.
+		finishRunningAnimation();
+
+		PaneMainScoreboard oldPane = currentPane;
 		IAnimation animation = settings.animation.getAnimation();
-		animation.doAnimationIn(newPane, currentPane, rootPane);
+		oldPane.paneWillDisappear();
+		newPane.paneWillAppear();
+		rootPane.getChildren().add(newPane);
+
+		runningAnimation = animation.createAnimation(newPane, oldPane, rootPane);
+		finishAnimation = () -> {
+			rootPane.getChildren().remove(oldPane);
+			animation.cleanUp(newPane, oldPane, rootPane);
+			oldPane.paneDidDisappear();
+			newPane.paneDidAppear();
+		};
+		runningAnimation.setOnFinished(evt -> finishRunningAnimation());
 		currentPane = newPane;
+		runningAnimation.play();
+	}
+
+	private void finishRunningAnimation() {
+		if (runningAnimation == null) {
+			return;
+		}
+		Runnable finish = finishAnimation;
+		runningAnimation.stop();
+		runningAnimation = null;
+		finishAnimation = null;
+		finish.run();
 	}
 	
 	public Pane getRootPane() {

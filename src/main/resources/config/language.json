@@ -564,6 +564,48 @@
         "ENGLISH": "Goal Animation",
         "GERMAN": "Tor Animation"
       }
+    },
+    "animation": {
+      "hmText": {
+        "ENGLISH": "Transition animation",
+        "GERMAN": "Übergangsanimation"
+      }
+    },
+    "animation_none": {
+      "hmText": {
+        "ENGLISH": "None (hard cut)",
+        "GERMAN": "Keine (harter Schnitt)"
+      }
+    },
+    "animation_fade": {
+      "hmText": {
+        "ENGLISH": "Fade",
+        "GERMAN": "Überblenden"
+      }
+    },
+    "animation_slide": {
+      "hmText": {
+        "ENGLISH": "Slide sideways",
+        "GERMAN": "Seitlich schieben"
+      }
+    },
+    "animation_push_up": {
+      "hmText": {
+        "ENGLISH": "Push up",
+        "GERMAN": "Nach oben schieben"
+      }
+    },
+    "animation_zoom": {
+      "hmText": {
+        "ENGLISH": "Zoom",
+        "GERMAN": "Zoom"
+      }
+    },
+    "animation_wipe": {
+      "hmText": {
+        "ENGLISH": "Color wipe",
+        "GERMAN": "Farbwischer"
+      }
     }
   }
 }

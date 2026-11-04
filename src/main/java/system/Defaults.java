@@ -4,6 +4,7 @@
  ************************************************/
 package system;
 
+import gui.animation.Animations;
 import system.settings.GoalAnimation;
 import system.settings.Themes;
 
@@ -32,6 +33,8 @@ public class Defaults {
     public static final boolean IS_SNOWING = false;
     public static final Themes THEME = Themes.DEFAULT;
     public static final GoalAnimation GOAL_ANIMATION = GoalAnimation.ANIMATION_2;
+    public static final Animations ANIMATION = Animations.FADE;
+    public static final String ANIMATION_WIPE_COLOR = "#0057b8";
 
     public static final boolean OTHER_FRAME_1_ACTIVATED = true;
     public static final int OTHER_FRAME_1_WIDTH = 65;

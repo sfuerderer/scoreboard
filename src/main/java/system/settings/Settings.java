@@ -123,7 +123,7 @@ public class Settings {
             update = true;
         }
         if (animation == null) {
-            animation = Animations.FADE;
+            animation = Defaults.ANIMATION;
             update = true;
         }
         if (iHalftime1Length == 0) {
