@@ -6,6 +6,7 @@ package system;
 
 import gui.animation.Animations;
 import system.settings.GoalAnimation;
+import system.settings.ScalingMode;
 import system.settings.Themes;
 
 public class Defaults {
@@ -18,8 +19,8 @@ public class Defaults {
     public static final int FRAME_HEIGHT = 280;
     public static final int FRAME_START_X = 0;
     public static final int FRAME_START_Y = 10;
-    // Resolution of the LED wall. All scoreboard panes are laid out for this size and
-    // stretched to the configured window size (the wall's receiver scales the signal back).
+    // Resolution of the LED wall. With ScalingMode.FILL all scoreboard panes are laid out for this size
+    // and stretched to the configured window size (the wall's receiver scales the signal back).
     public static final int SCOREBOARD_DESIGN_WIDTH = 514;
     public static final int SCOREBOARD_DESIGN_HEIGHT = 280;
 
@@ -35,6 +36,7 @@ public class Defaults {
     public static final GoalAnimation GOAL_ANIMATION = GoalAnimation.ANIMATION_2;
     public static final Animations ANIMATION = Animations.FADE;
     public static final String ANIMATION_WIPE_COLOR = "#0057b8";
+    public static final ScalingMode SCALING_MODE = ScalingMode.FILL;
 
     public static final boolean OTHER_FRAME_1_ACTIVATED = true;
     public static final int OTHER_FRAME_1_WIDTH = 65;

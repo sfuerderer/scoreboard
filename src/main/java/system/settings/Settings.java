@@ -31,6 +31,8 @@ public class Settings {
     @Expose
     public Animations animation;
     @Expose
+    public ScalingMode scalingMode;
+    @Expose
     public int iHalftime1Length;
     @Expose
     public int iHalftime2Length;
@@ -56,16 +58,18 @@ public class Settings {
     public Settings(String version, Frame mainFrame, Languages eSystemLanguage, Animations animation,
                     int iHalftime1Length, int iHalftime2Length, int iHalftime3Length, int iHalftime4Length,
                     int iTimeBetweenAdvertisingInMiliseconds, int iTimeBetweenReplacementInMiliseconds,
-                    int iTimeUntilGoToMainInMiliseconds, boolean bSnowing, Themes theme, GoalAnimation sGoalAnimation) {
+                    int iTimeUntilGoToMainInMiliseconds, boolean bSnowing, Themes theme, GoalAnimation sGoalAnimation,
+                    ScalingMode scalingMode) {
         this(version, mainFrame, null, eSystemLanguage, animation, iHalftime1Length, iHalftime2Length, iHalftime3Length,
                 iHalftime4Length, iTimeBetweenAdvertisingInMiliseconds, iTimeBetweenReplacementInMiliseconds,
-                iTimeUntilGoToMainInMiliseconds, bSnowing, theme, sGoalAnimation);
+                iTimeUntilGoToMainInMiliseconds, bSnowing, theme, sGoalAnimation, scalingMode);
     }
 
     public Settings(String version, Frame mainFrame, Frame[] otherFrames, Languages eSystemLanguage,
                     Animations animation, int iHalftime1Length, int iHalftime2Length, int iHalftime3Length,
                     int iHalftime4Length, int iTimeBetweenAdvertisingInMiliseconds, int iTimeBetweenReplacementInMiliseconds,
-                    int iTimeUntilGoToMainInMiliseconds, boolean bSnowing, Themes theme, GoalAnimation sGoalAnimation) {
+                    int iTimeUntilGoToMainInMiliseconds, boolean bSnowing, Themes theme, GoalAnimation sGoalAnimation,
+                    ScalingMode scalingMode) {
         this.version = version;
         this.mainFrame = mainFrame;
         this.otherFrames = otherFrames;
@@ -81,6 +85,7 @@ public class Settings {
         this.bSnowing = bSnowing;
         this.theme = theme;
         this.sGoalAnimation = sGoalAnimation;
+        this.scalingMode = scalingMode;
     }
 
     /**
@@ -124,6 +129,10 @@ public class Settings {
         }
         if (animation == null) {
             animation = Defaults.ANIMATION;
+            update = true;
+        }
+        if (scalingMode == null) {
+            scalingMode = Defaults.SCALING_MODE;
             update = true;
         }
         if (iHalftime1Length == 0) {

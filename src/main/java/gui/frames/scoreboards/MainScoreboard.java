@@ -16,7 +16,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import system.Defaults;
 import system.settings.Frame;
 import system.settings.Settings;
 
@@ -25,6 +24,7 @@ public class MainScoreboard extends Stage{
 	private Settings settings;
 	private StackPane rootPane;
 	private Pane windowPane;
+	private Scale scale;
 	private PaneMainScoreboard currentPane;
 	private Animation runningAnimation;
 	private Runnable finishAnimation;
@@ -32,19 +32,13 @@ public class MainScoreboard extends Stage{
 	public MainScoreboard(Frame mainFrame, Settings settings, Match match) {
 		this.settings = settings;
 		
-		// The panes are always laid out in the resolution of the LED wall and then stretched to the
-		// window size, so the wall shows the same picture regardless of the configured window size.
 		rootPane = new StackPane();
-		rootPane.setMinSize(Defaults.SCOREBOARD_DESIGN_WIDTH, Defaults.SCOREBOARD_DESIGN_HEIGHT);
-		rootPane.setPrefSize(Defaults.SCOREBOARD_DESIGN_WIDTH, Defaults.SCOREBOARD_DESIGN_HEIGHT);
-		rootPane.setMaxSize(Defaults.SCOREBOARD_DESIGN_WIDTH, Defaults.SCOREBOARD_DESIGN_HEIGHT);
 
 		windowPane = new Pane(rootPane);
 		windowPane.setStyle("-fx-background-color: #000000;");
-		Scale scale = new Scale();
-		scale.xProperty().bind(windowPane.widthProperty().divide(Defaults.SCOREBOARD_DESIGN_WIDTH));
-		scale.yProperty().bind(windowPane.heightProperty().divide(Defaults.SCOREBOARD_DESIGN_HEIGHT));
+		scale = new Scale();
 		rootPane.getTransforms().add(scale);
+		applyScaling(mainFrame);
 
 		initStyle(StageStyle.UNDECORATED);
 		setAlwaysOnTop(true);
@@ -65,6 +59,20 @@ public class MainScoreboard extends Stage{
 		setY(mainFrame.iStartYPosition);
 		setWidth(mainFrame.iWidth);
 		setHeight(mainFrame.iHeight);
+		applyScaling(mainFrame);
+	}
+
+	// The panes are laid out in the size of the scaling mode and then stretched to the window size.
+	// With FILL the wall shows the same picture regardless of the configured window size, with
+	// CONTAIN the layout size equals the window size and nothing is scaled.
+	private void applyScaling(Frame mainFrame) {
+		int iLayoutWidth = settings.scalingMode.getLayoutWidth(mainFrame);
+		int iLayoutHeight = settings.scalingMode.getLayoutHeight(mainFrame);
+		rootPane.setMinSize(iLayoutWidth, iLayoutHeight);
+		rootPane.setPrefSize(iLayoutWidth, iLayoutHeight);
+		rootPane.setMaxSize(iLayoutWidth, iLayoutHeight);
+		scale.xProperty().bind(windowPane.widthProperty().divide(iLayoutWidth));
+		scale.yProperty().bind(windowPane.heightProperty().divide(iLayoutHeight));
 	}
 	
 	public void changePane(PaneMainScoreboard newPane) {

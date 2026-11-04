@@ -606,6 +606,24 @@
         "ENGLISH": "Color wipe",
         "GERMAN": "Farbwischer"
       }
+    },
+    "scaling": {
+      "hmText": {
+        "ENGLISH": "Scaling",
+        "GERMAN": "Skalierung"
+      }
+    },
+    "scaling_contain": {
+      "hmText": {
+        "ENGLISH": "Contain (fixed sizes, no scaling)",
+        "GERMAN": "Contain (feste Größen, keine Skalierung)"
+      }
+    },
+    "scaling_fill": {
+      "hmText": {
+        "ENGLISH": "Fill (stretch to window size)",
+        "GERMAN": "Fill (auf Fenstergröße strecken)"
+      }
     }
   }
 }

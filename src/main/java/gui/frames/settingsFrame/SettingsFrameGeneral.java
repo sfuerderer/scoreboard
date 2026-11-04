@@ -11,6 +11,7 @@ import language.Languages;
 import message.ErrorMsg;
 import system.Defaults;
 import system.settings.GoalAnimation;
+import system.settings.ScalingMode;
 import system.settings.Settings;
 import system.settings.Themes;
 
@@ -19,6 +20,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
     private ChoiceBox<Themes> cbThemeSelection;
     private ChoiceBox<GoalAnimation> cbGoalAnimation;
     private ChoiceBox<Animations> cbAnimationSelection;
+    private ChoiceBox<ScalingMode> cbScalingSelection;
     private TextField tfHalftime1Length, tfHalftime2Length, tfHalftime3Length, tfHalftime4Length, tfTimeBetweenAd, tfTimeBetweenReplacement, tfTimeUntilBackMain;
     private CheckBox cbIsSnowing;
 
@@ -45,6 +47,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         Label lbTheme = new Label(Language.getText("theme") + " (Beta)");
         Label lbGoalAnimation = new Label((Language.getText("goal_animation")));
         Label lbAnimation = new Label(Language.getText("animation"));
+        Label lbScaling = new Label(Language.getText("scaling"));
 
         // Language selection
         cbLangSelection = new ChoiceBox<Languages>();
@@ -72,6 +75,20 @@ public class SettingsFrameGeneral extends SettingsComponent {
             }
         });
         cbAnimationSelection.getSelectionModel().select(sSettings.animation);
+        cbScalingSelection = new ChoiceBox<ScalingMode>();
+        cbScalingSelection.getItems().setAll(ScalingMode.values());
+        cbScalingSelection.setConverter(new StringConverter<ScalingMode>() {
+            @Override
+            public String toString(ScalingMode scalingMode) {
+                return scalingMode == null ? "" : Language.getText(scalingMode.getsLanguageKey());
+            }
+
+            @Override
+            public ScalingMode fromString(String sText) {
+                return null;
+            }
+        });
+        cbScalingSelection.getSelectionModel().select(sSettings.scalingMode);
 
         tfHalftime1Length = new TextField(sSettings.iHalftime1Length + "");
         tfHalftime2Length = new TextField(sSettings.iHalftime2Length + "");
@@ -119,6 +136,8 @@ public class SettingsFrameGeneral extends SettingsComponent {
         centerPane.add(cbGoalAnimation, 1, 11);
         centerPane.add(lbAnimation, 0, 12);
         centerPane.add(cbAnimationSelection, 1, 12);
+        centerPane.add(lbScaling, 0, 13);
+        centerPane.add(cbScalingSelection, 1, 13);
 
         scrollPaneCenter.setContent(centerPane);
 
@@ -133,6 +152,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         sSettings.bSnowing = cbIsSnowing.isSelected();
         sSettings.theme = cbThemeSelection.getSelectionModel().getSelectedItem();
         sSettings.animation = cbAnimationSelection.getSelectionModel().getSelectedItem();
+        sSettings.scalingMode = cbScalingSelection.getSelectionModel().getSelectedItem();
         try {
             sSettings.iHalftime1Length = Integer.parseInt(tfHalftime1Length.getText());
             sSettings.iHalftime2Length = Integer.parseInt(tfHalftime2Length.getText());
@@ -156,6 +176,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         tfTimeBetweenReplacement.setText(sSettings.iTimeBetweenReplacementInMiliseconds + "");
         tfTimeUntilBackMain.setText(sSettings.iTimeUntilGoToMainInMiliseconds + "");
         cbAnimationSelection.getSelectionModel().select(sSettings.animation);
+        cbScalingSelection.getSelectionModel().select(sSettings.scalingMode);
     }
 
     @Override
@@ -168,6 +189,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         tfTimeBetweenReplacement.setText(Defaults.TIME_BETWEEN_REPLACEMENT_IN_MILISECONDS + "");
         tfTimeUntilBackMain.setText(Defaults.TIME_UNTIL_GO_TO_MAIN_IN_MILISECONDS + "");
         cbAnimationSelection.getSelectionModel().select(Defaults.ANIMATION);
+        cbScalingSelection.getSelectionModel().select(Defaults.SCALING_MODE);
     }
 
     @Override
