@@ -4,6 +4,7 @@
  ************************************************/
 package gui.animation;
 
+import gui.GUIControlling;
 import gui.frames.panes.PaneMainScoreboard;
 import javafx.animation.Animation;
 import javafx.animation.SequentialTransition;
@@ -12,7 +13,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.util.Duration;
-import system.Defaults;
 
 /**
  * A slanted bar sweeps across the scoreboard and hides the change of the panes, like the
@@ -34,7 +34,7 @@ public class AnimationWipe implements IAnimation {
 				dWidth + 2 * dSlant, 0,
 				dWidth + dSlant, dHeight,
 				0, dHeight);
-		bar.setFill(Color.web(Defaults.ANIMATION_WIPE_COLOR));
+		bar.setFill(Color.web(GUIControlling.getSettings().sWipeColor));
 		bar.setId(S_BAR_ID);
 		bar.setManaged(false);
 		rootPane.getChildren().add(bar);

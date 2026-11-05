@@ -7,6 +7,7 @@ package system.settings;
 import com.google.gson.annotations.Expose;
 import exceptions.FileNotCreatedException;
 import gui.animation.Animations;
+import javafx.scene.paint.Color;
 import language.Languages;
 import message.ErrorMsg;
 import system.Defaults;
@@ -30,6 +31,8 @@ public class Settings {
     public Languages sSystemLanguage;
     @Expose
     public Animations animation;
+    @Expose
+    public String sWipeColor;
     @Expose
     public int iHalftime1Length;
     @Expose
@@ -56,16 +59,18 @@ public class Settings {
     public Settings(String version, Frame mainFrame, Languages eSystemLanguage, Animations animation,
                     int iHalftime1Length, int iHalftime2Length, int iHalftime3Length, int iHalftime4Length,
                     int iTimeBetweenAdvertisingInMiliseconds, int iTimeBetweenReplacementInMiliseconds,
-                    int iTimeUntilGoToMainInMiliseconds, boolean bSnowing, Themes theme, GoalAnimation sGoalAnimation) {
+                    int iTimeUntilGoToMainInMiliseconds, boolean bSnowing, Themes theme, GoalAnimation sGoalAnimation,
+                    String sWipeColor) {
         this(version, mainFrame, null, eSystemLanguage, animation, iHalftime1Length, iHalftime2Length, iHalftime3Length,
                 iHalftime4Length, iTimeBetweenAdvertisingInMiliseconds, iTimeBetweenReplacementInMiliseconds,
-                iTimeUntilGoToMainInMiliseconds, bSnowing, theme, sGoalAnimation);
+                iTimeUntilGoToMainInMiliseconds, bSnowing, theme, sGoalAnimation, sWipeColor);
     }
 
     public Settings(String version, Frame mainFrame, Frame[] otherFrames, Languages eSystemLanguage,
                     Animations animation, int iHalftime1Length, int iHalftime2Length, int iHalftime3Length,
                     int iHalftime4Length, int iTimeBetweenAdvertisingInMiliseconds, int iTimeBetweenReplacementInMiliseconds,
-                    int iTimeUntilGoToMainInMiliseconds, boolean bSnowing, Themes theme, GoalAnimation sGoalAnimation) {
+                    int iTimeUntilGoToMainInMiliseconds, boolean bSnowing, Themes theme, GoalAnimation sGoalAnimation,
+                    String sWipeColor) {
         this.version = version;
         this.mainFrame = mainFrame;
         this.otherFrames = otherFrames;
@@ -81,6 +86,7 @@ public class Settings {
         this.bSnowing = bSnowing;
         this.theme = theme;
         this.sGoalAnimation = sGoalAnimation;
+        this.sWipeColor = sWipeColor;
     }
 
     /**
@@ -126,6 +132,10 @@ public class Settings {
             animation = Defaults.ANIMATION;
             update = true;
         }
+        if (!isValidColor(sWipeColor)) {
+            sWipeColor = Defaults.ANIMATION_WIPE_COLOR;
+            update = true;
+        }
         if (iHalftime1Length == 0) {
             iHalftime1Length = Defaults.HALFTIME_1_LENGTH;
             update = true;
@@ -157,5 +167,20 @@ public class Settings {
 
         if (update)
             save();
+    }
+
+    /**
+     * An invalid color in the settings.json would otherwise throw an exception during the transition.
+     */
+    public static boolean isValidColor(String sColor) {
+        if (sColor == null) {
+            return false;
+        }
+        try {
+            Color.web(sColor);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 }

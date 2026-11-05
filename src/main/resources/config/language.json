@@ -606,6 +606,12 @@
         "ENGLISH": "Color wipe",
         "GERMAN": "Farbwischer"
       }
+    },
+    "animation_wipe_color": {
+      "hmText": {
+        "ENGLISH": "Color of the color wipe",
+        "GERMAN": "Farbe des Farbwischers"
+      }
     }
   }
 }
