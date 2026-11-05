@@ -12,6 +12,7 @@ import language.Languages;
 import message.ErrorMsg;
 import system.Defaults;
 import system.settings.GoalAnimation;
+import system.settings.ScalingMode;
 import system.settings.Settings;
 import system.settings.Themes;
 
@@ -21,6 +22,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
     private ChoiceBox<GoalAnimation> cbGoalAnimation;
     private ChoiceBox<Animations> cbAnimationSelection;
     private ColorPicker cpWipeColor;
+    private ChoiceBox<ScalingMode> cbScalingSelection;
     private TextField tfHalftime1Length, tfHalftime2Length, tfHalftime3Length, tfHalftime4Length, tfTimeBetweenAd, tfTimeBetweenReplacement, tfTimeUntilBackMain;
     private CheckBox cbIsSnowing;
 
@@ -48,6 +50,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         Label lbGoalAnimation = new Label((Language.getText("goal_animation")));
         Label lbAnimation = new Label(Language.getText("animation"));
         Label lbWipeColor = new Label(Language.getText("animation_wipe_color"));
+        Label lbScaling = new Label(Language.getText("scaling"));
 
         // Language selection
         cbLangSelection = new ChoiceBox<Languages>();
@@ -77,6 +80,20 @@ public class SettingsFrameGeneral extends SettingsComponent {
         cbAnimationSelection.getSelectionModel().select(sSettings.animation);
         cpWipeColor = new ColorPicker(Color.web(sSettings.sWipeColor));
         cpWipeColor.disableProperty().bind(cbAnimationSelection.valueProperty().isNotEqualTo(Animations.WIPE));
+        cbScalingSelection = new ChoiceBox<ScalingMode>();
+        cbScalingSelection.getItems().setAll(ScalingMode.values());
+        cbScalingSelection.setConverter(new StringConverter<ScalingMode>() {
+            @Override
+            public String toString(ScalingMode scalingMode) {
+                return scalingMode == null ? "" : Language.getText(scalingMode.getsLanguageKey());
+            }
+
+            @Override
+            public ScalingMode fromString(String sText) {
+                return null;
+            }
+        });
+        cbScalingSelection.getSelectionModel().select(sSettings.scalingMode);
 
         tfHalftime1Length = new TextField(sSettings.iHalftime1Length + "");
         tfHalftime2Length = new TextField(sSettings.iHalftime2Length + "");
@@ -126,6 +143,8 @@ public class SettingsFrameGeneral extends SettingsComponent {
         centerPane.add(cbAnimationSelection, 1, 12);
         centerPane.add(lbWipeColor, 0, 13);
         centerPane.add(cpWipeColor, 1, 13);
+        centerPane.add(lbScaling, 0, 14);
+        centerPane.add(cbScalingSelection, 1, 14);
 
         scrollPaneCenter.setContent(centerPane);
 
@@ -141,6 +160,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         sSettings.theme = cbThemeSelection.getSelectionModel().getSelectedItem();
         sSettings.animation = cbAnimationSelection.getSelectionModel().getSelectedItem();
         sSettings.sWipeColor = cpWipeColor.getValue().toString();
+        sSettings.scalingMode = cbScalingSelection.getSelectionModel().getSelectedItem();
         try {
             sSettings.iHalftime1Length = Integer.parseInt(tfHalftime1Length.getText());
             sSettings.iHalftime2Length = Integer.parseInt(tfHalftime2Length.getText());
@@ -165,6 +185,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         tfTimeUntilBackMain.setText(sSettings.iTimeUntilGoToMainInMiliseconds + "");
         cbAnimationSelection.getSelectionModel().select(sSettings.animation);
         cpWipeColor.setValue(Color.web(sSettings.sWipeColor));
+        cbScalingSelection.getSelectionModel().select(sSettings.scalingMode);
     }
 
     @Override
@@ -178,6 +199,7 @@ public class SettingsFrameGeneral extends SettingsComponent {
         tfTimeUntilBackMain.setText(Defaults.TIME_UNTIL_GO_TO_MAIN_IN_MILISECONDS + "");
         cbAnimationSelection.getSelectionModel().select(Defaults.ANIMATION);
         cpWipeColor.setValue(Color.web(Defaults.ANIMATION_WIPE_COLOR));
+        cbScalingSelection.getSelectionModel().select(Defaults.SCALING_MODE);
     }
 
     @Override
