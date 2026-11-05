@@ -17,3 +17,5 @@ jobs:
           cache: maven
       - name: Build and verify
         run: ./mvnw -B verify
+      - name: Check native libraries in JAR
+        run: .github/scripts/check-jar-natives.sh

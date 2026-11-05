@@ -19,6 +19,7 @@ wie Datum/Uhrzeit) werden auf der LED-Wand dargestellt.
 ./mvnw -B compile          # kompilieren
 ./mvnw -B verify           # kompilieren + (künftige) Tests + Fat-JAR bauen
 java -jar target/Anzeigetafel-*.jar   # App starten (aus dem Repo-Root!)
+make release               # Release anlegen (nur Menschen, siehe „Release“)
 ```
 
 - Tests: JUnit 5 unter `src/test/java` (laufen mit `./mvnw -B verify`). Neue Logik außerhalb der GUI
@@ -67,8 +68,8 @@ Ressourcen in `src/main/resources`: `config/language.json`, `style/*.css`, `imag
   2. Default in `system.Defaults` und Verwendung in `Load.loadSettings()`
   3. Null-Fallback in `Settings.update()` (migriert alte `settings.json`)
   4. UI in `gui.frames.settingsFrame.SettingsFrame*` inkl. `saveToSettings()`
-- **Version** steht doppelt: `Main.VERSION` und `<version>` in `pom.xml` – bei Releases beide anpassen.
-  Ein Versionswechsel löst in `Settings.update()` die Migration aus.
+- **Version** steht in `Main.VERSION`, `<version>` in `pom.xml` und `.cz.toml`. Nicht von Hand ändern, das macht
+  `make release`. Ein Versionswechsel löst in `Settings.update()` die Migration aus.
 - Namensstil des Bestands beibehalten: Präfixe für Felder (`sName`, `iCount`, `bActive`, `lPlayers`),
   Singletons über statische Getter (`Load.getLoad()`, `FileHandling.getFileHandling()`).
 - Einrückung: Dateien mischen Tabs und Spaces – **die Einrückung der jeweiligen Datei übernehmen**,
@@ -83,11 +84,34 @@ Ressourcen in `src/main/resources`: `config/language.json`, `style/*.css`, `imag
 - `main` ist der einzige langlebige Branch und ist **immer lauffähig** (`./mvnw -B verify` grün).
 - Für jede Änderung einen kurzlebigen Branch von `main` abzweigen:
   `feature/<kurzbeschreibung>`, `fix/<kurzbeschreibung>`, `chore/<kurzbeschreibung>`
-- Kleine, fokussierte Commits; Nachricht im Imperativ, z. B. `Add goal animation selection to settings`.
+- Kleine, fokussierte Commits nach [Conventional Commits](https://www.conventionalcommits.org), z. B.
+  `feat: add goal animation selection to settings`. `fix:` erhöht die Patch-, `feat:` die Minor-Version,
+  `feat!:` die Major-Version; `chore:`, `docs:` usw. lösen kein Release aus.
+- **Der PR-Titel folgt derselben Form**, denn er wird beim Squash-Merge zum Commit und steuert die nächste
+  Version. CI prüft das (Workflow `PR title`), kann den Merge aber nicht erzwingen.
 - Push → Pull Request gegen `main` → CI (GitHub Actions) muss grün sein → Review → **Squash-Merge** → Branch löschen.
-- Releases werden als Git-Tag auf `main` markiert (`v1.3.0`), nicht als Branch.
+- Releases werden als Git-Tag auf `main` markiert (`v1.3.0`), nicht als Branch (siehe „Release“).
 - Agenten: **nie direkt auf `main` committen oder pushen**, kein Force-Push, keine Branches löschen
   ohne ausdrückliche Anweisung.
+
+## Release
+
+Voraussetzung einmalig: `brew install commitizen`. Dann auf einem sauberen, aktuellen `main`:
+
+```bash
+make release
+```
+
+Das Target prüft Branch und Arbeitsverzeichnis, läuft `./mvnw -B verify`, zeigt Version und Changelog-Eintrag als
+Vorschau und fragt nach `y`. Erst dann erzeugt Commitizen Commit und Tag und beides wird gepusht. Der Tag startet
+`.github/workflows/release.yml`, das das JAR baut und als GitHub-Release veröffentlicht.
+
+- Einzige Ausnahme von „alles über PRs“: Der Bump-Commit geht direkt auf `main`. **Nur Menschen führen
+  `make release` aus, Agenten nie.**
+- Schlägt nur der Push fehl, liegen Commit und Tag lokal vor: `git push --atomic origin main v<version>` wiederholen.
+- Das JAR enthält die JavaFX-Bibliotheken für Windows x64, macOS arm64 und Linux x64 und braucht dort ein
+  installiertes Java 17+. Intel-Macs werden nicht unterstützt, weil sich `mac`- und `mac-aarch64`-Dateien
+  überschreiben würden.
 
 ## Bekannte Stolperfallen
 

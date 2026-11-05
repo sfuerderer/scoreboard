@@ -1,3 +1,5 @@
+<!-- PR-Titel als Conventional Commit, z. B. `feat: add goal animation selection`. Er steuert die nächste Version. -->
+
 ## Was & warum
 
 <!-- Kurz: Was ändert sich und welches Problem löst es? -->
