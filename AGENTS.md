@@ -113,6 +113,24 @@ Vorschau und fragt nach `y`. Erst dann erzeugt Commitizen Commit und Tag und bei
   installiertes Java 17+. Intel-Macs werden nicht unterstützt, weil sich `mac`- und `mac-aarch64`-Dateien
   überschreiben würden.
 
+## Spielerfotos freistellen
+
+Die Anzeigetafel stellt Spielerinnen ab Version 2 ohne Hintergrund dar. Die Vereinsfotos sind Studiofotos mit
+grauem Hintergrund und werden einmal pro Saison freigestellt (nur macOS 14+, nutzt die Motiv-Erkennung von macOS):
+
+```bash
+tools/freistellen/freistellen.sh "/Volumes/<Stick>/Bilder Frauen 1/26-27" "<Ausgabeordner>"
+```
+
+- Jedes Foto (`jpg`, `jpeg`, `png`, `heic`) im Ordner wird als PNG mit gleichem Namen in den Ausgabeordner
+  geschrieben; Unterordner (z. B. `Originale`) werden übersprungen. Die Originale bleiben unverändert, Ein- und
+  Ausgabeordner dürfen nicht gleich sein.
+- Zuschnitt: oben ein fester kleiner Rand über dem Kopf, damit alle Köpfe auf der Wand gleich hoch stehen;
+  höchstens 800 Pixel breit.
+- Das Skript kompiliert beim ersten Aufruf `tools/freistellen/freistellen.swift` nach `target/freistellen`.
+- Danach die PNGs im Spieler-Dialog der jeweiligen Spielerin zuordnen. Fotos mit „✗“ in der Ausgabe von Hand
+  prüfen; Vision erkennt jedes deutliche Motiv, nicht nur Personen.
+
 ## Bekannte Stolperfallen
 
 - Auf Apple-Silicon-Macs nur ein arm64-JDK 17 verwenden; alte x86-JDK-8-Installationen brechen den Build.
