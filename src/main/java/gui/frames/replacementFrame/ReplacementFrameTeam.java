@@ -44,12 +44,13 @@ public class ReplacementFrameTeam extends GridPane implements Runnable {
 	private GUIControlling guiControlling;
 	private ReplacementFrame replacementFrame;
 	private ControlFrame controlFrame;
-	private Teams selectedTeam;
+	// Set on the JavaFX thread before the substitution thread starts
+	private volatile Team replacementTeam;
+	private volatile String sReplacementMinute;
 	private boolean bRunning = false;
 
 	@SuppressWarnings("unchecked")
 	public ReplacementFrameTeam(Teams selectedTeam, Settings sSettings, GUIControlling guiControlling, ReplacementFrame replacementFrame, ControlFrame controlFrame) {
-		this.selectedTeam = selectedTeam;
 		this.sSettings = sSettings;
 		this.guiControlling = guiControlling;
 		this.replacementFrame = replacementFrame;
@@ -187,6 +188,9 @@ public class ReplacementFrameTeam extends GridPane implements Runnable {
 			Main.getMatch().getlLineup().removePlayerOnField(selectedTeam, player);
 			Main.getMatch().getlLineup().addPlayerOnExchange(selectedTeam, player);
 		}
+		// Read here on the JavaFX thread: the playtime service must not be used from the substitution thread
+		replacementTeam = selectedTeam == Teams.HOME ? Main.getMatch().gettTeamHome() : Main.getMatch().gettTeamGuest();
+		sReplacementMinute = MatchMinute.format(Main.getServicePlaytime().getMessage());
 		bRunning = true;
 		new Thread(this).start();
 	}
@@ -320,12 +324,10 @@ public class ReplacementFrameTeam extends GridPane implements Runnable {
 	@Override
 	public void run() {
 		try {
-			Team team = selectedTeam == Teams.HOME ? Main.getMatch().gettTeamHome() : Main.getMatch().gettTeamGuest();
-			String sMinute = MatchMinute.format(Main.getServicePlaytime().getMessage());
 			// Player coming on and going off are shown together, as long as both were shown one after the other before
 			for (int i = 0; i < tableDataReplacementIn.size() && bRunning ; i++) {
-				Platform.runLater(new ChangeRunnable(guiControlling, team, tableDataReplacementIn.get(i),
-						tableDataReplacementOut.get(i), sMinute));
+				Platform.runLater(new ChangeRunnable(guiControlling, replacementTeam, tableDataReplacementIn.get(i),
+						tableDataReplacementOut.get(i), sReplacementMinute));
 				Thread.sleep(2L * sSettings.iTimeBetweenReplacementInMiliseconds);
 			}
 		} catch (InterruptedException ie) {
