@@ -2,7 +2,9 @@
 name = "cz_conventional_commits"
 version_provider = "commitizen"
 version = "1.4.0"
-version_scheme = "semver"
+version_scheme = "semver2"
+prerelease_offset = 1
+changelog_merge_prerelease = true
 tag_format = "v$version"
 annotated_tag = true
 update_changelog_on_bump = true
