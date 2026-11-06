@@ -11,7 +11,7 @@ public class Main {
     private static AdvertismentThread adThread;
     private static ConcreteSubject subject;
     private static ServicePlaytime servicePlaytime;
-    public static final String VERSION = "1.4.0";
+    public static final String VERSION = "1.4.1";
 
     public static void main(String[] args) {
         new Main(args);

@@ -1,3 +1,9 @@
+## v1.4.1 (2026-11-06)
+
+### Fix
+
+- open dialogs on the control frame's screen (#17)
+
 ## v1.4.0 (2026-11-06)
 
 ### Feat
