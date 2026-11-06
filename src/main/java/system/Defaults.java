@@ -23,6 +23,9 @@ public class Defaults {
     // and stretched to the configured window size (the wall's receiver scales the signal back).
     public static final int SCOREBOARD_DESIGN_WIDTH = 514;
     public static final int SCOREBOARD_DESIGN_HEIGHT = 280;
+    // Resolution of the small displays (date, time), used like SCOREBOARD_DESIGN_* for the other scoreboards.
+    public static final int OTHER_SCOREBOARD_DESIGN_WIDTH = 64;
+    public static final int OTHER_SCOREBOARD_DESIGN_HEIGHT = 16;
 
     public static final int HALFTIME_1_LENGTH = 45;
     public static final int HALFTIME_2_LENGTH = 45;

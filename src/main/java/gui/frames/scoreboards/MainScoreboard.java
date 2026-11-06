@@ -13,7 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import system.settings.Frame;
@@ -23,8 +22,7 @@ public class MainScoreboard extends Stage{
 	private Scene mainScene;
 	private Settings settings;
 	private StackPane rootPane;
-	private Pane windowPane;
-	private Scale scale;
+	private ScaledPane windowPane;
 	private PaneMainScoreboard currentPane;
 	private Animation runningAnimation;
 	private Runnable finishAnimation;
@@ -34,10 +32,7 @@ public class MainScoreboard extends Stage{
 		
 		rootPane = new StackPane();
 
-		windowPane = new Pane(rootPane);
-		windowPane.setStyle("-fx-background-color: #000000;");
-		scale = new Scale();
-		rootPane.getTransforms().add(scale);
+		windowPane = new ScaledPane(rootPane);
 		applyScaling(mainFrame);
 
 		initStyle(StageStyle.UNDECORATED);
@@ -66,13 +61,8 @@ public class MainScoreboard extends Stage{
 	// With FILL the wall shows the same picture regardless of the configured window size, with
 	// CONTAIN the layout size equals the window size and nothing is scaled.
 	private void applyScaling(Frame mainFrame) {
-		int iLayoutWidth = settings.scalingMode.getLayoutWidth(mainFrame);
-		int iLayoutHeight = settings.scalingMode.getLayoutHeight(mainFrame);
-		rootPane.setMinSize(iLayoutWidth, iLayoutHeight);
-		rootPane.setPrefSize(iLayoutWidth, iLayoutHeight);
-		rootPane.setMaxSize(iLayoutWidth, iLayoutHeight);
-		scale.xProperty().bind(windowPane.widthProperty().divide(iLayoutWidth));
-		scale.yProperty().bind(windowPane.heightProperty().divide(iLayoutHeight));
+		windowPane.setLayoutSize(settings.scalingMode.getLayoutWidth(mainFrame),
+				settings.scalingMode.getLayoutHeight(mainFrame));
 	}
 	
 	public void changePane(PaneMainScoreboard newPane) {

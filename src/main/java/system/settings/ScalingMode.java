@@ -7,8 +7,9 @@ package system.settings;
 import system.Defaults;
 
 /**
- * How the panes of the main scoreboard use the window. FILL lays them out in the resolution of the
- * LED wall and stretches them to the window, CONTAIN lays them out in the window size without scaling.
+ * How the content of the scoreboards uses the window. FILL lays it out in the resolution of the
+ * LED wall (or the small displays) and stretches it to the window, CONTAIN lays it out in the window
+ * size without scaling.
  */
 public enum ScalingMode {
     CONTAIN("scaling_contain"), FILL("scaling_fill");
@@ -23,11 +24,21 @@ public enum ScalingMode {
         return sLanguageKey;
     }
 
+    /** Layout width of the main scoreboard. */
     public int getLayoutWidth(Frame mainFrame) {
-        return this == FILL ? Defaults.SCOREBOARD_DESIGN_WIDTH : mainFrame.iWidth;
+        return getLayoutWidth(mainFrame, Defaults.SCOREBOARD_DESIGN_WIDTH);
     }
 
+    /** Layout height of the main scoreboard. */
     public int getLayoutHeight(Frame mainFrame) {
-        return this == FILL ? Defaults.SCOREBOARD_DESIGN_HEIGHT : mainFrame.iHeight;
+        return getLayoutHeight(mainFrame, Defaults.SCOREBOARD_DESIGN_HEIGHT);
+    }
+
+    public int getLayoutWidth(Frame frame, int iDesignWidth) {
+        return this == FILL ? iDesignWidth : frame.iWidth;
+    }
+
+    public int getLayoutHeight(Frame frame, int iDesignHeight) {
+        return this == FILL ? iDesignHeight : frame.iHeight;
     }
 }

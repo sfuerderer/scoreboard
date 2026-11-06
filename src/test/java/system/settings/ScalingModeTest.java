@@ -43,6 +43,17 @@ class ScalingModeTest {
 	}
 
 	@Test
+	void fillUsesGivenDesignSizeForOtherScoreboards() {
+		Frame frame = new Frame(true, 130, 32, 0, 0, null);
+		assertEquals(Defaults.OTHER_SCOREBOARD_DESIGN_WIDTH,
+				ScalingMode.FILL.getLayoutWidth(frame, Defaults.OTHER_SCOREBOARD_DESIGN_WIDTH));
+		assertEquals(Defaults.OTHER_SCOREBOARD_DESIGN_HEIGHT,
+				ScalingMode.FILL.getLayoutHeight(frame, Defaults.OTHER_SCOREBOARD_DESIGN_HEIGHT));
+		assertEquals(130, ScalingMode.CONTAIN.getLayoutWidth(frame, Defaults.OTHER_SCOREBOARD_DESIGN_WIDTH));
+		assertEquals(32, ScalingMode.CONTAIN.getLayoutHeight(frame, Defaults.OTHER_SCOREBOARD_DESIGN_HEIGHT));
+	}
+
+	@Test
 	void everyModeHasTextInAllLanguages() throws Exception {
 		try (Reader reader = new InputStreamReader(ScalingModeTest.class.getResourceAsStream("/config/language.json"),
 				StandardCharsets.UTF_8)) {
