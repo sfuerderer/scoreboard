@@ -20,6 +20,7 @@ wie Datum/Uhrzeit) werden auf der LED-Wand dargestellt.
 ./mvnw -B verify           # kompilieren + (künftige) Tests + Fat-JAR bauen
 java -jar target/Anzeigetafel-*.jar   # App starten (aus dem Repo-Root!)
 make release               # Release anlegen (nur Menschen, siehe „Release“)
+make prerelease            # Beta aus einem feature/*-Branch (nur Menschen, siehe „Prerelease“)
 ```
 
 - Tests: JUnit 5 unter `src/test/java` (laufen mit `./mvnw -B verify`). Neue Logik außerhalb der GUI
@@ -109,6 +110,27 @@ Vorschau und fragt nach `y`. Erst dann erzeugt Commitizen Commit und Tag und bei
 - Einzige Ausnahme von „alles über PRs“: Der Bump-Commit geht direkt auf `main`. **Nur Menschen führen
   `make release` aus, Agenten nie.**
 - Schlägt nur der Push fehl, liegen Commit und Tag lokal vor: `git push --atomic origin main v<version>` wiederholen.
+
+### Prerelease (Beta aus einem Feature-Branch)
+
+Größere Umbauten (z. B. Version 2) lassen sich vor dem Merge als Beta testen. Auf einem sauberen, gepushten
+`feature/*`-Branch:
+
+```bash
+make prerelease                   # nächste Beta, z. B. 2.0.0-beta.1 → 2.0.0-beta.2
+make prerelease INCREMENT=MAJOR   # erste Beta einer neuen Hauptversion, z. B. 1.4.0 → 2.0.0-beta.1
+```
+
+Ablauf wie bei `make release` (Prüfungen, `./mvnw -B verify`, Vorschau, Rückfrage `y`), aber der Bump-Commit und
+der Tag `v<version>-beta.<n>` gehen auf den Feature-Branch. Der Tag startet `.github/workflows/prerelease.yml`,
+das das JAR als GitHub-**Pre-release** veröffentlicht.
+
+- **Nur Menschen führen `make prerelease` aus, Agenten nie.**
+- Nach dem Squash-Merge des Feature-Branches ergibt `make release` auf `main` automatisch die finale Version
+  (z. B. `2.0.0`); die Beta-Einträge im `CHANGELOG.md` werden dabei zu einem Eintrag zusammengefasst
+  (`changelog_merge_prerelease`).
+- Für große Umbauten einen Integrationsbranch nutzen (z. B. `feature/v2-design`), Teilschritte als eigene
+  Branches mit PR gegen diesen Integrationsbranch, und `main` regelmäßig hineinmergen.
 - Das JAR enthält die JavaFX-Bibliotheken für Windows x64, macOS arm64 und Linux x64 und braucht dort ein
   installiertes Java 17+. Intel-Macs werden nicht unterstützt, weil sich `mac`- und `mac-aarch64`-Dateien
   überschreiben würden.

@@ -1,0 +1,54 @@
+name: Prerelease
+
+# Beta-Versionen (z. B. v2.0.0-beta.1) aus einem feature/*-Branch, erzeugt mit `make prerelease`.
+# Normale Versionen ohne "-" laufen weiter über release.yml.
+on:
+  push:
+    tags: ['v[0-9]+.[0-9]+.[0-9]+-*']
+
+permissions:
+  contents: write
+
+jobs:
+  prerelease:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - name: Check tag against feature branch and version files
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          git branch -r --contains "$GITHUB_SHA" | grep -q 'origin/feature/' \
+            || { echo "::error::$GITHUB_REF_NAME liegt auf keinem feature/*-Branch"; exit 1; }
+          pom_version=$(./mvnw -B -q help:evaluate -Dexpression=project.version -DforceStdout)
+          test "$pom_version" = "$version" \
+            || { echo "::error::pom.xml hat Version $pom_version, Tag ist $GITHUB_REF_NAME"; exit 1; }
+          grep -qF "VERSION = \"$version\"" src/main/java/system/Main.java \
+            || { echo "::error::Main.VERSION passt nicht zu $GITHUB_REF_NAME"; exit 1; }
+      - name: Build and verify
+        run: ./mvnw -B verify
+      - name: Check native libraries in JAR
+        run: .github/scripts/check-jar-natives.sh
+      - name: Extract release notes from changelog
+        run: |
+          awk -v tag="$GITHUB_REF_NAME" '
+            /^## / { found = ($2 == tag || $2 == substr(tag, 2)); next }
+            found
+          ' CHANGELOG.md > release-notes.md
+          grep -q '[^[:space:]]' release-notes.md \
+            || { echo "::error::Kein Eintrag für $GITHUB_REF_NAME in CHANGELOG.md"; exit 1; }
+      - name: Create GitHub pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "target/Anzeigetafel-${GITHUB_REF_NAME#v}.jar" \
+            --verify-tag \
+            --prerelease \
+            --title "$GITHUB_REF_NAME" \
+            --notes-file release-notes.md
