@@ -11,6 +11,7 @@ import football.person.CoachType;
 import football.person.Player;
 import message.ErrorMsg;
 import system.Cleanup;
+import system.Defaults;
 import system.FileHandling;
 import system.Resetable;
 
@@ -29,6 +30,13 @@ public class Team implements Resetable {
     private String sPathToLogo;
     @Expose
     private String sOwnPath;
+    // Shown on the scoreboard instead of the full name (e.g. "Potsdam" for "1. FFC Turbine Potsdam").
+    // Missing in team files written before version 2, then the full name is used.
+    @Expose
+    private String sShortName;
+    // Team color as hex value (#rrggbb), shown as a small bar next to the name on the scoreboard
+    @Expose
+    private String sColor;
     // private ImageIcon iiLogo;
 
     public Team(String sTeamName, List<Player> lPlayers, List<Coach> lCoaches, String sPathToLogo, String sOwnPath) {
@@ -150,6 +158,52 @@ public class Team implements Resetable {
      */
     public void setsOwnPath(String sOwnPath) {
         this.sOwnPath = sOwnPath;
+    }
+
+    /**
+     * Returns the short name as entered, null if none is set.
+     */
+    public String getsShortName() {
+        return sShortName;
+    }
+
+    /**
+     * Sets the short name. Blank values remove it, so the full name is shown again.
+     */
+    public void setsShortName(String sShortName) {
+        this.sShortName = sShortName == null || sShortName.trim().isEmpty() ? null : sShortName.trim();
+    }
+
+    /**
+     * Name for the scoreboard: the short name, or the full name if no short name is set.
+     */
+    public String getDisplayName() {
+        return sShortName != null ? sShortName : sTeamName;
+    }
+
+    /**
+     * Returns the color as entered, null if none is set.
+     */
+    public String getsColor() {
+        return sColor;
+    }
+
+    /**
+     * Sets the team color. Values that are not a hex color (#rrggbb) remove it.
+     */
+    public void setsColor(String sColor) {
+        this.sColor = isHexColor(sColor) ? sColor.toLowerCase() : null;
+    }
+
+    /**
+     * Color for the scoreboard: the team color, or the default if none is set.
+     */
+    public String getDisplayColor() {
+        return isHexColor(sColor) ? sColor : Defaults.TEAM_COLOR;
+    }
+
+    private static boolean isHexColor(String sValue) {
+        return sValue != null && sValue.matches("#[0-9a-fA-F]{6}");
     }
 
     /**
