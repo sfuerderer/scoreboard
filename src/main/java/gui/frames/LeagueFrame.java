@@ -16,6 +16,7 @@ import football.Team;
 import football.TeamWrapper;
 import football.person.Player;
 import gui.GUIControlling;
+import gui.Message;
 import gui.frames.teamFrame.TeamFrame;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,10 +24,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -36,7 +40,9 @@ import message.ErrorMsg;
 import system.Cleanup;
 import system.Defaults;
 import system.FileHandling;
+import system.LeagueDeletion;
 import system.Load;
+import system.Main;
 import system.settings.Settings;
 
 public class LeagueFrame extends BasicFrame {
@@ -162,12 +168,38 @@ public class LeagueFrame extends BasicFrame {
 				}
 			});
 
+			// Delete button, context menu and delete key for the leagues
+			Runnable deleteSelectedLeague = () -> deleteLeague(leagueTable.getSelectionModel().getSelectedItem(),
+					tableDataLeagues, tableDataTeams, leagues);
+			Button btnDeleteLeague = new Button(Language.getText("loeschen"));
+			btnDeleteLeague.setMaxWidth(Double.MAX_VALUE);
+			btnDeleteLeague.setOnAction(event -> deleteSelectedLeague.run());
+			leagueTable.setContextMenu(createDeleteContextMenu(deleteSelectedLeague));
+			leagueTable.setOnKeyPressed(event -> {
+				if (event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.BACK_SPACE)
+					deleteSelectedLeague.run();
+			});
+
+			// Delete button, context menu and delete key for the teams
+			Runnable deleteSelectedTeam = () -> deleteTeam(leagueTable.getSelectionModel().getSelectedItem(),
+					teamTable.getSelectionModel().getSelectedItem(), tableDataTeams, leagues);
+			Button btnDeleteTeam = new Button(Language.getText("loeschen"));
+			btnDeleteTeam.setMaxWidth(Double.MAX_VALUE);
+			btnDeleteTeam.setOnAction(event -> deleteSelectedTeam.run());
+			teamTable.setContextMenu(createDeleteContextMenu(deleteSelectedTeam));
+			teamTable.setOnKeyPressed(event -> {
+				if (event.getCode() == KeyCode.DELETE || event.getCode() == KeyCode.BACK_SPACE)
+					deleteSelectedTeam.run();
+			});
+
 			centerPane.add(tfNewLeagueName, 0, 0);
 			centerPane.add(btnAdd, 1, 0);
 			centerPane.add(leagueTable, 0, 1, 2, 1);
 			centerPane.add(tfNewTeamName, 2, 0);
 			centerPane.add(btnAddTeam, 3, 0);
 			centerPane.add(teamTable, 2, 1, 2, 1);
+			centerPane.add(btnDeleteLeague, 1, 2);
+			centerPane.add(btnDeleteTeam, 3, 2);
 
 			return centerPane;
 		} catch (FileNotCreatedException e) {
@@ -220,6 +252,62 @@ public class LeagueFrame extends BasicFrame {
 		} else {
 			ErrorMsg.showErrorMessage(200);
 		}
+	}
+
+	private ContextMenu createDeleteContextMenu(Runnable deleteAction) {
+		MenuItem miDelete = new MenuItem(Language.getText("loeschen"));
+		miDelete.setOnAction(event -> deleteAction.run());
+		return new ContextMenu(miDelete);
+	}
+
+	private void deleteLeague(League league, ObservableList<League> tableDataLeagues,
+			ObservableList<TeamWrapper> tableDataTeams, List<League> leagues) {
+		if (league == null) {
+			ErrorMsg.showErrorMessage(200);
+			return;
+		}
+		if (LeagueDeletion.getLeagueDeletion().isLeagueInUse(league, Main.getMatch())) {
+			ErrorMsg.showErrorMessage(213);
+			return;
+		}
+		if (!Message.confirmDelete("ligaLoeschenFrage",
+				league.getsLeagueName() + "\n\n" + Language.getText("ligaLoeschenHinweisTeams")))
+			return;
+
+		try {
+			LeagueDeletion.getLeagueDeletion().deleteLeague(leagues, league);
+		} catch (FileNotCreatedException | IOException e) {
+			ErrorMsg.showErrorMessage(117, e.getMessage());
+		}
+		// The list in memory is the source of truth, also if only the folder could not be deleted
+		tableDataLeagues.setAll(leagues);
+		tableDataTeams.clear();
+	}
+
+	private void deleteTeam(League league, TeamWrapper team, ObservableList<TeamWrapper> tableDataTeams,
+			List<League> leagues) {
+		if (league == null) {
+			ErrorMsg.showErrorMessage(200);
+			return;
+		}
+		if (team == null) {
+			ErrorMsg.showErrorMessage(202);
+			return;
+		}
+		if (LeagueDeletion.getLeagueDeletion().isTeamInUse(team, Main.getMatch())) {
+			ErrorMsg.showErrorMessage(213);
+			return;
+		}
+		if (!Message.confirmDelete("teamLoeschenFrage",
+				team.getsTeamName() + "\n\n" + Language.getText("teamLoeschenHinweis")))
+			return;
+
+		try {
+			LeagueDeletion.getLeagueDeletion().deleteTeam(leagues, league, team);
+		} catch (FileNotCreatedException | IOException e) {
+			ErrorMsg.showErrorMessage(117, e.getMessage());
+		}
+		tableDataTeams.setAll(league.getlTeams());
 	}
 
 	private League createNewLeague(String sLeagueName, List<League> leagues) throws LeagueNotCreatedException {

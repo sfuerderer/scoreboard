@@ -630,6 +630,42 @@
         "ENGLISH": "Fill (stretch to window size)",
         "GERMAN": "Fill (auf Fenstergröße strecken)"
       }
+    },
+    "loeschen": {
+      "hmText": {
+        "ENGLISH": "Delete",
+        "GERMAN": "Löschen"
+      }
+    },
+    "abbrechen": {
+      "hmText": {
+        "ENGLISH": "Cancel",
+        "GERMAN": "Abbrechen"
+      }
+    },
+    "ligaLoeschenFrage": {
+      "hmText": {
+        "ENGLISH": "Do you really want to delete the league?",
+        "GERMAN": "Soll die Liga wirklich gelöscht werden?"
+      }
+    },
+    "ligaLoeschenHinweisTeams": {
+      "hmText": {
+        "ENGLISH": "All teams of this league and their players, coaches and images will be deleted as well.",
+        "GERMAN": "Alle Teams dieser Liga mit ihren Spielern, Trainern und Bildern werden ebenfalls gelöscht."
+      }
+    },
+    "teamLoeschenFrage": {
+      "hmText": {
+        "ENGLISH": "Do you really want to delete the team?",
+        "GERMAN": "Soll das Team wirklich gelöscht werden?"
+      }
+    },
+    "teamLoeschenHinweis": {
+      "hmText": {
+        "ENGLISH": "All players, coaches and images of this team will be deleted as well.",
+        "GERMAN": "Alle Spieler, Trainer und Bilder dieses Teams werden ebenfalls gelöscht."
+      }
     }
   }
 }
