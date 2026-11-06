@@ -229,6 +229,24 @@
         "GERMAN": "2. VL"
       }
     },
+    "tor_anzeige": {
+      "hmText": {
+        "ENGLISH": "Goal",
+        "GERMAN": "Tor"
+      }
+    },
+    "wechsel_anzeige": {
+      "hmText": {
+        "ENGLISH": "Substitution",
+        "GERMAN": "Wechsel"
+      }
+    },
+    "startelf": {
+      "hmText": {
+        "ENGLISH": "Starting XI",
+        "GERMAN": "Startelf"
+      }
+    },
     "neues_spiel": {
       "hmText": {
         "ENGLISH": "New Match",

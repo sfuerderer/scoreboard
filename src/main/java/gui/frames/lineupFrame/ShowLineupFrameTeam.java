@@ -6,11 +6,11 @@ package gui.frames.lineupFrame;
 
 import java.util.List;
 
+import football.Team;
 import football.match.Teams;
 import football.person.Player;
 import gui.frames.ControlFrame;
-import gui.frames.panes.PanePlayer;
-import gui.frames.panes.PanePersonIcons;
+import gui.frames.panes.PanePersonIntro;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -96,7 +96,10 @@ public class ShowLineupFrameTeam extends GridPane {
 			btnShow.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent event) {
-					controlFrame.changeMainScoreboardPane(new PanePlayer(controlFrame.getRootPaneMainScoreboard(), PanePersonIcons.NONE, player));
+					Team team = selectedTeam == Teams.HOME ? Main.getMatch().gettTeamHome()
+							: Main.getMatch().gettTeamGuest();
+					controlFrame.changeMainScoreboardPane(
+							new PanePersonIntro(controlFrame.getRootPaneMainScoreboard(), player, team));
 				}
 			});
 

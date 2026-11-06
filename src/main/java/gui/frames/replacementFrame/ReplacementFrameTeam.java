@@ -6,13 +6,14 @@ package gui.frames.replacementFrame;
 
 import java.util.List;
 
+import football.Team;
+import football.match.MatchMinute;
 import football.match.Teams;
 import football.person.Player;
 import gui.GUIControlling;
 import gui.frames.ControlFrame;
 import gui.frames.panes.PaneMain;
-import gui.frames.panes.PanePlayer;
-import gui.frames.panes.PanePersonIcons;
+import gui.frames.panes.PaneSubstitution;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,6 +44,9 @@ public class ReplacementFrameTeam extends GridPane implements Runnable {
 	private GUIControlling guiControlling;
 	private ReplacementFrame replacementFrame;
 	private ControlFrame controlFrame;
+	// Set on the JavaFX thread before the substitution thread starts
+	private volatile Team replacementTeam;
+	private volatile String sReplacementMinute;
 	private boolean bRunning = false;
 
 	@SuppressWarnings("unchecked")
@@ -184,6 +188,9 @@ public class ReplacementFrameTeam extends GridPane implements Runnable {
 			Main.getMatch().getlLineup().removePlayerOnField(selectedTeam, player);
 			Main.getMatch().getlLineup().addPlayerOnExchange(selectedTeam, player);
 		}
+		// Read here on the JavaFX thread: the playtime service must not be used from the substitution thread
+		replacementTeam = selectedTeam == Teams.HOME ? Main.getMatch().gettTeamHome() : Main.getMatch().gettTeamGuest();
+		sReplacementMinute = MatchMinute.format(Main.getServicePlaytime().getMessage());
 		bRunning = true;
 		new Thread(this).start();
 	}
@@ -317,11 +324,11 @@ public class ReplacementFrameTeam extends GridPane implements Runnable {
 	@Override
 	public void run() {
 		try {
+			// Player coming on and going off are shown together, as long as both were shown one after the other before
 			for (int i = 0; i < tableDataReplacementIn.size() && bRunning ; i++) {
-				Platform.runLater(new ChangeRunnable(guiControlling,tableDataReplacementOut.get(i),PanePersonIcons.REPLACEMENT_OUT));
-				Thread.sleep(sSettings.iTimeBetweenReplacementInMiliseconds);
-				Platform.runLater(new ChangeRunnable(guiControlling,tableDataReplacementIn.get(i),PanePersonIcons.REPLACEMENT_IN));
-				Thread.sleep(sSettings.iTimeBetweenReplacementInMiliseconds);
+				Platform.runLater(new ChangeRunnable(guiControlling, replacementTeam, tableDataReplacementIn.get(i),
+						tableDataReplacementOut.get(i), sReplacementMinute));
+				Thread.sleep(2L * sSettings.iTimeBetweenReplacementInMiliseconds);
 			}
 		} catch (InterruptedException ie) {
 			ie.printStackTrace();
@@ -341,19 +348,23 @@ public class ReplacementFrameTeam extends GridPane implements Runnable {
 
 class ChangeRunnable implements Runnable{
 	private GUIControlling guiControlling;
-	private Player player;
-	private PanePersonIcons replacementIcon;
-	
-	public ChangeRunnable(GUIControlling guiControlling, Player player,PanePersonIcons replacementIcon) {
+	private Team team;
+	private Player playerIn;
+	private Player playerOut;
+	private String sMinute;
+
+	public ChangeRunnable(GUIControlling guiControlling, Team team, Player playerIn, Player playerOut, String sMinute) {
 		this.guiControlling = guiControlling;
-		this.player = player;
-		this.replacementIcon = replacementIcon;
+		this.team = team;
+		this.playerIn = playerIn;
+		this.playerOut = playerOut;
+		this.sMinute = sMinute;
 	}
-	
+
 	@Override
 	public void run() {
-		guiControlling.changeMainScoreboardPane(new PanePlayer(guiControlling.getRootPaneMainScoreboard(),
-				replacementIcon, player));
+		guiControlling.changeMainScoreboardPane(new PaneSubstitution(guiControlling.getRootPaneMainScoreboard(),
+				team, playerIn, playerOut, sMinute));
 	}
-	
+
 }

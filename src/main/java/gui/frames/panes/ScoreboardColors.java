@@ -20,6 +20,16 @@ public final class ScoreboardColors {
 	public static final Color PANEL = Color.web("#050d3a");
 	// Track of the progress bar
 	public static final Color PROGRESS_TRACK = Color.web("#1a2147");
+	// Lighter accent that stands out on the club blue (exclamation mark, bars in event views)
+	public static final Color ACCENT_LIGHT = Color.web("#7f9bff");
+	// Outline of the large shirt number behind a player
+	public static final Color NUMBER_OUTLINE = Color.web("#f4f6fc", 0.2);
+	public static final Color CARD_YELLOW = Color.web("#ffd21f");
+	public static final Color CARD_RED = Color.web("#e3262f");
+	// Red for text on the club blue; the card red is too dark there
+	public static final Color CARD_RED_TEXT = Color.web("#ff5a62");
+	public static final Color SUBSTITUTION_IN = Color.web("#22c55e");
+	public static final Color SUBSTITUTION_OUT = Color.web("#e3262f");
 
 	private ScoreboardColors() {
 	}
