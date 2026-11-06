@@ -5,6 +5,7 @@ import background.threads.AdvertismentThread;
 import football.match.Match;
 import gui.observer.ConcreteSubject;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class Main {
     private static Match match;
@@ -72,7 +73,37 @@ public class Main {
     }
 
     public static Font getMainFont(int size) {
-        return Fonts.loadFontFromResource("captureit", "ttf", size);
+        return getMainFont(FontWeight.BOLD, size);
+    }
+
+    /**
+     * Font of the scoreboards (Barlow Condensed, SIL Open Font License). Its digits have different widths,
+     * so numbers that change while shown (clock, result) belong in a {@code FixedDigitsLabel}.
+     */
+    public static Font getMainFont(FontWeight weight, int size) {
+        return Fonts.loadFontFromResource(getMainFontFile(weight), "ttf", size);
+    }
+
+    static String getMainFontFile(FontWeight weight) {
+        return "BarlowCondensed-" + getMainFontStyle(weight);
+    }
+
+    private static String getMainFontStyle(FontWeight weight) {
+        switch (weight) {
+            case THIN:
+            case EXTRA_LIGHT:
+            case LIGHT:
+            case NORMAL:
+                return "Regular";
+            case MEDIUM:
+                return "Medium";
+            case SEMI_BOLD:
+                return "SemiBold";
+            case BOLD:
+                return "Bold";
+            default:
+                return "ExtraBold";
+        }
     }
 
 

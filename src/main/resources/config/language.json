@@ -421,6 +421,12 @@
         "GERMAN": "beim SC Sand"
       }
     },
+    "spiel_gestartet": {
+      "hmText": {
+        "ENGLISH": "Match started",
+        "GERMAN": "Spiel wurde gestartet"
+      }
+    },
     "zeit": {
       "hmText": {
         "ENGLISH": "Playtime",

@@ -5,6 +5,7 @@
 package gui.frames.panes;
 
 import java.net.MalformedURLException;
+import java.util.Locale;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,7 +23,7 @@ import system.Main;
 public class PaneWelcome extends PaneMainScoreboard{
 	
 	public PaneWelcome(Pane rootPane) {
-		super(Images.getImages().loadImageFromResource("background1", "jpg"),rootPane);
+		super(ScoreboardBackground.crestDiagonal(), rootPane);
 		
 		BorderPane paneMain = new BorderPane();
 		paneMain.prefWidthProperty().bind(this.widthProperty());
@@ -33,8 +34,8 @@ public class PaneWelcome extends PaneMainScoreboard{
 		content.setAlignment(Pos.CENTER);
 		content.setSpacing(10);
 		
-		Label lbLine1 = new Label(Language.getText("welcome_line_1"));
-		Label lbLine2 = new Label(Language.getText("welcome_line_2"));
+		Label lbLine1 = new Label(Language.getText("welcome_line_1").toUpperCase(Locale.GERMAN));
+		Label lbLine2 = new Label(Language.getText("welcome_line_2").toUpperCase(Locale.GERMAN));
 
 		lbLine1.setTextFill(Color.web("#ffffff"));
 		lbLine1.setFont(Main.getMainFont(40));

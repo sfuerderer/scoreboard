@@ -5,6 +5,7 @@
 package gui.frames.panes;
 
 import java.net.MalformedURLException;
+import java.util.Locale;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -37,7 +38,7 @@ public class PanePerson extends PaneMainScoreboard {
 
 	public PanePerson(Pane rootPane, PanePersonIcons icon, String sText1, String sText2, String sText3,
 			String sPathToImage) {
-		super(Images.getImages().loadImageFromResource("background1", "jpg"), rootPane);
+		super(ScoreboardBackground.crestDiagonal(), rootPane);
 
 		BorderPane panePlayer = new BorderPane();
 		panePlayer.prefWidthProperty().bind(this.widthProperty());
@@ -48,9 +49,10 @@ public class PanePerson extends PaneMainScoreboard {
 		playerData.setAlignment(Pos.CENTER);
 		playerData.setSpacing(10);
 
-		Label lbText1 = new Label(sText1 == null ? "" : sText1);
-		Label lbText2 = new Label(sText2 == null ? "" : sText2);
-		Label lbText3 = new Label(sText3 == null ? "" : sText3);
+		// Upper case like on TV graphics; the old scoreboard font only had capital letters
+		Label lbText1 = new Label(sText1 == null ? "" : sText1.toUpperCase(Locale.GERMAN));
+		Label lbText2 = new Label(sText2 == null ? "" : sText2.toUpperCase(Locale.GERMAN));
+		Label lbText3 = new Label(sText3 == null ? "" : sText3.toUpperCase(Locale.GERMAN));
 
 		lbText1.setTextFill(Color.web("#ffffff"));
 		lbText1.setFont(Main.getMainFont(40));
