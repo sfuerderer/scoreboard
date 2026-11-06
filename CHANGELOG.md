@@ -1,3 +1,15 @@
+## v2.0.0-beta.1 (2026-11-06)
+
+### Feat
+
+- show only logos and clock in the main view (#24)
+- record goals and cards for half-time and statistic views (#23)
+- new event views for goal, card, substitution and lineup (#22)
+- add tool to cut out player photos (#21)
+- new main scoreboard with fixed score bar (#20)
+- add short name and color to teams (#19)
+- new scoreboard font and crest diagonal background (#18)
+
 ## v1.4.1 (2026-11-06)
 
 ### Fix

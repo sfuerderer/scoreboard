@@ -1,7 +1,7 @@
 [tool.commitizen]
 name = "cz_conventional_commits"
 version_provider = "commitizen"
-version = "1.4.1"
+version = "2.0.0-beta.1"
 version_scheme = "semver2"
 prerelease_offset = 1
 changelog_merge_prerelease = true
