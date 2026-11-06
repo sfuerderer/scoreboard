@@ -24,6 +24,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import language.Language;
@@ -57,14 +58,13 @@ public class LineupFrameTeam extends GridPane {
 		bottomPaneCol4.setPercentWidth(25);
 		getColumnConstraints().addAll(bottomPaneCol1, bottomPaneCol2, bottomPaneCol3, bottomPaneCol4);
 
+		// Title rows use their natural height, the two list rows share the remaining space.
+		// Percent heights would turn the fixed label heights into a minimum height of the whole grid
+		// (e.g. 25px / 5% = 500px) and push the content out of the window with larger fonts (Windows).
 		RowConstraints paneRow1 = new RowConstraints();
-		paneRow1.setPercentHeight(5);
-		RowConstraints paneRow2 = new RowConstraints();
-		paneRow2.setPercentHeight(45);
+		RowConstraints paneRow2 = buildGrowingRow();
 		RowConstraints paneRow3 = new RowConstraints();
-		paneRow3.setPercentHeight(5);
-		RowConstraints paneRow4 = new RowConstraints();
-		paneRow4.setPercentHeight(45);
+		RowConstraints paneRow4 = buildGrowingRow();
 		getRowConstraints().addAll(paneRow1, paneRow2, paneRow3, paneRow4);
 
 		ScrollPane spAllPlayers = new ScrollPane();
@@ -130,6 +130,13 @@ public class LineupFrameTeam extends GridPane {
 		add(lbTitleReplacement, 2, 2, 2, 1);
 		add(tableOnField, 0, 3, 2, 1);
 		add(tableOnChange, 2, 3, 2, 1);
+	}
+
+	private RowConstraints buildGrowingRow() {
+		RowConstraints row = new RowConstraints();
+		row.setPrefHeight(0);
+		row.setVgrow(Priority.ALWAYS);
+		return row;
 	}
 
 	private VBox buildAllPlayers(Team team, Teams selectedTeam) {

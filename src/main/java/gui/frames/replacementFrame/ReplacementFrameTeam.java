@@ -28,6 +28,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.WindowEvent;
@@ -80,16 +81,14 @@ public class ReplacementFrameTeam extends GridPane implements Runnable {
 		bottomPaneCol4.setPercentWidth(25);
 		getColumnConstraints().addAll(bottomPaneCol1, bottomPaneCol2, bottomPaneCol3, bottomPaneCol4);
 		
+		// Title and button rows use their natural height, the two list rows share the remaining space.
+		// Percent heights would turn the fixed label/button heights into a minimum height of the whole grid
+		// (e.g. 25px / 5% = 500px) and push the button out of the window with larger fonts (Windows).
 		RowConstraints paneRow1 = new RowConstraints();
-		paneRow1.setPercentHeight(5);
-		RowConstraints paneRow2 = new RowConstraints();
-		paneRow2.setPercentHeight(40);
+		RowConstraints paneRow2 = buildGrowingRow();
 		RowConstraints paneRow3 = new RowConstraints();
-		paneRow3.setPercentHeight(5);
-		RowConstraints paneRow4 = new RowConstraints();
-		paneRow4.setPercentHeight(40);
+		RowConstraints paneRow4 = buildGrowingRow();
 		RowConstraints paneRow5 = new RowConstraints();
-		paneRow5.setPercentHeight(10);
 		getRowConstraints().addAll(paneRow1,paneRow2,paneRow3,paneRow4,paneRow5);
 
 		ScrollPane spAllPlayers = new ScrollPane();
@@ -169,6 +168,13 @@ public class ReplacementFrameTeam extends GridPane implements Runnable {
 //		add(btnShow,0,1,4,1);
 	}
 	
+	private RowConstraints buildGrowingRow() {
+		RowConstraints row = new RowConstraints();
+		row.setPrefHeight(0);
+		row.setVgrow(Priority.ALWAYS);
+		return row;
+	}
+
 	private void showReplacement(Teams selectedTeam) {
 		for (Player player : tableDataReplacementIn) {
 			Main.getMatch().getlLineup().removePlayerOnExchange(selectedTeam, player);
