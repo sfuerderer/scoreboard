@@ -1,3 +1,14 @@
+## v1.4.0 (2026-11-06)
+
+### Feat
+
+- delete leagues and teams (#15)
+- apply scaling mode to the other scoreboards (#13)
+
+### Fix
+
+- keep replacement and lineup frames within window on larger fonts (#14)
+
 ## v1.3.0 (2026-11-05)
 
 ### Feat
