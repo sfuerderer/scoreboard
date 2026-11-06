@@ -6,7 +6,6 @@ package gui.frames.panes;
 
 import football.match.Match;
 import gui.frames.ControlFrame;
-import gui.frames.panes.components.ClockProgress;
 import gui.frames.panes.components.FixedDigitsLabel;
 import gui.frames.panes.components.ScoreboardText;
 import gui.frames.panes.components.TeamColumn;
@@ -28,13 +27,12 @@ import language.Language;
 import system.Main;
 
 /**
- * Main view of the scoreboard: competition and halftime at the top, logos, names and result in the
- * middle, clock with the progress of the halftime at the bottom.
+ * Main view of the scoreboard: competition and halftime at the top, logos and result in the middle, clock at
+ * the bottom.
  */
 public class PaneMain extends PaneMainScoreboard {
 	private static final double TOP_BAR_HEIGHT = 30;
 	private static final double CLOCK_BAR_HEIGHT = 64;
-	private static final double PROGRESS_HEIGHT = 4;
 	// Largest result that still fits between the top bar and the clock bar in 280 pixels
 	private static final int RESULT_SIZE = 140;
 
@@ -42,13 +40,10 @@ public class PaneMain extends PaneMainScoreboard {
 	private final FixedDigitsLabel lbGoalsHome;
 	private final FixedDigitsLabel lbGoalsGuest;
 	private final Label lbHalftime;
-	private final Region rProgress;
-	private final StackPane clockBar;
-	private double dProgress;
 
 	// Kept as fields: the match and the playtime live longer than this pane, so they only hold weak references
 	private final ChangeListener<String> resultListener = (observable, oldValue, newValue) -> showResult();
-	private final ChangeListener<String> clockListener = (observable, oldValue, newValue) -> showClock(newValue);
+	private final ChangeListener<String> clockListener = (observable, oldValue, newValue) -> showHalftime();
 
 	public PaneMain(Pane rootPane, ControlFrame controlFrame) {
 		super(ScoreboardBackground.crestDiagonal(), rootPane);
@@ -81,25 +76,13 @@ public class PaneMain extends PaneMainScoreboard {
 		middle.setAlignment(Pos.CENTER);
 		VBox.setVgrow(middle, Priority.ALWAYS);
 
-		// Bottom: clock and progress of the halftime
+		// Bottom: clock
 		FixedDigitsLabel lbClock = new FixedDigitsLabel("00:00", Main.getMainFont(FontWeight.BOLD, 50),
 				ScoreboardColors.TEXT);
-		Region rProgressTrack = new Region();
-		rProgressTrack.setBackground(new Background(new BackgroundFill(ScoreboardColors.PROGRESS_TRACK, null, null)));
-		rProgressTrack.setMinHeight(PROGRESS_HEIGHT);
-		rProgressTrack.setMaxHeight(PROGRESS_HEIGHT);
-		rProgress = new Region();
-		rProgress.setBackground(new Background(new BackgroundFill(ScoreboardColors.ACCENT, null, null)));
-		rProgress.setMinHeight(PROGRESS_HEIGHT);
-		rProgress.setMaxHeight(PROGRESS_HEIGHT);
-		rProgress.setMaxWidth(0);
-		clockBar = new StackPane(lbClock, rProgressTrack, rProgress);
-		StackPane.setAlignment(rProgressTrack, Pos.BOTTOM_LEFT);
-		StackPane.setAlignment(rProgress, Pos.BOTTOM_LEFT);
+		StackPane clockBar = new StackPane(lbClock);
 		clockBar.setBackground(new Background(new BackgroundFill(ScoreboardColors.PANEL, null, null)));
 		clockBar.setMinHeight(CLOCK_BAR_HEIGHT);
 		clockBar.setPrefHeight(CLOCK_BAR_HEIGHT);
-		clockBar.widthProperty().addListener((observable, oldWidth, newWidth) -> showProgress());
 
 		VBox layout = new VBox(topBar, middle, clockBar);
 		layout.prefWidthProperty().bind(widthProperty());
@@ -109,8 +92,9 @@ public class PaneMain extends PaneMainScoreboard {
 		showResult();
 		match.sResult.addListener(new WeakChangeListener<String>(resultListener));
 		lbClock.textProperty().bind(Main.getServicePlaytime().messageProperty());
+		// The halftime changes with the clock, so the label is updated on every tick
 		Main.getServicePlaytime().messageProperty().addListener(new WeakChangeListener<String>(clockListener));
-		showClock(Main.getServicePlaytime().getMessage());
+		showHalftime();
 	}
 
 	private void showResult() {
@@ -118,13 +102,7 @@ public class PaneMain extends PaneMainScoreboard {
 		lbGoalsGuest.setText(String.valueOf(match.getiGoalsGuest()));
 	}
 
-	private void showClock(String sClock) {
+	private void showHalftime() {
 		lbHalftime.setText(ScoreboardText.upper(Language.getText(match.geteWhichHalftime().getsLanguageKey())));
-		dProgress = ClockProgress.of(sClock, match.getTimePassedToHalftime(), match.getiHalftimeLength());
-		showProgress();
-	}
-
-	private void showProgress() {
-		rProgress.setMaxWidth(clockBar.getWidth() * dProgress);
 	}
 }
