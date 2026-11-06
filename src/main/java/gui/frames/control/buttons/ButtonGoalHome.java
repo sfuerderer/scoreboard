@@ -4,11 +4,11 @@
  ************************************************/
 package gui.frames.control.buttons;
 
+import football.match.MatchMinute;
 import football.match.Teams;
 import football.person.Player;
 import gui.frames.ControlFrame;
-import gui.frames.panes.PanePersonIcons;
-import gui.frames.panes.PanePlayer;
+import gui.frames.panes.PaneGoal;
 import gui.frames.panes.PaneVideo;
 import javafx.event.ActionEvent;
 import javafx.scene.control.ChoiceDialog;
@@ -27,6 +27,8 @@ public class ButtonGoalHome extends ControlButton {
     public void handle(ActionEvent event) {
         if (event.getSource() == this) {
             Main.getMatch().addGoal(Teams.HOME);
+            // Taken now: choosing the scorer can take a while
+            String sMinute = MatchMinute.format(Main.getServicePlaytime().getMessage());
             if (Main.getMatch().getlLineup().getlHomePlayersOnField().size() > 0) {
                 controlFrame.changeMainScoreboardPane(new PaneVideo(controlFrame.getRootPaneMainScoreboard(),
                         Medias.loadMediaFromResource(controlFrame.getSettings().sGoalAnimation.getFilename(), "mp4", "videos"), false));
@@ -42,7 +44,7 @@ public class ButtonGoalHome extends ControlButton {
 
                 result.ifPresent(player -> {
                     controlFrame.changeMainScoreboardPane(
-                            new PanePlayer(controlFrame.getRootPaneMainScoreboard(), PanePersonIcons.BALL, player));
+                            new PaneGoal(controlFrame.getRootPaneMainScoreboard(), player, sMinute));
                 });
             }
         }

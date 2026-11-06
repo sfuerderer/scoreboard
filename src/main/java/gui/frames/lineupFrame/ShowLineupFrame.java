@@ -6,6 +6,7 @@ package gui.frames.lineupFrame;
 
 import java.util.List;
 
+import football.Team;
 import football.match.Match;
 import football.match.Teams;
 import football.person.Coach;
@@ -13,9 +14,8 @@ import football.person.Player;
 import gui.GUIControlling;
 import gui.frames.BasicFrame;
 import gui.frames.ControlFrame;
-import gui.frames.panes.PaneCoach;
 import gui.frames.panes.PaneLineupComplete;
-import gui.frames.panes.PanePersonIcons;
+import gui.frames.panes.PanePersonIntro;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -76,11 +76,11 @@ public class ShowLineupFrame extends BasicFrame {
 				switch (tabPane.getSelectionModel().getSelectedIndex()) {
 				case 0:
 					changePaneOnScoreboardComplete(match.getlLineup().getlHomePlayersOnField(),
-							match.gettTeamHome().getsPathToLogo(), match.gettTeamHome().getHeadCoach());
+							match.gettTeamHome(), match.gettTeamHome().getHeadCoach());
 					break;
 				case 1:
 					changePaneOnScoreboardComplete(match.getlLineup().getlGuestPlayersOnField(),
-							match.gettTeamGuest().getsPathToLogo(), match.gettTeamGuest().getHeadCoach());
+							match.gettTeamGuest(), match.gettTeamGuest().getHeadCoach());
 					break;
 				}
 			}
@@ -116,13 +116,13 @@ public class ShowLineupFrame extends BasicFrame {
 		return bottomPane;
 	}
 
-	private void changePaneOnScoreboardComplete(List<Player> playersToShow, String pathToLogo, Coach coach) {
+	private void changePaneOnScoreboardComplete(List<Player> playersToShow, Team team, Coach coach) {
 		guiControlling.changeMainScoreboardPane(
-				new PaneLineupComplete(guiControlling.getRootPaneMainScoreboard(), playersToShow, pathToLogo, coach));
+				new PaneLineupComplete(guiControlling.getRootPaneMainScoreboard(), playersToShow, team, coach));
 	}
 
 	private void changePaneOnScoreboardCoach(Coach coachToShow) {
 		guiControlling.changeMainScoreboardPane(
-				new PaneCoach(guiControlling.getRootPaneMainScoreboard(), PanePersonIcons.NONE, coachToShow));
+				new PanePersonIntro(guiControlling.getRootPaneMainScoreboard(), coachToShow));
 	}
 }
