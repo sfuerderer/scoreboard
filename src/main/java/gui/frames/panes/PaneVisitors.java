@@ -17,7 +17,7 @@ import system.Main;
 public class PaneVisitors extends PaneMainScoreboard {
 
 	public PaneVisitors(Pane rootPane) {
-		super(Images.getImages().loadImageFromResource("background1", "jpg"), rootPane);
+		super(ScoreboardBackground.crestDiagonal(), rootPane);
 
 		BorderPane paneMain = new BorderPane();
 		paneMain.prefWidthProperty().bind(this.widthProperty());

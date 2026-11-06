@@ -6,6 +6,7 @@ package gui.frames.panes;
 
 import football.match.Match;
 import gui.frames.ControlFrame;
+import gui.frames.panes.components.FixedDigitsLabel;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -23,7 +24,7 @@ import java.net.MalformedURLException;
 public class PaneMain extends PaneMainScoreboard {
 
     public PaneMain(Pane rootPane, ControlFrame controlFrame) {
-        super(Images.getImages().loadImageFromResource("background1", "jpg"), rootPane);
+        super(ScoreboardBackground.crestDiagonal(), rootPane);
         Match match = Main.getMatch();
 //		ServicePlaytime servicePlaytime = new ServicePlaytime(controlFrame);
 
@@ -59,14 +60,10 @@ public class PaneMain extends PaneMainScoreboard {
         ivLogoGuest.setFitHeight(100);
         ivLogoGuest.setPreserveRatio(true);
 
-        Label lbTime = new Label("00:00");
-        lbTime.setFont(Main.getMainFont());
-        lbTime.setTextFill(Color.web("#ffffff"));
+        FixedDigitsLabel lbTime = new FixedDigitsLabel("00:00", Main.getMainFont(), Color.web("#ffffff"));
         lbTime.textProperty().bind(Main.getServicePlaytime().messageProperty());
 
-        Label lbResult = new Label("0:0");
-        lbResult.setFont(Main.getMainFont(150));
-        lbResult.setTextFill(Color.web("#ffffff"));
+        FixedDigitsLabel lbResult = new FixedDigitsLabel("0:0", Main.getMainFont(150), Color.web("#ffffff"));
         GridPane.setHalignment(lbResult, HPos.CENTER);
         lbResult.textProperty().bind(Main.getMatch().sResult);
 

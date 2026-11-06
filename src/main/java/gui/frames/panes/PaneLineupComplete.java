@@ -26,7 +26,7 @@ import system.Images;
 public class PaneLineupComplete extends PaneMainScoreboard {
 
 	public PaneLineupComplete(Pane rootPane, List<Player> playersToShow, String pathToLogo, Coach coach) {
-		super(Images.getImages().loadImageFromResource("background1", "jpg"), rootPane);
+		super(ScoreboardBackground.crestDiagonal(), rootPane);
 
 		BorderPane paneLineup = new BorderPane();
 		paneLineup.prefWidthProperty().bind(this.widthProperty());

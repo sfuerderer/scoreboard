@@ -5,6 +5,7 @@
 package gui.frames.panes;
 
 import java.net.MalformedURLException;
+import java.util.Locale;
 
 import football.match.Match;
 import gui.frames.ControlFrame;
@@ -16,6 +17,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import language.Language;
 import message.ErrorMsg;
 import system.Images;
 import system.Main;
@@ -23,7 +25,7 @@ import system.Main;
 public class PaneLaunchGame extends PaneMainScoreboard {
 
 	public PaneLaunchGame(Pane rootPane, ControlFrame controlFrame) {
-		super(Images.getImages().loadImageFromResource("background1", "jpg"), rootPane);
+		super(ScoreboardBackground.crestDiagonal(), rootPane);
 		Match match = Main.getMatch();
 
 		GridPane paneMain = new GridPane();
@@ -56,7 +58,7 @@ public class PaneLaunchGame extends PaneMainScoreboard {
 		ivLogoGuest.setFitHeight(175);
 		ivLogoGuest.setPreserveRatio(true);
 
-		Label lbHeadline = new Label("Spiel wurde gestartet");
+		Label lbHeadline = new Label(Language.getText("spiel_gestartet").toUpperCase(Locale.GERMAN));
 		lbHeadline.setFont(Main.getMainFont(40));
 		lbHeadline.setTextFill(Color.web("#ffffff"));
 

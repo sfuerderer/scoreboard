@@ -5,7 +5,9 @@
 package gui.frames.panes;
 
 import java.net.MalformedURLException;
+import java.util.Locale;
 
+import gui.frames.panes.components.FixedDigitsLabel;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -22,7 +24,7 @@ import system.Main;
 public class PaneCorners extends PaneMainScoreboard {
 
 	public PaneCorners(Pane rootPane) {
-		super(Images.getImages().loadImageFromResource("background1", "jpg"), rootPane);
+		super(ScoreboardBackground.crestDiagonal(), rootPane);
 
 		GridPane paneMain = new GridPane();
 		paneMain.prefWidthProperty().bind(this.widthProperty());
@@ -58,13 +60,11 @@ public class PaneCorners extends PaneMainScoreboard {
 		ivLogoGuest.setFitHeight(100);
 		ivLogoGuest.setPreserveRatio(true);
 
-		Label lbTitle = new Label(Language.getText("ecken"));
+		Label lbTitle = new Label(Language.getText("ecken").toUpperCase(Locale.GERMAN));
 		lbTitle.setFont(Main.getMainFont());
 		lbTitle.setTextFill(Color.web("#ffffff"));
 
-		Label lbCorners = new Label("0:0");
-		lbCorners.setFont(Main.getMainFont(150));
-		lbCorners.setTextFill(Color.web("#ffffff"));
+		FixedDigitsLabel lbCorners = new FixedDigitsLabel("0:0", Main.getMainFont(150), Color.web("#ffffff"));
 		GridPane.setHalignment(lbCorners, HPos.CENTER);
 		lbCorners.textProperty().bind(Main.getMatch().sCorners);
 
