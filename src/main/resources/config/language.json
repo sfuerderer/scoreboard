@@ -187,6 +187,24 @@
         "GERMAN": "Logo"
       }
     },
+    "kurzname": {
+      "hmText": {
+        "ENGLISH": "Short name",
+        "GERMAN": "Kurzname"
+      }
+    },
+    "kurzname_hinweis": {
+      "hmText": {
+        "ENGLISH": "Shown on the scoreboard, e.g. Potsdam. Empty: full name",
+        "GERMAN": "Wird auf der Anzeigetafel gezeigt, z. B. Potsdam. Leer: voller Name"
+      }
+    },
+    "teamfarbe": {
+      "hmText": {
+        "ENGLISH": "Team color",
+        "GERMAN": "Teamfarbe"
+      }
+    },
     "neues_spiel": {
       "hmText": {
         "ENGLISH": "New Match",
