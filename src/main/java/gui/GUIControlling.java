@@ -5,6 +5,8 @@
 package gui;
 
 import com.sun.javafx.css.StyleManager;
+import exceptions.FileNotCreatedException;
+import football.League;
 import football.Team;
 import football.match.Match;
 import gui.frames.ControlFrame;
@@ -32,10 +34,12 @@ import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import message.ErrorMsg;
 import message.InfoMsg;
+import system.Load;
 import system.Main;
 import system.settings.Frame;
 import system.settings.Settings;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -150,6 +154,14 @@ public class GUIControlling extends Application {
 
     public void startNewMatch(Team teamHome, Team teamGuest) {
         match = new Match(teamHome, teamGuest, sSettings.iHalftime1Length, sSettings.iHalftime2Length, sSettings.iHalftime3Length, sSettings.iHalftime4Length);
+        // The guest's league names the competition: a friendly against a team from "Testspiele" shows that
+        // instead of the home team's league
+        try {
+            match.setsCompetition(League.findLeagueNameOf(teamGuest, Load.getLoad().loadLeagues()));
+        } catch (IOException | FileNotCreatedException e) {
+            // Without the leagues file the scoreboard just shows no competition
+            match.setsCompetition(null);
+        }
         Main.setMatch(match, controlFrame::halftimeEnded);
         controlFrame.changeState(new ControlFrameStateMatch());
         changeMainScoreboardPane(new PaneLaunchGame(getRootPaneMainScoreboard(), controlFrame));
