@@ -34,6 +34,8 @@ public class Match implements Observer {
     public StringProperty sResult;
     public StringProperty sCorners;
     private volatile boolean bPlaytimeRunning;
+    // Competition shown on the scoreboard (name of the league), null if unknown
+    private String sCompetition;
 
     public Match(Team tTeamHome, Team tTeamGuest, int iHalftime1Length, int iHalftime2Length, int iHalftime3Length,
                  int iHalftime4Length) {
@@ -417,6 +419,14 @@ public class Match implements Observer {
             default:
                 break;
         }
+    }
+
+    public String getsCompetition() {
+        return sCompetition;
+    }
+
+    public void setsCompetition(String sCompetition) {
+        this.sCompetition = sCompetition;
     }
 
     public void start() {

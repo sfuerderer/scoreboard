@@ -205,6 +205,30 @@
         "GERMAN": "Teamfarbe"
       }
     },
+    "halbzeit_1": {
+      "hmText": {
+        "ENGLISH": "1st half",
+        "GERMAN": "1. HZ"
+      }
+    },
+    "halbzeit_2": {
+      "hmText": {
+        "ENGLISH": "2nd half",
+        "GERMAN": "2. HZ"
+      }
+    },
+    "halbzeit_3": {
+      "hmText": {
+        "ENGLISH": "Extra time 1",
+        "GERMAN": "1. VL"
+      }
+    },
+    "halbzeit_4": {
+      "hmText": {
+        "ENGLISH": "Extra time 2",
+        "GERMAN": "2. VL"
+      }
+    },
     "neues_spiel": {
       "hmText": {
         "ENGLISH": "New Match",

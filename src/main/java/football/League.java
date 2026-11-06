@@ -34,6 +34,26 @@ public class League {
 	}
 
 	/**
+	 * Finds the name of the league the team belongs to. Team files lie in
+	 * "leagues/&lt;league folder&gt;/&lt;team folder&gt;/&lt;team&gt;.json", so the league is found by its folder.
+	 *
+	 * @return the league name, null if the team is in none of the leagues
+	 */
+	public static String findLeagueNameOf(Team team, List<League> leagues) {
+		if (team == null || team.getsOwnPath() == null || leagues == null)
+			return null;
+		String[] sPathElements = team.getsOwnPath().replace('\\', '/').split("/");
+		if (sPathElements.length < 3)
+			return null;
+		String sLeagueFolder = sPathElements[sPathElements.length - 3];
+		for (League league : leagues) {
+			if (sLeagueFolder.equals(league.sFolderName))
+				return league.sLeagueNameGson;
+		}
+		return null;
+	}
+
+	/**
 	 * Returns the sLeagueName.
 	 *
 	 * @return the sLeagueName

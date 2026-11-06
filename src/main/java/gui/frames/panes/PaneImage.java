@@ -16,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import message.ErrorMsg;
 import system.Images;
+import system.Main;
 import system.settings.Frame;
 
 public class PaneImage extends PaneMainScoreboard {
@@ -26,7 +27,11 @@ public class PaneImage extends PaneMainScoreboard {
 
 		BorderPane wrapperPane = new BorderPane();
 		wrapperPane.prefWidthProperty().bind(this.widthProperty());
-		wrapperPane.prefHeightProperty().bind(this.heightProperty());
+		// During a match the score bar stays visible below the picture, so the picture is fitted above it
+		if (showsScoreBar())
+			wrapperPane.prefHeightProperty().bind(this.heightProperty().subtract(SCORE_BAR_HEIGHT));
+		else
+			wrapperPane.prefHeightProperty().bind(this.heightProperty());
 
 		try {
 			Frame mainFrame = GUIControlling.getSettings().mainFrame;
@@ -41,5 +46,10 @@ public class PaneImage extends PaneMainScoreboard {
 		}
 		setStyle("-fx-background-color: #000000;");
 		getChildren().addAll(wrapperPane);
+	}
+
+	@Override
+	public boolean showsScoreBar() {
+		return Main.getMatch() != null;
 	}
 }
