@@ -24,9 +24,10 @@ public class ButtonGoalGuest extends ControlButton{
 	@Override
 	public void handle(ActionEvent event) {
 		if(event.getSource() == this) {
-			Main.getMatch().addGoal(Teams.GUEST);
 			// Taken now: choosing the scorer can take a while
-			String sMinute = MatchMinute.format(Main.getServicePlaytime().getMessage());
+			String sClock = Main.getServicePlaytime().getMessage();
+			String sMinute = MatchMinute.format(sClock);
+			Main.getMatch().addGoal(Teams.GUEST, MatchMinute.of(sClock));
 			if (Main.getMatch().getlLineup().getlGuestPlayersOnField().size() > 0) {
 				ChoiceDialog<Player> dialog = new ChoiceDialog<Player>(
 						Main.getMatch().getlLineup().getlGuestPlayersOnField().get(0),
@@ -39,6 +40,7 @@ public class ButtonGoalGuest extends ControlButton{
 				Optional<Player> result = dialog.showAndWait();
 
 				result.ifPresent(player -> {
+					Main.getMatch().setScorerOfLastGoal(Teams.GUEST, player);
 					controlFrame.changeMainScoreboardPane(
 							new PaneGoal(controlFrame.getRootPaneMainScoreboard(), player, sMinute));
 				});

@@ -11,6 +11,8 @@ import gui.frames.BasicFrame;
 import gui.frames.ControlFrame;
 import gui.frames.panes.PaneCorners;
 import gui.frames.panes.PaneMain;
+import gui.frames.panes.PaneResult;
+import gui.frames.panes.PaneStatistic;
 import gui.frames.panes.PaneVisitors;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -25,6 +27,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import language.Language;
 import message.ErrorMsg;
 import system.Main;
@@ -36,7 +39,7 @@ public class StatisticFrame extends BasicFrame implements Runnable {
 	private boolean isShowing = false;
 
 	public StatisticFrame(Settings sSettings, GUIControlling guiControlling, ControlFrame controlFrame) {
-		super(sSettings, guiControlling, "statistik", controlFrame, 400, 200);
+		super(sSettings, guiControlling, "statistik", controlFrame, 400, 300);
 	}
 
 	@Override
@@ -60,7 +63,22 @@ public class StatisticFrame extends BasicFrame implements Runnable {
 
 	@Override
 	protected Pane buildBottomPane() {
-		return null;
+		if (Main.getMatch() == null)
+			return null;
+
+		Button btnShowResult = new Button(Language.getText("spielstand_anzeigen"));
+		btnShowResult.setMaxWidth(Double.MAX_VALUE);
+		btnShowResult.setOnAction(event -> guiControlling
+				.changeMainScoreboardPane(new PaneResult(guiControlling.getRootPaneMainScoreboard())));
+
+		Button btnShowStatistic = new Button(Language.getText("statistik_anzeigen"));
+		btnShowStatistic.setMaxWidth(Double.MAX_VALUE);
+		btnShowStatistic.setOnAction(event -> guiControlling
+				.changeMainScoreboardPane(new PaneStatistic(guiControlling.getRootPaneMainScoreboard())));
+
+		VBox buttons = new VBox(10, btnShowResult, btnShowStatistic);
+		buttons.setPadding(new Insets(10));
+		return buttons;
 	}
 
 	private GridPane getPaneVisitors() {
