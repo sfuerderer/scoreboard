@@ -21,9 +21,14 @@ import gui.frames.settingsFrame.SettingsFrame;
 import gui.menu.Menus;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
+import javafx.geometry.Rectangle2D;
 import javafx.event.EventHandler;
+import javafx.scene.control.DialogPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import message.ErrorMsg;
 import message.InfoMsg;
@@ -46,6 +51,7 @@ public class GUIControlling extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        keepDialogsInFront();
 
         controlFrame = new ControlFrame(sSettings, this);
         primaryStage = controlFrame;
@@ -85,6 +91,61 @@ public class GUIControlling extends Application {
         showAllFrames();
         ErrorMsg.setBGuiStarted(true);
         InfoMsg.setBGuiStarted(true);
+    }
+
+    /**
+     * Dialogs without an owner open centered on the primary screen, which is
+     * often the LED wall, and end up behind the always-on-top scoreboards.
+     * Every dialog (alerts, goal/card selection, ...) is therefore moved to the
+     * window it was opened from (usually the control frame) and kept in front.
+     */
+    private void keepDialogsInFront() {
+        Window.getWindows().addListener((ListChangeListener<Window>) change -> {
+            while (change.next()) {
+                for (Window window : change.getAddedSubList()) {
+                    if (window instanceof Stage && window.getScene() != null
+                            && window.getScene().getRoot() instanceof DialogPane) {
+                        Stage stage = (Stage) window;
+                        Window target = getDialogTarget(stage);
+                        stage.setAlwaysOnTop(true);
+                        stage.addEventHandler(WindowEvent.WINDOW_SHOWN, event -> {
+                            centerOn(stage, target);
+                            stage.toFront();
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+    /** The focused operator window, or the control frame if none (never a scoreboard). */
+    private Window getDialogTarget(Stage dialog) {
+        for (Window window : Window.getWindows()) {
+            if (window != dialog && window.isShowing() && window.isFocused()
+                    && !(window instanceof MainScoreboard) && !(window instanceof OtherScoreboards)
+                    && !(window.getScene() != null && window.getScene().getRoot() instanceof DialogPane)) {
+                return window;
+            }
+        }
+        return controlFrame;
+    }
+
+    private static void centerOn(Stage dialog, Window target) {
+        if (target == null || !target.isShowing()) {
+            return;
+        }
+        double dX = target.getX() + (target.getWidth() - dialog.getWidth()) / 2;
+        double dY = target.getY() + (target.getHeight() - dialog.getHeight()) / 3;
+
+        // keep the dialog completely on the screen of the target window
+        List<Screen> lScreens = Screen.getScreensForRectangle(target.getX(), target.getY(),
+                target.getWidth(), target.getHeight());
+        Rectangle2D bounds = (lScreens.isEmpty() ? Screen.getPrimary() : lScreens.get(0)).getVisualBounds();
+        dX = Math.max(bounds.getMinX(), Math.min(dX, bounds.getMaxX() - dialog.getWidth()));
+        dY = Math.max(bounds.getMinY(), Math.min(dY, bounds.getMaxY() - dialog.getHeight()));
+
+        dialog.setX(dX);
+        dialog.setY(dY);
     }
 
     public void startNewMatch(Team teamHome, Team teamGuest) {
