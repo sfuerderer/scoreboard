@@ -62,7 +62,7 @@ public class GUIControlling extends Application {
         mainScoreboard = new MainScoreboard(sSettings.mainFrame, sSettings, match);
 
         for (Frame frame : sSettings.otherFrames) {
-            lOtherFrames.add(new OtherScoreboards(frame, frame.otherFrameFunction.getOtherFrameFunction()));
+            lOtherFrames.add(new OtherScoreboards(frame, sSettings, frame.otherFrameFunction.getOtherFrameFunction()));
         }
 
         Application.setUserAgentStylesheet(null);
