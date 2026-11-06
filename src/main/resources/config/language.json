@@ -247,6 +247,42 @@
         "GERMAN": "Startelf"
       }
     },
+    "halbzeit_anzeige": {
+      "hmText": {
+        "ENGLISH": "Half-time",
+        "GERMAN": "Halbzeit"
+      }
+    },
+    "spielstand": {
+      "hmText": {
+        "ENGLISH": "Score",
+        "GERMAN": "Spielstand"
+      }
+    },
+    "gelbe_karten": {
+      "hmText": {
+        "ENGLISH": "Yellow cards",
+        "GERMAN": "Gelbe Karten"
+      }
+    },
+    "rote_karten": {
+      "hmText": {
+        "ENGLISH": "Red cards",
+        "GERMAN": "Rote Karten"
+      }
+    },
+    "spielstand_anzeigen": {
+      "hmText": {
+        "ENGLISH": "Show score with scorers",
+        "GERMAN": "Spielstand mit Torschützinnen anzeigen"
+      }
+    },
+    "statistik_anzeigen": {
+      "hmText": {
+        "ENGLISH": "Show statistic",
+        "GERMAN": "Statistik anzeigen"
+      }
+    },
     "neues_spiel": {
       "hmText": {
         "ENGLISH": "New Match",

@@ -26,9 +26,10 @@ public class ButtonGoalHome extends ControlButton {
     @Override
     public void handle(ActionEvent event) {
         if (event.getSource() == this) {
-            Main.getMatch().addGoal(Teams.HOME);
             // Taken now: choosing the scorer can take a while
-            String sMinute = MatchMinute.format(Main.getServicePlaytime().getMessage());
+            String sClock = Main.getServicePlaytime().getMessage();
+            String sMinute = MatchMinute.format(sClock);
+            Main.getMatch().addGoal(Teams.HOME, MatchMinute.of(sClock));
             if (Main.getMatch().getlLineup().getlHomePlayersOnField().size() > 0) {
                 controlFrame.changeMainScoreboardPane(new PaneVideo(controlFrame.getRootPaneMainScoreboard(),
                         Medias.loadMediaFromResource(controlFrame.getSettings().sGoalAnimation.getFilename(), "mp4", "videos"), false));
@@ -43,6 +44,7 @@ public class ButtonGoalHome extends ControlButton {
                 Optional<Player> result = dialog.showAndWait();
 
                 result.ifPresent(player -> {
+                    Main.getMatch().setScorerOfLastGoal(Teams.HOME, player);
                     controlFrame.changeMainScoreboardPane(
                             new PaneGoal(controlFrame.getRootPaneMainScoreboard(), player, sMinute));
                 });

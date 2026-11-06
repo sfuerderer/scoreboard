@@ -30,7 +30,8 @@ public class ButtonCard extends ControlButton {
 	public void handle(ActionEvent event) {
 		if (event.getSource() == this) {
 			// Taken now: choosing player and card can take a while
-			String sMinute = MatchMinute.format(Main.getServicePlaytime().getMessage());
+			String sClock = Main.getServicePlaytime().getMessage();
+			String sMinute = MatchMinute.format(sClock);
 			Optional<Pair<Player, Cards>> result = new DialogCard(Language.getText("karte"), controlFrame.getSettings())
 					.showAndWait();
 			result.ifPresent(selected -> {
@@ -42,6 +43,9 @@ public class ButtonCard extends ControlButton {
 					Teams team = match.getlLineup().teamOf(selectedPlayer);
 					Team selectedTeam = team == Teams.HOME ? match.gettTeamHome()
 							: team == Teams.GUEST ? match.gettTeamGuest() : null;
+					// Counted in the statistic; a player outside the lineup has no team to count for
+					if (team != null)
+						match.addCard(team, selectedPlayer, selectedCard, MatchMinute.of(sClock));
 					controlFrame.changeMainScoreboardPane(new PaneCard(controlFrame.getRootPaneMainScoreboard(),
 							selectedPlayer, selectedTeam, selectedCard, sMinute));
 				} else {
