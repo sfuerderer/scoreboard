@@ -14,12 +14,10 @@ public final class ScoreboardColors {
 	public static final Color TEXT = Color.web("#f4f6fc");
 	// Secondary text: competition, first names, separators
 	public static final Color TEXT_DIM = Color.web("#8e98c4");
-	// Accent: halftime label, progress of the halftime
+	// Accent: halftime label
 	public static final Color ACCENT = Color.web("#2d4fe0");
 	// Dark bars (clock, score bar), set off from the club blue background
 	public static final Color PANEL = Color.web("#050d3a");
-	// Track of the progress bar
-	public static final Color PROGRESS_TRACK = Color.web("#1a2147");
 	// Lighter accent that stands out on the club blue (exclamation mark, bars in event views)
 	public static final Color ACCENT_LIGHT = Color.web("#7f9bff");
 	// Outline of the large shirt number behind a player
