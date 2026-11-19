@@ -6,6 +6,7 @@ package advertising;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -67,7 +68,7 @@ public class Advertising {
 		if (config == null)
 			config = new AdvertisingConfig();
 		config.update();
-		addNewFolderFiles();
+		syncWithFolder();
 	}
 
 	public void save() throws FileNotCreatedException, IOException {
@@ -116,8 +117,7 @@ public class Advertising {
 	 */
 	private Sponsor getShowableSponsor(String sName) {
 		Sponsor sponsor = getSponsor(sName);
-		if (sponsor == null || !sponsor.bActive || sponsor.sLogoFile == null || sponsor.sLogoFile.isEmpty()
-				|| !getLogoFile(sponsor).isFile())
+		if (sponsor == null || !sponsor.bActive || !sponsor.hasLogo() || !getLogoFile(sponsor).isFile())
 			return null;
 		return sponsor;
 	}
@@ -148,9 +148,18 @@ public class Advertising {
 	public List<FullscreenSpot> getActiveFullscreenSpots() {
 		List<FullscreenSpot> lResult = new ArrayList<FullscreenSpot>();
 		for (FullscreenSpot spot : config.lFullscreenSpots)
-			if (spot.bActive && FullscreenSpot.isSupported(spot.sFile) && getSpotFile(spot).isFile())
+			if (spot.bActive && FullscreenSpot.isSupported(spot.sFile) && getSpotFile(spot).isFile()
+					&& isSponsorActive(spot.sSponsor))
 				lResult.add(spot);
 		return lResult;
+	}
+
+	/**
+	 * @return false only for an inactive sponsor; spots without or with an unknown sponsor are shown
+	 */
+	private boolean isSponsorActive(String sName) {
+		Sponsor sponsor = getSponsor(sName);
+		return sponsor == null || sponsor.bActive;
 	}
 
 	/**
@@ -164,15 +173,36 @@ public class Advertising {
 	}
 
 	/**
-	 * Files that were copied into the folder by hand are shown like before, at the end of the rotation.
+	 * Files that were copied into the folder by hand are shown like before, at the end of the rotation. Spots
+	 * whose file was deleted are removed.
 	 */
-	public void addNewFolderFiles() {
+	public void syncWithFolder() {
+		config.lFullscreenSpots.removeIf(spot -> !getSpotFile(spot).isFile());
 		Set<String> sKnown = new HashSet<String>();
 		for (FullscreenSpot spot : config.lFullscreenSpots)
 			sKnown.add(spot.sFile);
 		for (String sFile : listFolderFiles())
 			if (!sKnown.contains(sFile))
 				config.lFullscreenSpots.add(new FullscreenSpot(sFile, true, 0));
+	}
+
+	/**
+	 * Copies the file into the folder. An existing file with the same name is not overwritten, the copy gets a
+	 * number instead (logo.png, logo-2.png, ...).
+	 *
+	 * @return the name of the copy in the folder
+	 */
+	public static String importFile(File fSource, File fTargetFolder) throws IOException {
+		Files.createDirectories(fTargetFolder.toPath());
+		String sName = fSource.getName();
+		int iDot = sName.lastIndexOf('.');
+		String sBase = iDot > 0 ? sName.substring(0, iDot) : sName;
+		String sExtension = iDot > 0 ? sName.substring(iDot) : "";
+		File fTarget = new File(fTargetFolder, sName);
+		for (int i = 2; fTarget.exists(); i++)
+			fTarget = new File(fTargetFolder, sBase + "-" + i + sExtension);
+		Files.copy(fSource.toPath(), fTarget.toPath());
+		return fTarget.getName();
 	}
 
 	private List<String> listFolderFiles() {
