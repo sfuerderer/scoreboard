@@ -77,7 +77,7 @@ class AdvertisingTest {
 	}
 
 	@Test
-	void filesAddedByHandAreAppendedAndMissingFilesSkipped() throws Exception {
+	void filesAddedByHandAreAppendedAndMissingFilesRemoved() throws Exception {
 		touch("b.png");
 		Advertising advertising = load();
 		advertising.getConfig().lFullscreenSpots.add(0, new FullscreenSpot("gone.png", true, 0));
@@ -87,6 +87,42 @@ class AdvertisingTest {
 		Advertising loaded = load();
 
 		assertEquals(List.of("b.png", "a.jpg"), files(loaded.getActiveFullscreenSpots()));
+		assertEquals(List.of("b.png", "a.jpg"), files(loaded.getConfig().lFullscreenSpots));
+	}
+
+	@Test
+	void importedFilesDoNotOverwriteExistingOnes() throws Exception {
+		touch("source/logo.png");
+		File fSource = tempDir.resolve("source/logo.png").toFile();
+		File fTarget = tempDir.resolve("logos").toFile();
+
+		assertEquals("logo.png", Advertising.importFile(fSource, fTarget));
+		assertEquals("logo-2.png", Advertising.importFile(fSource, fTarget));
+		assertEquals("logo-3.png", Advertising.importFile(fSource, fTarget));
+	}
+
+	@Test
+	void renamingAndRemovingSponsorsKeepsPlacesConsistent() {
+		AdvertisingConfig config = new AdvertisingConfig();
+		Sponsor one = new Sponsor("One", "one.png", true);
+		config.lSponsors.add(one);
+		config.lSponsors.add(new Sponsor("Two", "two.png", true));
+		config.lMainViewSponsors.addAll(List.of("Two", "One"));
+		config.mPresentedBy.put(AdPlacement.GOAL, "One");
+		config.mPresentedBy.put(AdPlacement.CARD, "Two");
+
+		config.renameSponsor(one, "Uno");
+
+		assertEquals(List.of("Two", "Uno"), config.lMainViewSponsors);
+		assertEquals("Uno", config.mPresentedBy.get(AdPlacement.GOAL));
+		assertTrue(config.isSponsorPlaced("Uno"));
+
+		config.removeSponsor(one);
+
+		assertEquals(List.of("Two"), config.lMainViewSponsors);
+		assertNull(config.mPresentedBy.get(AdPlacement.GOAL));
+		assertEquals("Two", config.mPresentedBy.get(AdPlacement.CARD));
+		assertTrue(!config.hasSponsor("Uno") && config.hasSponsor("Two"));
 	}
 
 	@Test

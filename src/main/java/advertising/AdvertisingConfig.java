@@ -34,6 +34,39 @@ public class AdvertisingConfig {
 	@Expose
 	public Map<AdPlacement, String> mPresentedBy = new EnumMap<AdPlacement, String>(AdPlacement.class);
 
+	public boolean hasSponsor(String sName) {
+		for (Sponsor sponsor : lSponsors)
+			if (sponsor.sName.equals(sName))
+				return true;
+		return false;
+	}
+
+	/**
+	 * @return true if the sponsor is placed in the main view or presents an event
+	 */
+	public boolean isSponsorPlaced(String sName) {
+		return lMainViewSponsors.contains(sName) || mPresentedBy.containsValue(sName);
+	}
+
+	/**
+	 * Renames the sponsor and keeps its places.
+	 */
+	public void renameSponsor(Sponsor sponsor, String sNewName) {
+		String sOldName = sponsor.sName;
+		sponsor.sName = sNewName;
+		lMainViewSponsors.replaceAll(sName -> sName.equals(sOldName) ? sNewName : sName);
+		mPresentedBy.replaceAll((placement, sName) -> sName.equals(sOldName) ? sNewName : sName);
+	}
+
+	/**
+	 * Removes the sponsor from the list and from all places.
+	 */
+	public void removeSponsor(Sponsor sponsor) {
+		lSponsors.remove(sponsor);
+		lMainViewSponsors.removeIf(sName -> sName.equals(sponsor.sName));
+		mPresentedBy.values().removeIf(sName -> sName.equals(sponsor.sName));
+	}
+
 	/**
 	 * Fills values that are missing in older or hand edited files.
 	 */

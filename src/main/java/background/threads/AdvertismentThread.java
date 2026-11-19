@@ -33,7 +33,7 @@ public class AdvertismentThread extends Thread {
 		this.sSettings = sSettings;
 		setDaemon(true);
 		advertising = Advertising.getAdvertising();
-		advertising.addNewFolderFiles();
+		advertising.syncWithFolder();
 		lSpots = advertising.getActiveFullscreenSpots();
 	}
 

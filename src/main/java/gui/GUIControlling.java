@@ -19,6 +19,7 @@ import gui.frames.panes.PaneLaunchGame;
 import gui.frames.panes.PaneMainScoreboard;
 import gui.frames.scoreboards.MainScoreboard;
 import gui.frames.scoreboards.OtherScoreboards;
+import gui.frames.advertisingFrame.AdvertisingFrame;
 import gui.frames.settingsFrame.SettingsFrame;
 import gui.menu.Menus;
 import javafx.application.Application;
@@ -199,6 +200,9 @@ public class GUIControlling extends Application {
         switch (menu) {
             case FILE_SETTINGS:
                 new SettingsFrame(sSettings, this).show();
+                break;
+            case FILE_ADVERTISING:
+                new AdvertisingFrame(sSettings, this).show();
                 break;
             case FOOTBALL_LEAGUES:
                 new LeagueFrame(sSettings, this).show();

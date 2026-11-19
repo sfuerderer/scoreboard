@@ -768,6 +768,108 @@
         "ENGLISH": "All players, coaches and images of this team will be deleted as well.",
         "GERMAN": "Alle Spieler, Trainer und Bilder dieses Teams werden ebenfalls gelöscht."
       }
+    },
+    "sponsoren": {
+      "hmText": {
+        "ENGLISH": "Sponsors",
+        "GERMAN": "Sponsoren"
+      }
+    },
+    "neuer_sponsor": {
+      "hmText": {
+        "ENGLISH": "New sponsor …",
+        "GERMAN": "Neuer Sponsor …"
+      }
+    },
+    "sponsor_name": {
+      "hmText": {
+        "ENGLISH": "Name",
+        "GERMAN": "Name"
+      }
+    },
+    "sponsor_aktiv": {
+      "hmText": {
+        "ENGLISH": "Is shown (active)",
+        "GERMAN": "Wird angezeigt (aktiv)"
+      }
+    },
+    "sponsor_inaktiv": {
+      "hmText": {
+        "ENGLISH": "inactive",
+        "GERMAN": "inaktiv"
+      }
+    },
+    "logo_aendern": {
+      "hmText": {
+        "ENGLISH": "Change logo …",
+        "GERMAN": "Logo ändern …"
+      }
+    },
+    "bilder": {
+      "hmText": {
+        "ENGLISH": "Images",
+        "GERMAN": "Bilder"
+      }
+    },
+    "sponsor_hinweis": {
+      "hmText": {
+        "ENGLISH": "Logos with a transparent background (PNG) look best on the wall. Inactive sponsors are kept but not shown anywhere.",
+        "GERMAN": "Logos mit transparentem Hintergrund (PNG) wirken auf der Wand am besten. Inaktive Sponsoren bleiben gespeichert, werden aber nirgends angezeigt."
+      }
+    },
+    "sponsor_loeschen_frage": {
+      "hmText": {
+        "ENGLISH": "Do you really want to delete this sponsor?",
+        "GERMAN": "Soll der Sponsor wirklich gelöscht werden?"
+      }
+    },
+    "sponsor_loeschen_hinweis": {
+      "hmText": {
+        "ENGLISH": "The sponsor is assigned to an advertising place and will be removed there as well.",
+        "GERMAN": "Der Sponsor ist einem Werbeplatz zugeordnet und wird dort ebenfalls entfernt."
+      }
+    },
+    "vollbild": {
+      "hmText": {
+        "ENGLISH": "Full screen ads",
+        "GERMAN": "Vollbild-Werbung"
+      }
+    },
+    "vollbild_video": {
+      "hmText": {
+        "ENGLISH": "Video",
+        "GERMAN": "Video"
+      }
+    },
+    "vollbild_dauer": {
+      "hmText": {
+        "ENGLISH": "Duration (s)",
+        "GERMAN": "Anzeigedauer (s)"
+      }
+    },
+    "vollbild_dauer_hinweis": {
+      "hmText": {
+        "ENGLISH": "0 = default from the settings (%s s). Videos always play in full length.",
+        "GERMAN": "0 = Standard aus den Einstellungen (%s s). Videos laufen immer in voller Länge."
+      }
+    },
+    "vollbild_hinweis": {
+      "hmText": {
+        "ENGLISH": "The advertising shows all activated files in this order. To remove a file, uncheck it or delete it from the \"advertisment\" folder.",
+        "GERMAN": "Die Werbung zeigt alle aktivierten Dateien in dieser Reihenfolge. Zum Entfernen den Haken entfernen oder die Datei aus dem Ordner \"advertisment\" löschen."
+      }
+    },
+    "vollbild_dateien": {
+      "hmText": {
+        "ENGLISH": "Images and videos",
+        "GERMAN": "Bilder und Videos"
+      }
+    },
+    "vorschau": {
+      "hmText": {
+        "ENGLISH": "Preview",
+        "GERMAN": "Vorschau"
+      }
     }
   }
 }
