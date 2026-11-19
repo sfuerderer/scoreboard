@@ -4,6 +4,7 @@
  ************************************************/
 package gui.frames.panes;
 
+import advertising.AdPlacement;
 import java.util.List;
 
 import football.Team;
@@ -93,6 +94,7 @@ public class PaneLineupComplete extends PaneMainScoreboard {
 		layout.prefWidthProperty().bind(widthProperty());
 		layout.prefHeightProperty().bind(heightProperty());
 		getChildren().add(layout);
+		showPresentedBy(AdPlacement.LINEUP);
 	}
 
 	private static HBox playerLine(Player player, int iRows) {

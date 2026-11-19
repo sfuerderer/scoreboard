@@ -4,6 +4,7 @@
  ************************************************/
 package gui.frames.panes;
 
+import advertising.AdPlacement;
 import java.util.Locale;
 
 import gui.frames.panes.components.ScoreboardText;
@@ -33,5 +34,6 @@ public class PaneVisitors extends PaneMainScoreboard {
 		content.prefWidthProperty().bind(widthProperty());
 		content.prefHeightProperty().bind(heightProperty());
 		getChildren().add(content);
+		showPresentedBy(AdPlacement.VISITORS);
 	}
 }
