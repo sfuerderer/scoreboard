@@ -900,6 +900,12 @@
         "ENGLISH": "If the sponsor is inactive, this spot is not shown. “—” stands for ads of the club.",
         "GERMAN": "Ist der Sponsor inaktiv, läuft dieser Spot nicht. „—“ steht für Werbung des Vereins."
       }
+    },
+    "vollbild_sponsor_waehlen": {
+      "hmText": {
+        "ENGLISH": "Which sponsor do the new ads belong to?",
+        "GERMAN": "Zu welchem Sponsor gehört die neue Werbung?"
+      }
     }
   }
 }

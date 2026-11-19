@@ -19,6 +19,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -208,11 +209,37 @@ class AdvertisingFrameFullscreen extends AdvertisingTab {
 	}
 
 	private void addSpot() {
-		List<FullscreenSpot> lNewSpots = importSpots(null);
+		String sSponsor = chooseSponsor();
+		if (sSponsor == null)
+			return;
+		List<FullscreenSpot> lNewSpots = importSpots(sSponsor);
 		if (lNewSpots.isEmpty())
 			return;
 		lvSpots.getItems().setAll(getSpots());
 		lvSpots.getSelectionModel().select(lNewSpots.get(lNewSpots.size() - 1));
+	}
+
+	/**
+	 * New spots always belong to an existing sponsor, so the user picks one before choosing the files.
+	 *
+	 * @return the name of the sponsor or null if there is none or the user cancelled
+	 */
+	private String chooseSponsor() {
+		List<String> lNames = new ArrayList<String>();
+		for (Sponsor sponsor : advertising.getConfig().lSponsors)
+			lNames.add(sponsor.sName);
+		if (lNames.isEmpty()) {
+			ErrorMsg.showErrorMessage(215);
+			return null;
+		}
+		FullscreenSpot selected = getSelected();
+		String sDefault = selected != null && lNames.contains(selected.sSponsor) ? selected.sSponsor : lNames.get(0);
+		ChoiceDialog<String> dialog = new ChoiceDialog<String>(sDefault, lNames);
+		dialog.initOwner(getScene().getWindow());
+		dialog.setTitle(Language.getText("vollbild_hinzufuegen"));
+		dialog.setHeaderText(Language.getText("vollbild_sponsor_waehlen"));
+		dialog.setContentText(Language.getText("sponsor"));
+		return dialog.showAndWait().orElse(null);
 	}
 
 	@Override

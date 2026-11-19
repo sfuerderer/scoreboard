@@ -55,6 +55,7 @@ public class ErrorMsg {
 		ERRORS.put(210, "Zu dieser Mannschaft wurde noch kein Trainer angelegt.");
 		ERRORS.put(211, "Du kannst nur einen Haupttrainer anlegen.");
 		ERRORS.put(212, "Im Ordner \"advertisment\" wurden keine aktiven Bilder (jpg, png) oder Videos (mp4) gefunden.");
+		ERRORS.put(215, "Es gibt noch keinen Sponsor. Lege zuerst im Tab \"Sponsoren\" einen Sponsor an.");
 		ERRORS.put(214, "Der Name des Sponsors darf nicht leer sein und muss eindeutig sein.");
 		ERRORS.put(213, "Die Liga oder das Team wird im aktuellen Spiel verwendet und kann nicht gelöscht werden.");
 	}
