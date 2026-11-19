@@ -117,8 +117,7 @@ public class Advertising {
 	 */
 	private Sponsor getShowableSponsor(String sName) {
 		Sponsor sponsor = getSponsor(sName);
-		if (sponsor == null || !sponsor.bActive || sponsor.sLogoFile == null || sponsor.sLogoFile.isEmpty()
-				|| !getLogoFile(sponsor).isFile())
+		if (sponsor == null || !sponsor.bActive || !sponsor.hasLogo() || !getLogoFile(sponsor).isFile())
 			return null;
 		return sponsor;
 	}
@@ -149,9 +148,18 @@ public class Advertising {
 	public List<FullscreenSpot> getActiveFullscreenSpots() {
 		List<FullscreenSpot> lResult = new ArrayList<FullscreenSpot>();
 		for (FullscreenSpot spot : config.lFullscreenSpots)
-			if (spot.bActive && FullscreenSpot.isSupported(spot.sFile) && getSpotFile(spot).isFile())
+			if (spot.bActive && FullscreenSpot.isSupported(spot.sFile) && getSpotFile(spot).isFile()
+					&& isSponsorActive(spot.sSponsor))
 				lResult.add(spot);
 		return lResult;
+	}
+
+	/**
+	 * @return false only for an inactive sponsor; spots without or with an unknown sponsor are shown
+	 */
+	private boolean isSponsorActive(String sName) {
+		Sponsor sponsor = getSponsor(sName);
+		return sponsor == null || sponsor.bActive;
 	}
 
 	/**

@@ -777,8 +777,8 @@
     },
     "neuer_sponsor": {
       "hmText": {
-        "ENGLISH": "New sponsor …",
-        "GERMAN": "Neuer Sponsor …"
+        "ENGLISH": "New sponsor",
+        "GERMAN": "Neuer Sponsor"
       }
     },
     "sponsor_name": {
@@ -799,12 +799,6 @@
         "GERMAN": "inaktiv"
       }
     },
-    "logo_aendern": {
-      "hmText": {
-        "ENGLISH": "Change logo …",
-        "GERMAN": "Logo ändern …"
-      }
-    },
     "bilder": {
       "hmText": {
         "ENGLISH": "Images",
@@ -813,8 +807,8 @@
     },
     "sponsor_hinweis": {
       "hmText": {
-        "ENGLISH": "Logos with a transparent background (PNG) look best on the wall. Inactive sponsors are kept but not shown anywhere.",
-        "GERMAN": "Logos mit transparentem Hintergrund (PNG) wirken auf der Wand am besten. Inaktive Sponsoren bleiben gespeichert, werden aber nirgends angezeigt."
+        "ENGLISH": "Logos with a transparent background (PNG) look best on the wall. An inactive sponsor is kept but shown nowhere – not even its full screen ads.",
+        "GERMAN": "Logos mit transparentem Hintergrund (PNG) wirken auf der Wand am besten. Ein inaktiver Sponsor bleibt gespeichert, wird aber nirgends angezeigt – auch seine Vollbild-Werbung nicht."
       }
     },
     "sponsor_loeschen_frage": {
@@ -825,8 +819,8 @@
     },
     "sponsor_loeschen_hinweis": {
       "hmText": {
-        "ENGLISH": "The sponsor is assigned to an advertising place and will be removed there as well.",
-        "GERMAN": "Der Sponsor ist einem Werbeplatz zugeordnet und wird dort ebenfalls entfernt."
+        "ENGLISH": "The sponsor is assigned to advertising places and will be removed there. Its full screen ads are kept without a sponsor.",
+        "GERMAN": "Der Sponsor ist Werbeplätzen zugeordnet und wird dort entfernt. Seine Vollbild-Werbung bleibt ohne Sponsor erhalten."
       }
     },
     "vollbild": {
@@ -869,6 +863,42 @@
       "hmText": {
         "ENGLISH": "Preview",
         "GERMAN": "Vorschau"
+      }
+    },
+    "neuer_sponsor_name": {
+      "hmText": {
+        "ENGLISH": "New sponsor",
+        "GERMAN": "Neuer Sponsor"
+      }
+    },
+    "logo_waehlen": {
+      "hmText": {
+        "ENGLISH": "Choose logo …",
+        "GERMAN": "Logo wählen …"
+      }
+    },
+    "sponsor_kein_logo": {
+      "hmText": {
+        "ENGLISH": "No logo – the sponsor only appears in the full screen ads.",
+        "GERMAN": "Kein Logo – der Sponsor erscheint nur in der Vollbild-Werbung."
+      }
+    },
+    "sponsor": {
+      "hmText": {
+        "ENGLISH": "Sponsor",
+        "GERMAN": "Sponsor"
+      }
+    },
+    "vollbild_hinzufuegen": {
+      "hmText": {
+        "ENGLISH": "Add full screen ads …",
+        "GERMAN": "Vollbild-Werbung hinzufügen …"
+      }
+    },
+    "vollbild_sponsor_hinweis": {
+      "hmText": {
+        "ENGLISH": "If the sponsor is inactive, this spot is not shown. “—” stands for ads of the club.",
+        "GERMAN": "Ist der Sponsor inaktiv, läuft dieser Spot nicht. „—“ steht für Werbung des Vereins."
       }
     }
   }

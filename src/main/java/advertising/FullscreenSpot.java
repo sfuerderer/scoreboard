@@ -17,11 +17,19 @@ public class FullscreenSpot {
 	// 0 uses the default time between advertising of the settings; videos run as long as they are
 	@Expose
 	public int iDurationInSeconds;
+	// Name of the sponsor the spot belongs to, null for spots of the club (e.g. a trailer)
+	@Expose
+	public String sSponsor;
 
 	public FullscreenSpot(String sFile, boolean bActive, int iDurationInSeconds) {
+		this(sFile, bActive, iDurationInSeconds, null);
+	}
+
+	public FullscreenSpot(String sFile, boolean bActive, int iDurationInSeconds, String sSponsor) {
 		this.sFile = sFile;
 		this.bActive = bActive;
 		this.iDurationInSeconds = iDurationInSeconds;
+		this.sSponsor = sSponsor;
 	}
 
 	public boolean isVideo() {

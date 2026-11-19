@@ -45,7 +45,8 @@ public class AdvertisingConfig {
 	 * @return true if the sponsor is placed in the main view or presents an event
 	 */
 	public boolean isSponsorPlaced(String sName) {
-		return lMainViewSponsors.contains(sName) || mPresentedBy.containsValue(sName);
+		return lMainViewSponsors.contains(sName) || mPresentedBy.containsValue(sName)
+				|| lFullscreenSpots.stream().anyMatch(spot -> sName.equals(spot.sSponsor));
 	}
 
 	/**
@@ -56,15 +57,33 @@ public class AdvertisingConfig {
 		sponsor.sName = sNewName;
 		lMainViewSponsors.replaceAll(sName -> sName.equals(sOldName) ? sNewName : sName);
 		mPresentedBy.replaceAll((placement, sName) -> sName.equals(sOldName) ? sNewName : sName);
+		for (FullscreenSpot spot : lFullscreenSpots)
+			if (sOldName.equals(spot.sSponsor))
+				spot.sSponsor = sNewName;
 	}
 
 	/**
-	 * Removes the sponsor from the list and from all places.
+	 * Removes the sponsor from the list and from all places. Its full screen spots stay in the rotation without a
+	 * sponsor, so deleting a sponsor never deletes files.
 	 */
 	public void removeSponsor(Sponsor sponsor) {
 		lSponsors.remove(sponsor);
 		lMainViewSponsors.removeIf(sName -> sName.equals(sponsor.sName));
 		mPresentedBy.values().removeIf(sName -> sName.equals(sponsor.sName));
+		for (FullscreenSpot spot : lFullscreenSpots)
+			if (sponsor.sName.equals(spot.sSponsor))
+				spot.sSponsor = null;
+	}
+
+	/**
+	 * @return the full screen spots of the sponsor in the order of the rotation
+	 */
+	public List<FullscreenSpot> getSpotsOf(String sName) {
+		List<FullscreenSpot> lResult = new ArrayList<FullscreenSpot>();
+		for (FullscreenSpot spot : lFullscreenSpots)
+			if (sName.equals(spot.sSponsor))
+				lResult.add(spot);
+		return lResult;
 	}
 
 	/**
@@ -92,8 +111,11 @@ public class AdvertisingConfig {
 					mCleaned.put(placement, sName);
 			});
 		mPresentedBy = mCleaned;
-		for (FullscreenSpot spot : lFullscreenSpots)
+		for (FullscreenSpot spot : lFullscreenSpots) {
 			if (spot.iDurationInSeconds < 0)
 				spot.iDurationInSeconds = 0;
+			if (spot.sSponsor != null && spot.sSponsor.isEmpty())
+				spot.sSponsor = null;
+		}
 	}
 }

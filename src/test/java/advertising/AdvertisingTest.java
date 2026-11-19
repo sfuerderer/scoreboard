@@ -91,6 +91,27 @@ class AdvertisingTest {
 	}
 
 	@Test
+	void spotsOfInactiveSponsorsAreNotShown() throws Exception {
+		touch("a.jpg");
+		touch("b.jpg");
+		touch("c.jpg");
+		Advertising advertising = load();
+		AdvertisingConfig config = advertising.getConfig();
+		config.lSponsors.add(new Sponsor("Active", null, true));
+		config.lSponsors.add(new Sponsor("Paused", null, false));
+		config.lFullscreenSpots.get(0).sSponsor = "Active";
+		config.lFullscreenSpots.get(1).sSponsor = "Paused";
+		advertising.save();
+
+		Advertising loaded = load();
+
+		assertEquals(List.of("a.jpg", "c.jpg"), files(loaded.getActiveFullscreenSpots()));
+		assertEquals(List.of("b.jpg"), files(loaded.getConfig().getSpotsOf("Paused")));
+		// Without a logo the sponsor can book full screen ads only
+		assertTrue(loaded.getMainViewSponsors().isEmpty());
+	}
+
+	@Test
 	void importedFilesDoNotOverwriteExistingOnes() throws Exception {
 		touch("source/logo.png");
 		File fSource = tempDir.resolve("source/logo.png").toFile();
@@ -110,18 +131,23 @@ class AdvertisingTest {
 		config.lMainViewSponsors.addAll(List.of("Two", "One"));
 		config.mPresentedBy.put(AdPlacement.GOAL, "One");
 		config.mPresentedBy.put(AdPlacement.CARD, "Two");
+		FullscreenSpot spot = new FullscreenSpot("one.jpg", true, 0, "One");
+		config.lFullscreenSpots.add(spot);
 
 		config.renameSponsor(one, "Uno");
 
 		assertEquals(List.of("Two", "Uno"), config.lMainViewSponsors);
 		assertEquals("Uno", config.mPresentedBy.get(AdPlacement.GOAL));
 		assertTrue(config.isSponsorPlaced("Uno"));
+		assertEquals("Uno", spot.sSponsor);
 
 		config.removeSponsor(one);
 
 		assertEquals(List.of("Two"), config.lMainViewSponsors);
 		assertNull(config.mPresentedBy.get(AdPlacement.GOAL));
 		assertEquals("Two", config.mPresentedBy.get(AdPlacement.CARD));
+		assertNull(spot.sSponsor);
+		assertEquals(1, config.lFullscreenSpots.size());
 		assertTrue(!config.hasSponsor("Uno") && config.hasSponsor("Two"));
 	}
 

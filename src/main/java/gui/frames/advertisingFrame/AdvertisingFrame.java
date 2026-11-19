@@ -40,6 +40,10 @@ public class AdvertisingFrame extends BasicFrame {
 		for (AdvertisingTab tab : new AdvertisingTab[] { new AdvertisingFrameSponsors(advertising, onChange),
 				new AdvertisingFrameFullscreen(advertising, onChange, sSettings) })
 			tabPane.getTabs().add(new Tab(Language.getText(tab.getTitleKey()), tab));
+		tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
+			if (newTab != null)
+				((AdvertisingTab) newTab.getContent()).refresh();
+		});
 
 		return new BorderPane(tabPane);
 	}

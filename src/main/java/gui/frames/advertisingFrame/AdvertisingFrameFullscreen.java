@@ -6,16 +6,20 @@ package gui.frames.advertisingFrame;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import advertising.Advertising;
 import advertising.FullscreenSpot;
+import advertising.Sponsor;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -31,8 +35,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import language.Language;
 import message.ErrorMsg;
 import system.settings.Settings;
@@ -44,12 +46,15 @@ class AdvertisingFrameFullscreen extends AdvertisingTab {
 	private static final double PREVIEW_WIDTH = 257;
 	private static final double PREVIEW_HEIGHT = 140;
 	private static final int MAX_DURATION_IN_SECONDS = 600;
+	// Shown in the sponsor choice for spots of the club
+	private static final String NO_SPONSOR = "—";
 
 	private final Settings sSettings;
 	private final ListView<FullscreenSpot> lvSpots;
 	private final ImageView ivPreview;
 	private final Label lbVideo;
 	private final Spinner<Integer> spDuration;
+	private final ComboBox<String> cbSponsor;
 	private final Button btnUp;
 	private final Button btnDown;
 	private boolean bShowing;
@@ -59,7 +64,7 @@ class AdvertisingFrameFullscreen extends AdvertisingTab {
 		this.sSettings = sSettings;
 
 		lvSpots = new ListView<FullscreenSpot>();
-		lvSpots.setPrefWidth(340);
+		lvSpots.setPrefWidth(360);
 		lvSpots.setCellFactory(listView -> new SpotCell());
 		lvSpots.getItems().setAll(getSpots());
 		lvSpots.getSelectionModel().selectedItemProperty()
@@ -103,6 +108,11 @@ class AdvertisingFrameFullscreen extends AdvertisingTab {
 				.replace("%s", String.valueOf(sSettings.iTimeBetweenAdvertisingInMiliseconds / 1000)));
 		lbDurationHint.setWrapText(true);
 
+		cbSponsor = new ComboBox<String>();
+		cbSponsor.setOnAction(event -> saveSponsor());
+		Label lbSponsorHint = new Label(Language.getText("vollbild_sponsor_hinweis"));
+		lbSponsorHint.setWrapText(true);
+
 		Label lbHint = new Label(Language.getText("vollbild_hinweis"));
 		lbHint.setWrapText(true);
 
@@ -121,7 +131,10 @@ class AdvertisingFrameFullscreen extends AdvertisingTab {
 		details.add(new Label(Language.getText("vollbild_dauer")), 0, 1);
 		details.add(spDuration, 1, 1);
 		details.add(lbDurationHint, 1, 2);
-		details.add(lbHint, 0, 3, 2, 1);
+		details.add(new Label(Language.getText("sponsor")), 0, 3);
+		details.add(cbSponsor, 1, 3);
+		details.add(lbSponsorHint, 1, 4);
+		details.add(lbHint, 0, 5, 2, 1);
 
 		setLeft(left);
 		setCenter(details);
@@ -148,6 +161,9 @@ class AdvertisingFrameFullscreen extends AdvertisingTab {
 	private void showSpot(FullscreenSpot spot) {
 		bShowing = true;
 		boolean bEmpty = spot == null;
+		fillSponsorChoice();
+		cbSponsor.setDisable(bEmpty);
+		cbSponsor.setValue(bEmpty || spot.sSponsor == null ? NO_SPONSOR : spot.sSponsor);
 		int iIndex = lvSpots.getSelectionModel().getSelectedIndex();
 		btnUp.setDisable(bEmpty || iIndex <= 0);
 		btnDown.setDisable(bEmpty || iIndex >= lvSpots.getItems().size() - 1);
@@ -192,29 +208,40 @@ class AdvertisingFrameFullscreen extends AdvertisingTab {
 	}
 
 	private void addSpot() {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle(Language.getText("vollbild"));
-		fileChooser.getExtensionFilters().add(new ExtensionFilter(Language.getText("vollbild_dateien"), "*.png",
-				"*.jpg", "*.mp4", "*.PNG", "*.JPG", "*.MP4"));
-		List<File> files = fileChooser.showOpenMultipleDialog(getScene().getWindow());
-		if (files == null)
-			return;
-		FullscreenSpot lastSpot = null;
-		for (File file : files) {
-			if (!FullscreenSpot.isSupported(file.getName()))
-				continue;
-			try {
-				String sName = Advertising.importFile(file, advertising.getFolder());
-				lastSpot = new FullscreenSpot(sName, true, 0);
-				getSpots().add(lastSpot);
-			} catch (IOException e) {
-				ErrorMsg.showErrorMessage(119, e.getMessage());
-			}
-		}
-		if (lastSpot == null)
+		List<FullscreenSpot> lNewSpots = importSpots(null);
+		if (lNewSpots.isEmpty())
 			return;
 		lvSpots.getItems().setAll(getSpots());
-		lvSpots.getSelectionModel().select(lastSpot);
+		lvSpots.getSelectionModel().select(lNewSpots.get(lNewSpots.size() - 1));
+	}
+
+	@Override
+	void refresh() {
+		FullscreenSpot selected = getSelected();
+		lvSpots.getItems().setAll(getSpots());
+		if (selected != null)
+			lvSpots.getSelectionModel().select(selected);
+		showSpot(getSelected());
+	}
+
+	private void fillSponsorChoice() {
+		List<String> lNames = new ArrayList<String>();
+		lNames.add(NO_SPONSOR);
+		for (Sponsor sponsor : advertising.getConfig().lSponsors)
+			lNames.add(sponsor.sName);
+		cbSponsor.getItems().setAll(lNames);
+	}
+
+	private void saveSponsor() {
+		FullscreenSpot spot = getSelected();
+		String sChoice = cbSponsor.getValue();
+		if (spot == null || bShowing || sChoice == null)
+			return;
+		String sSponsor = sChoice.equals(NO_SPONSOR) ? null : sChoice;
+		if (Objects.equals(sSponsor, spot.sSponsor))
+			return;
+		spot.sSponsor = sSponsor;
+		lvSpots.refresh();
 		changed();
 	}
 
@@ -246,11 +273,14 @@ class AdvertisingFrameFullscreen extends AdvertisingTab {
 			}
 			cbActive.setSelected(spot.bActive);
 			lbName.setText(spot.sFile);
-			lbName.setOpacity(spot.bActive ? 1 : 0.5);
 			String sDuration = spot.isVideo() ? Language.getText("vollbild_video")
 					: spot.iDurationInSeconds > 0 ? spot.iDurationInSeconds + " s"
 							: sSettings.iTimeBetweenAdvertisingInMiliseconds / 1000 + " s";
-			lbInfo.setText(sDuration);
+			Sponsor sponsor = advertising.getSponsor(spot.sSponsor);
+			String sSponsor = sponsor == null ? ""
+					: " · " + sponsor.sName + (sponsor.bActive ? "" : " (" + Language.getText("sponsor_inaktiv") + ")");
+			lbInfo.setText(sDuration + sSponsor);
+			lbName.setOpacity(spot.bActive && (sponsor == null || sponsor.bActive) ? 1 : 0.5);
 			setGraphic(content);
 		}
 	}

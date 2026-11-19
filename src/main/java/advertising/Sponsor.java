@@ -7,7 +7,8 @@ package advertising;
 import com.google.gson.annotations.Expose;
 
 /**
- * A sponsor with its logo. The logo lies in the logo folder of the advertising folder.
+ * A sponsor with its logo. The logo lies in the logo folder of the advertising folder and is optional, e.g. for
+ * sponsors that only book full screen ads. An inactive sponsor is shown nowhere, not even in the full screen ads.
  */
 public class Sponsor {
 	@Expose
@@ -21,5 +22,9 @@ public class Sponsor {
 		this.sName = sName;
 		this.sLogoFile = sLogoFile;
 		this.bActive = bActive;
+	}
+
+	public boolean hasLogo() {
+		return sLogoFile != null && !sLogoFile.isEmpty();
 	}
 }
