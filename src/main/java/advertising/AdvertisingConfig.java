@@ -18,7 +18,12 @@ public class AdvertisingConfig {
 	public static final int MAIN_VIEW_MAX_LOGOS_LIMIT = 4;
 	public static final int DEFAULT_MAIN_VIEW_MAX_LOGOS = 4;
 	public static final int DEFAULT_MAIN_VIEW_ROTATION_SECONDS = 10;
+	// 0: all files directly in the advertising folder, 1: one folder per sponsor
+	public static final int FORMAT_SPONSOR_FOLDERS = 1;
 
+	// Missing in files of the first format, so it is read as 0 there
+	@Expose
+	public int iFormat;
 	@Expose
 	public List<Sponsor> lSponsors = new ArrayList<Sponsor>();
 	@Expose
@@ -63,16 +68,13 @@ public class AdvertisingConfig {
 	}
 
 	/**
-	 * Removes the sponsor from the list and from all places. Its full screen spots stay in the rotation without a
-	 * sponsor, so deleting a sponsor never deletes files.
+	 * Removes the sponsor with its full screen spots from the list and from all places. The files are not touched.
 	 */
 	public void removeSponsor(Sponsor sponsor) {
 		lSponsors.remove(sponsor);
 		lMainViewSponsors.removeIf(sName -> sName.equals(sponsor.sName));
 		mPresentedBy.values().removeIf(sName -> sName.equals(sponsor.sName));
-		for (FullscreenSpot spot : lFullscreenSpots)
-			if (sponsor.sName.equals(spot.sSponsor))
-				spot.sSponsor = null;
+		lFullscreenSpots.removeIf(spot -> sponsor.sName.equals(spot.sSponsor));
 	}
 
 	/**
