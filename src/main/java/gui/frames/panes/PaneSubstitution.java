@@ -4,6 +4,7 @@
  ************************************************/
 package gui.frames.panes;
 
+import advertising.AdPlacement;
 import football.Team;
 import football.person.Player;
 import gui.frames.panes.components.ScoreboardText;
@@ -41,7 +42,7 @@ public class PaneSubstitution extends PaneEvent {
 		HBox rowOut = placeTopLeft(row(playerOut, false), 132, ROW_LEFT);
 		rowOut.setOpacity(0.62);
 
-		buildIn(lbTitle, lbMinute, rowIn, rowOut);
+		buildIn(lbTitle, lbMinute, rowIn, rowOut, showPresentedBy(AdPlacement.SUBSTITUTION));
 	}
 
 	private static HBox row(Player player, boolean bComingOn) {

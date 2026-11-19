@@ -4,6 +4,7 @@
  ************************************************/
 package gui.frames.panes;
 
+import advertising.AdPlacement;
 import java.util.Locale;
 
 import football.match.Match;
@@ -79,6 +80,8 @@ public class PaneStatistic extends PaneMainScoreboard {
 		layout.prefWidthProperty().bind(widthProperty());
 		layout.prefHeightProperty().bind(heightProperty());
 		getChildren().add(layout);
+		// Above the visitors bar, if there is one
+		showPresentedBy(AdPlacement.STATISTIC, match.getiVisitors() > 0 ? VISITORS_HEIGHT : 0);
 	}
 
 	private static VBox statRow(String sTitle, int iHome, int iGuest, Color colorHome, Color colorGuest) {

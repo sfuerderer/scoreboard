@@ -4,6 +4,7 @@
  ************************************************/
 package gui.frames.panes;
 
+import advertising.AdPlacement;
 import football.match.Match;
 import football.match.MatchEvent;
 import football.match.Teams;
@@ -56,6 +57,7 @@ public class PaneResult extends PaneMainScoreboard {
 		layout.prefWidthProperty().bind(widthProperty());
 		layout.prefHeightProperty().bind(heightProperty());
 		getChildren().add(layout);
+		showPresentedBy(AdPlacement.HALFTIME);
 	}
 
 	private static Label scorers(Match match, Teams team) {

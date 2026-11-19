@@ -4,6 +4,7 @@
  ************************************************/
 package gui.frames.panes;
 
+import advertising.AdPlacement;
 import football.Cards;
 import football.Team;
 import football.person.Player;
@@ -46,7 +47,7 @@ public class PaneCard extends PaneEvent {
 		Label lbMeta = placeTopLeft(ScoreboardText.fittingLabel(sbMeta.toString(), FontWeight.SEMI_BOLD, 22, 15,
 				WALL_WIDTH - TEXT_LEFT - 16, ScoreboardColors.TEXT_DIM), 150, TEXT_LEFT + 2);
 
-		buildIn(cards, lbNumber, lbName, lbMeta);
+		buildIn(cards, lbNumber, lbName, lbMeta, showPresentedBy(AdPlacement.CARD));
 	}
 
 	private static Group drawCards(Cards card) {

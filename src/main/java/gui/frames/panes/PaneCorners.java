@@ -4,6 +4,7 @@
  ************************************************/
 package gui.frames.panes;
 
+import advertising.AdPlacement;
 import football.match.Match;
 import gui.frames.panes.components.FixedDigitsLabel;
 import gui.frames.panes.components.ScoreboardText;
@@ -56,6 +57,7 @@ public class PaneCorners extends PaneMainScoreboard {
 		layout.prefWidthProperty().bind(widthProperty());
 		layout.prefHeightProperty().bind(heightProperty());
 		getChildren().add(layout);
+		showPresentedBy(AdPlacement.CORNERS);
 
 		showCorners();
 		match.sCorners.addListener(new WeakChangeListener<String>(cornersListener));

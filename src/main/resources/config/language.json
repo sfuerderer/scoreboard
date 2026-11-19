@@ -1026,6 +1026,72 @@
         "ENGLISH": "no logo",
         "GERMAN": "kein Logo"
       }
+    },
+    "praesentiert_von": {
+      "hmText": {
+        "ENGLISH": "presented by",
+        "GERMAN": "präsentiert von"
+      }
+    },
+    "praesentiert_von_tab": {
+      "hmText": {
+        "ENGLISH": "Presented by",
+        "GERMAN": "Präsentiert von"
+      }
+    },
+    "praesentiert_von_hinweis": {
+      "hmText": {
+        "ENGLISH": "The chosen sponsor appears with “presented by” and its logo in the bottom right corner of the view. Without a sponsor (“—”) the view stays unchanged; an inactive sponsor is not shown. The lineup shows the sponsor on the overview, not when single players are introduced.",
+        "GERMAN": "Der gewählte Sponsor erscheint mit „präsentiert von“ und seinem Logo unten rechts in der jeweiligen Ansicht. Ohne Sponsor („—“) bleibt die Ansicht unverändert; ein inaktiver Sponsor wird nicht gezeigt. Die Aufstellung erscheint mit Sponsor auf der Übersicht, nicht bei der Vorstellung einzelner Spielerinnen."
+      }
+    },
+    "werbeplatz_tor": {
+      "hmText": {
+        "ENGLISH": "Goal",
+        "GERMAN": "Tor"
+      }
+    },
+    "werbeplatz_karte": {
+      "hmText": {
+        "ENGLISH": "Card",
+        "GERMAN": "Karte"
+      }
+    },
+    "werbeplatz_wechsel": {
+      "hmText": {
+        "ENGLISH": "Substitution",
+        "GERMAN": "Wechsel"
+      }
+    },
+    "werbeplatz_aufstellung": {
+      "hmText": {
+        "ENGLISH": "Lineup",
+        "GERMAN": "Aufstellung"
+      }
+    },
+    "werbeplatz_halbzeit": {
+      "hmText": {
+        "ENGLISH": "Score",
+        "GERMAN": "Spielstand"
+      }
+    },
+    "werbeplatz_statistik": {
+      "hmText": {
+        "ENGLISH": "Statistics",
+        "GERMAN": "Statistik"
+      }
+    },
+    "werbeplatz_ecken": {
+      "hmText": {
+        "ENGLISH": "Corners",
+        "GERMAN": "Ecken"
+      }
+    },
+    "werbeplatz_zuschauer": {
+      "hmText": {
+        "ENGLISH": "Visitors",
+        "GERMAN": "Zuschauer"
+      }
     }
   }
 }

@@ -4,6 +4,7 @@
  ************************************************/
 package gui.frames.panes;
 
+import advertising.AdPlacement;
 import football.person.Player;
 import gui.frames.panes.components.PlayerPhoto;
 import gui.frames.panes.components.ScoreboardText;
@@ -50,7 +51,7 @@ public class PaneGoal extends PaneEvent {
 		Label lbMinute = placeTopRight(ScoreboardText.label(sMinute, FontWeight.BOLD, 28, ScoreboardColors.TEXT_DIM),
 				22, 16);
 
-		buildIn(number, photo, goal, lbFirstname, lbLastname, lbMinute);
+		buildIn(number, photo, goal, lbFirstname, lbLastname, lbMinute, showPresentedBy(AdPlacement.GOAL));
 	}
 
 	@Override
