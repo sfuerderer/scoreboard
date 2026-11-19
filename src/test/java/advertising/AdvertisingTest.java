@@ -108,23 +108,28 @@ class AdvertisingTest {
 	}
 
 	@Test
-	void filesCopiedIntoFoldersByHandAreAddedWithTheirSponsor() throws Exception {
+	void filesCopiedIntoSponsorFoldersBecomeMediaButAreNotShownYet() throws Exception {
 		Advertising advertising = load();
 		advertising.addSponsor("Baier");
 		advertising.getConfig().iFormat = AdvertisingConfig.FORMAT_SPONSOR_FOLDERS;
 		advertising.save();
+		touch("sponsoren/baier/25.jpg");
 		touch("sponsoren/baier/24.jpg");
 		touch("sponsoren/baier/logo.png");
-		touch("verein/trailer.mp4");
 
 		Advertising loaded = load();
+		Sponsor baier = loaded.getSponsor("Baier");
 
-		assertEquals("logo.png", loaded.getSponsor("Baier").sLogoFile);
+		assertEquals("logo.png", baier.sLogoFile);
+		assertEquals(List.of("sponsoren/baier/24.jpg", "sponsoren/baier/25.jpg"), loaded.getMedia(baier));
+		// The full screen ads only show what was chosen from the sponsors
+		assertTrue(loaded.getConfig().lFullscreenSpots.isEmpty());
 
-		assertEquals(List.of("verein/trailer.mp4", "sponsoren/baier/24.jpg"),
-				files(loaded.getConfig().lFullscreenSpots));
-		assertNull(loaded.getConfig().lFullscreenSpots.get(0).sSponsor);
-		assertEquals("Baier", loaded.getConfig().lFullscreenSpots.get(1).sSponsor);
+		loaded.addToFullscreen(baier, "sponsoren/baier/25.jpg");
+		assertTrue(loaded.isInFullscreen("sponsoren/baier/25.jpg"));
+		assertFalse(loaded.isInFullscreen("sponsoren/baier/24.jpg"));
+		loaded.removeMedia("sponsoren/baier/25.jpg");
+		assertTrue(loaded.getConfig().lFullscreenSpots.isEmpty());
 	}
 
 	@Test
@@ -177,45 +182,45 @@ class AdvertisingTest {
 	void spotsOfInactiveSponsorsAreNotShown() throws Exception {
 		touch("source/a.jpg");
 		touch("source/b.jpg");
-		touch("source/c.jpg");
 		Advertising advertising = load();
-		advertising.addSponsor("Active");
-		advertising.addSponsor("Paused").bActive = false;
-		advertising.addSpot(tempDir.resolve("source/a.jpg").toFile(), "Active");
-		advertising.addSpot(tempDir.resolve("source/b.jpg").toFile(), "Paused");
-		advertising.addSpot(tempDir.resolve("source/c.jpg").toFile(), null);
+		Sponsor active = advertising.addSponsor("Active");
+		Sponsor paused = advertising.addSponsor("Paused");
+		paused.bActive = false;
+		advertising.addToFullscreen(active, advertising.addMedia(active, tempDir.resolve("source/a.jpg").toFile()));
+		advertising.addToFullscreen(paused, advertising.addMedia(paused, tempDir.resolve("source/b.jpg").toFile()));
 
-		assertEquals(List.of("sponsoren/active/a.jpg", "verein/c.jpg"),
-				files(advertising.getActiveFullscreenSpots()));
+		assertEquals(List.of("sponsoren/active/a.jpg"), files(advertising.getActiveFullscreenSpots()));
 		assertEquals(List.of("sponsoren/paused/b.jpg"), files(advertising.getConfig().getSpotsOf("Paused")));
 		assertTrue(advertising.getMainViewSponsors().isEmpty());
 	}
 
 	@Test
-	void spotsAndLogosAreCopiedWithoutOverwritingAndMovedBetweenSponsors() throws Exception {
+	void mediaAndLogosAreCopiedWithoutOverwritingAndSpotsWithoutSponsorCanBeAssigned() throws Exception {
 		touch("source/24.jpg");
 		touch("source/logo.jpg");
 		touch("source/new-logo.png");
+		touch("verein/old.jpg");
 		File fSpot = tempDir.resolve("source/24.jpg").toFile();
 		Advertising advertising = load();
 		Sponsor baier = advertising.addSponsor("Baier");
-		advertising.addSponsor("Roth");
 
-		FullscreenSpot first = advertising.addSpot(fSpot, "Baier");
-		FullscreenSpot second = advertising.addSpot(fSpot, "Baier");
-		assertEquals("sponsoren/baier/24.jpg", first.sFile);
-		assertEquals("sponsoren/baier/24-2.jpg", second.sFile);
+		assertEquals("sponsoren/baier/24.jpg", advertising.addMedia(baier, fSpot));
+		assertEquals("sponsoren/baier/24-2.jpg", advertising.addMedia(baier, fSpot));
 
-		advertising.moveSpot(second, "Roth");
-		assertEquals("sponsoren/roth/24-2.jpg", second.sFile);
-		assertEquals("Roth", second.sSponsor);
-		assertTrue(exists("sponsoren/roth/24-2.jpg") && !exists("sponsoren/baier/24-2.jpg"));
+		FullscreenSpot old = new FullscreenSpot("verein/old.jpg", true, 0);
+		advertising.getConfig().lFullscreenSpots.add(old);
+		advertising.moveSpot(old, "Baier");
+		assertEquals("sponsoren/baier/old.jpg", old.sFile);
+		assertEquals("Baier", old.sSponsor);
+		assertTrue(exists("sponsoren/baier/old.jpg") && !exists("verein/old.jpg"));
 
 		advertising.setLogo(baier, tempDir.resolve("source/logo.jpg").toFile());
 		advertising.setLogo(baier, tempDir.resolve("source/new-logo.png").toFile());
 		assertEquals("logo.png", baier.sLogoFile);
 		assertFalse(exists("sponsoren/baier/logo.jpg"));
 		assertTrue(exists("source/logo.jpg"));
+		assertEquals(List.of("sponsoren/baier/24-2.jpg", "sponsoren/baier/24.jpg", "sponsoren/baier/old.jpg"),
+				advertising.getMedia(baier));
 	}
 
 	@Test

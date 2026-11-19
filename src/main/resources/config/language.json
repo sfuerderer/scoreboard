@@ -807,8 +807,8 @@
     },
     "sponsor_hinweis": {
       "hmText": {
-        "ENGLISH": "Logos with a transparent background (PNG) look best on the wall. An inactive sponsor is kept but shown nowhere – not even its full screen ads.",
-        "GERMAN": "Logos mit transparentem Hintergrund (PNG) wirken auf der Wand am besten. Ein inaktiver Sponsor bleibt gespeichert, wird aber nirgends angezeigt – auch seine Vollbild-Werbung nicht."
+        "ENGLISH": "Logos with a transparent background (PNG) look best on the wall. Media are the sponsor's images and videos; the advertising places decide which of them run. An inactive sponsor is shown nowhere.",
+        "GERMAN": "Logos mit transparentem Hintergrund (PNG) wirken auf der Wand am besten. Werbemittel sind die Bilder und Videos des Sponsors; was davon läuft, legst du in den Werbeplätzen fest. Ein inaktiver Sponsor wird nirgends angezeigt."
       }
     },
     "sponsor_loeschen_frage": {
@@ -849,8 +849,8 @@
     },
     "vollbild_hinweis": {
       "hmText": {
-        "ENGLISH": "The advertising shows all activated files in this order. Every sponsor has its own folder in \"advertisment/sponsoren\"; files copied there by hand appear at the end of the list after the next start.",
-        "GERMAN": "Die Werbung zeigt alle aktivierten Dateien in dieser Reihenfolge. Jeder Sponsor hat einen eigenen Ordner unter \"advertisment/sponsoren\"; Dateien, die dort von Hand abgelegt werden, erscheinen beim nächsten Start hinten in der Liste."
+        "ENGLISH": "The full screen ads show the checked entries in this order. Media come from the “Sponsors” tab; “Remove” only takes an entry out of this list.",
+        "GERMAN": "Die Vollbild-Werbung zeigt die angehakten Einträge in dieser Reihenfolge. Werbemittel kommen aus dem Tab „Sponsoren“; „Entfernen“ nimmt einen Eintrag nur aus dieser Liste."
       }
     },
     "vollbild_dateien": {
@@ -891,32 +891,80 @@
     },
     "vollbild_hinzufuegen": {
       "hmText": {
-        "ENGLISH": "Add full screen ads …",
-        "GERMAN": "Vollbild-Werbung hinzufügen …"
-      }
-    },
-    "vollbild_sponsor_hinweis": {
-      "hmText": {
-        "ENGLISH": "If the sponsor is inactive, this spot is not shown. “—” stands for ads of the club.",
-        "GERMAN": "Ist der Sponsor inaktiv, läuft dieser Spot nicht. „—“ steht für Werbung des Vereins."
-      }
-    },
-    "vollbild_sponsor_waehlen": {
-      "hmText": {
-        "ENGLISH": "Which sponsor do the new ads belong to?",
-        "GERMAN": "Zu welchem Sponsor gehört die neue Werbung?"
-      }
-    },
-    "vollbild_loeschen_frage": {
-      "hmText": {
-        "ENGLISH": "Do you want to delete this ad? The file is moved to the trash.",
-        "GERMAN": "Soll diese Werbung gelöscht werden? Die Datei wird in den Papierkorb verschoben."
+        "ENGLISH": "Add …",
+        "GERMAN": "Hinzufügen …"
       }
     },
     "sponsor_loeschen_dateien": {
       "hmText": {
         "ENGLISH": "The folder \"%s\" with logo and full screen ads is moved to the trash.",
         "GERMAN": "Der Ordner \"%s\" mit Logo und Vollbild-Werbung wird in den Papierkorb verschoben."
+      }
+    },
+    "werbemittel": {
+      "hmText": {
+        "ENGLISH": "Media",
+        "GERMAN": "Werbemittel"
+      }
+    },
+    "werbemittel_hinzufuegen": {
+      "hmText": {
+        "ENGLISH": "Add media …",
+        "GERMAN": "Werbemittel hinzufügen …"
+      }
+    },
+    "werbemittel_loeschen_frage": {
+      "hmText": {
+        "ENGLISH": "Do you want to delete this medium? The file is moved to the trash.",
+        "GERMAN": "Soll dieses Werbemittel gelöscht werden? Die Datei wird in den Papierkorb verschoben."
+      }
+    },
+    "werbemittel_loeschen_hinweis": {
+      "hmText": {
+        "ENGLISH": "It runs in the full screen ads and will be removed there as well.",
+        "GERMAN": "Es läuft in der Vollbild-Werbung und wird dort ebenfalls entfernt."
+      }
+    },
+    "im_vollbild": {
+      "hmText": {
+        "ENGLISH": "in full screen",
+        "GERMAN": "im Vollbild"
+      }
+    },
+    "vollbild_entfernen": {
+      "hmText": {
+        "ENGLISH": "Remove",
+        "GERMAN": "Entfernen"
+      }
+    },
+    "vollbild_auswahl": {
+      "hmText": {
+        "ENGLISH": "Which media should be added to the full screen ads?",
+        "GERMAN": "Welche Werbemittel sollen in die Vollbild-Werbung?"
+      }
+    },
+    "bereits_enthalten": {
+      "hmText": {
+        "ENGLISH": "already added",
+        "GERMAN": "bereits enthalten"
+      }
+    },
+    "ohne_sponsor": {
+      "hmText": {
+        "ENGLISH": "Without sponsor",
+        "GERMAN": "Ohne Sponsor"
+      }
+    },
+    "sponsor_zuordnen": {
+      "hmText": {
+        "ENGLISH": "Assign",
+        "GERMAN": "Zuordnen"
+      }
+    },
+    "sponsor_waehlen": {
+      "hmText": {
+        "ENGLISH": "Choose sponsor …",
+        "GERMAN": "Sponsor wählen …"
       }
     }
   }

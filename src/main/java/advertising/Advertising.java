@@ -31,9 +31,10 @@ import system.FileHandling;
  *   verein/trailer.mp4          (ads without a sponsor)
  * </pre>
  *
- * Files that are copied into these folders by hand are added to the rotation. Older installations kept every file
- * directly in the advertising folder; they are moved into this structure once. Without a sponsor placed anywhere
- * the scoreboard looks like before the sponsors were added.
+ * The files in a sponsor folder are the media of the sponsor (its library). The places on the scoreboard choose
+ * from it, e.g. the full screen ads are a list of chosen media. Older installations kept every file directly in
+ * the advertising folder; they are moved into this structure once and keep running as ads without a sponsor.
+ * Without a sponsor placed anywhere the scoreboard looks like before the sponsors were added.
  */
 public class Advertising {
 	public static final String S_FOLDER = "advertisment";
@@ -127,7 +128,14 @@ public class Advertising {
 	}
 
 	public File getSpotFile(FullscreenSpot spot) {
-		return new File(fFolder, spot.sFile);
+		return getFile(spot.sFile);
+	}
+
+	/**
+	 * @param sPath path inside the advertising folder, e.g. "sponsoren/baier/24.jpg"
+	 */
+	public File getFile(String sPath) {
+		return new File(fFolder, sPath);
 	}
 
 	public File getLogoFile(Sponsor sponsor) {
@@ -168,17 +176,54 @@ public class Advertising {
 	}
 
 	/**
-	 * Copies the file into the folder of the sponsor (or the club) and appends it to the rotation.
+	 * @return the images and videos in the sponsor folder (without the logo) as paths inside the advertising
+	 *         folder, sorted by name
 	 */
-	public FullscreenSpot addSpot(File fSource, String sSponsor) throws IOException {
-		File fTarget = importFile(fSource, getSpotFolder(sSponsor));
-		FullscreenSpot spot = new FullscreenSpot(getRelativePath(fTarget), true, 0, sSponsor);
+	public List<String> getMedia(Sponsor sponsor) {
+		List<String> lMedia = new ArrayList<String>();
+		if (sponsor.sFolder == null)
+			return lMedia;
+		for (File file : listSupportedFiles(getSponsorFolder(sponsor)))
+			if (!isLogo(file))
+				lMedia.add(getRelativePath(file));
+		return lMedia;
+	}
+
+	/**
+	 * Copies the image or video into the sponsor folder. It is not shown anywhere until a place chooses it.
+	 *
+	 * @return the path of the copy inside the advertising folder
+	 */
+	public String addMedia(Sponsor sponsor, File fSource) throws IOException {
+		return getRelativePath(importFile(fSource, getSponsorFolder(sponsor)));
+	}
+
+	/**
+	 * Appends the medium of the sponsor to the full screen ads.
+	 */
+	public FullscreenSpot addToFullscreen(Sponsor sponsor, String sPath) {
+		FullscreenSpot spot = new FullscreenSpot(sPath, true, 0, sponsor.sName);
 		config.lFullscreenSpots.add(spot);
 		return spot;
 	}
 
+	public boolean isInFullscreen(String sPath) {
+		for (FullscreenSpot spot : config.lFullscreenSpots)
+			if (spot.sFile.equals(sPath))
+				return true;
+		return false;
+	}
+
 	/**
-	 * Gives the spot to another sponsor (or the club) and moves its file into that folder.
+	 * Removes the medium from all places, e.g. before its file is deleted.
+	 */
+	public void removeMedia(String sPath) {
+		config.lFullscreenSpots.removeIf(spot -> spot.sFile.equals(sPath));
+	}
+
+	/**
+	 * Gives a spot without a sponsor (from an older installation) to a sponsor and moves its file into the sponsor
+	 * folder.
 	 */
 	public void moveSpot(FullscreenSpot spot, String sSponsor) throws IOException {
 		File fTarget = moveFile(getSpotFile(spot), getSpotFolder(sSponsor));
@@ -237,36 +282,39 @@ public class Advertising {
 	}
 
 	/**
-	 * Files that were copied into the folders by hand are added at the end of the rotation, a file in a sponsor
-	 * folder belongs to that sponsor. Spots whose file was deleted are removed.
+	 * Removes full screen ads whose file was deleted and takes a logo copied into a sponsor folder by hand. New
+	 * files in the folders only become media of the sponsor; they are shown once a place chooses them.
 	 */
 	public void syncWithFolder() {
 		config.lFullscreenSpots.removeIf(spot -> !getSpotFile(spot).isFile());
+		for (Sponsor sponsor : config.lSponsors) {
+			if (sponsor.sFolder == null || (sponsor.hasLogo() && getLogoFile(sponsor).isFile()))
+				continue;
+			sponsor.sLogoFile = null;
+			for (File file : listSupportedFiles(getSponsorFolder(sponsor)))
+				if (isLogo(file) && FullscreenSpot.isImage(file.getName())) {
+					sponsor.sLogoFile = file.getName();
+					break;
+				}
+		}
+	}
+
+	private static boolean isLogo(File file) {
+		return file.getName().toLowerCase().startsWith(S_LOGO_NAME + ".");
+	}
+
+	/**
+	 * Files directly in the advertising folder that are not in the list yet: before the sponsors they were all
+	 * shown, so they are added as ads without a sponsor.
+	 */
+	private void addUnknownRootFiles() {
 		Set<String> sKnown = new HashSet<String>();
 		for (FullscreenSpot spot : config.lFullscreenSpots)
 			sKnown.add(spot.sFile);
-
-		// Files directly in the advertising folder still work, e.g. if someone copies them there out of habit
-		addUnknownFiles(fFolder, null, sKnown);
-		addUnknownFiles(getClubFolder(), null, sKnown);
-		for (Sponsor sponsor : config.lSponsors)
-			if (sponsor.sFolder != null)
-				addUnknownFiles(getSponsorFolder(sponsor), sponsor, sKnown);
-	}
-
-	private void addUnknownFiles(File fSpotFolder, Sponsor sponsor, Set<String> sKnown) {
-		for (File file : listSupportedFiles(fSpotFolder)) {
+		for (File file : listSupportedFiles(fFolder)) {
 			String sPath = getRelativePath(file);
-			// A logo in the sponsor folder never runs as full screen ad; one copied there by hand is used as logo
-			if (sponsor != null && file.getName().toLowerCase().startsWith(S_LOGO_NAME + ".")) {
-				if (!sponsor.hasLogo() || !getLogoFile(sponsor).isFile())
-					sponsor.sLogoFile = file.getName();
-				continue;
-			}
-			if (sKnown.contains(sPath))
-				continue;
-			config.lFullscreenSpots.add(new FullscreenSpot(sPath, true, 0, sponsor == null ? null : sponsor.sName));
-			sKnown.add(sPath);
+			if (!sKnown.contains(sPath))
+				config.lFullscreenSpots.add(new FullscreenSpot(sPath, true, 0, null));
 		}
 	}
 
@@ -300,11 +348,7 @@ public class Advertising {
 			}
 		}
 
-		// Files that are not in the list yet were shown before as well, they become ads of the club
-		Set<String> sKnown = new HashSet<String>();
-		for (FullscreenSpot spot : config.lFullscreenSpots)
-			sKnown.add(spot.sFile);
-		addUnknownFiles(fFolder, null, sKnown);
+		addUnknownRootFiles();
 
 		for (FullscreenSpot spot : config.lFullscreenSpots) {
 			File fSpot = getSpotFile(spot);
