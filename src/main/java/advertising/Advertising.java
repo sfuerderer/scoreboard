@@ -17,6 +17,9 @@ import java.util.Locale;
 import java.util.Set;
 
 import exceptions.FileDidNotExistException;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import exceptions.FileNotCreatedException;
 import message.ErrorMsg;
 import system.FileHandling;
@@ -49,6 +52,8 @@ public class Advertising {
 
 	private final File fFolder;
 	private AdvertisingConfig config;
+	// Counts the saves, so the scoreboard can show changes at once
+	private final IntegerProperty iChanges = new SimpleIntegerProperty();
 
 	Advertising(File fFolder) {
 		this.fFolder = fFolder;
@@ -101,6 +106,15 @@ public class Advertising {
 
 	public void save() throws FileNotCreatedException, IOException {
 		FileHandling.getFileHandling().saveTToFile(config, new File(fFolder, S_FILE_NAME).getPath());
+		iChanges.set(iChanges.get() + 1);
+	}
+
+	/**
+	 * Changes after every save. Listeners are called on the thread that saved, which is the JavaFX thread for
+	 * the advertising window.
+	 */
+	public ReadOnlyIntegerProperty changesProperty() {
+		return iChanges;
 	}
 
 	public AdvertisingConfig getConfig() {

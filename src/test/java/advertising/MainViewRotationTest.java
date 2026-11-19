@@ -40,6 +40,15 @@ class MainViewRotationTest {
 	}
 
 	@Test
+	void logosAreSplitAroundTheClock() {
+		assertEquals(0, MainViewRotation.getLeftCount(0));
+		assertEquals(1, MainViewRotation.getLeftCount(1));
+		assertEquals(1, MainViewRotation.getLeftCount(2));
+		assertEquals(2, MainViewRotation.getLeftCount(3));
+		assertEquals(2, MainViewRotation.getLeftCount(4));
+	}
+
+	@Test
 	void everySponsorIsShownEquallyOftenPerCycle() {
 		int[] aShown = new int[7];
 		int iPages = MainViewRotation.getPageCount(6, 4);

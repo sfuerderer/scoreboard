@@ -966,6 +966,66 @@
         "ENGLISH": "Choose sponsor …",
         "GERMAN": "Sponsor wählen …"
       }
+    },
+    "hauptansicht": {
+      "hmText": {
+        "ENGLISH": "Main view",
+        "GERMAN": "Hauptansicht"
+      }
+    },
+    "hauptansicht_max_logos": {
+      "hmText": {
+        "ENGLISH": "Logos at the same time",
+        "GERMAN": "Logos gleichzeitig"
+      }
+    },
+    "hauptansicht_wechsel": {
+      "hmText": {
+        "ENGLISH": "Change every (s)",
+        "GERMAN": "Wechsel alle (s)"
+      }
+    },
+    "hauptansicht_info_leer": {
+      "hmText": {
+        "ENGLISH": "No sponsor chosen – the clock bar looks as before.",
+        "GERMAN": "Kein Sponsor gewählt – die Uhrleiste sieht aus wie bisher."
+      }
+    },
+    "hauptansicht_info_fest": {
+      "hmText": {
+        "ENGLISH": "All logos are shown all the time.",
+        "GERMAN": "Alle Logos sind dauerhaft zu sehen."
+      }
+    },
+    "hauptansicht_info_wechsel": {
+      "hmText": {
+        "ENGLISH": "The logos change page by page; after %d s every sponsor has been shown equally often.",
+        "GERMAN": "Die Logos wechseln seitenweise; nach %d s ist jeder Sponsor gleich oft gezeigt worden."
+      }
+    },
+    "hauptansicht_hinweis": {
+      "hmText": {
+        "ENGLISH": "The logos are shown left and right of the clock. Only sponsors with a logo can be chosen; inactive sponsors are skipped. Logos with a transparent background (PNG) look best on the dark bar.",
+        "GERMAN": "Die Logos stehen links und rechts neben der Uhr. Nur Sponsoren mit Logo können gewählt werden; inaktive Sponsoren werden übersprungen. Logos mit transparentem Hintergrund (PNG) wirken auf dem dunklen Balken am besten."
+      }
+    },
+    "hauptansicht_auswahl": {
+      "hmText": {
+        "ENGLISH": "Which sponsors should appear in the clock bar?",
+        "GERMAN": "Welche Sponsoren sollen in der Uhrleiste erscheinen?"
+      }
+    },
+    "hauptansicht_alle_gewaehlt": {
+      "hmText": {
+        "ENGLISH": "All sponsors are already chosen.",
+        "GERMAN": "Alle Sponsoren sind bereits gewählt."
+      }
+    },
+    "ohne_logo": {
+      "hmText": {
+        "ENGLISH": "no logo",
+        "GERMAN": "kein Logo"
+      }
     }
   }
 }
