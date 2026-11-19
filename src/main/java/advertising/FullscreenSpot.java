@@ -10,6 +10,7 @@ import com.google.gson.annotations.Expose;
  * An image or video of the full screen advertising rotation.
  */
 public class FullscreenSpot {
+	// Path inside the advertising folder with "/" as separator, e.g. "sponsoren/baier/24.jpg"
 	@Expose
 	public String sFile;
 	@Expose
@@ -36,6 +37,13 @@ public class FullscreenSpot {
 		return isVideo(sFile);
 	}
 
+	/**
+	 * @return the file name without folders, as shown to the user
+	 */
+	public String getFileName() {
+		return sFile.substring(sFile.lastIndexOf('/') + 1);
+	}
+
 	static String getFileExtension(String sFileName) {
 		int iDot = sFileName.lastIndexOf('.');
 		return iDot > 0 ? sFileName.substring(iDot + 1).toLowerCase() : "";
@@ -54,6 +62,7 @@ public class FullscreenSpot {
 	 * @return true for visible images and videos the rotation can show
 	 */
 	public static boolean isSupported(String sFileName) {
-		return sFileName.charAt(0) != '.' && (isVideo(sFileName) || isImage(sFileName));
+		String sName = sFileName.substring(sFileName.lastIndexOf('/') + 1);
+		return !sName.isEmpty() && sName.charAt(0) != '.' && (isVideo(sName) || isImage(sName));
 	}
 }

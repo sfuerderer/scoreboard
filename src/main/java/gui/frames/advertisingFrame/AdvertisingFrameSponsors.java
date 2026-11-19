@@ -36,6 +36,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import language.Language;
 import message.ErrorMsg;
+import system.Trash;
 
 /**
  * List of all sponsors with name, logo, full screen ads and whether they are shown at the moment.
@@ -121,7 +122,8 @@ class AdvertisingFrameSponsors extends AdvertisingTab {
 			protected void updateItem(FullscreenSpot spot, boolean bEmpty) {
 				super.updateItem(spot, bEmpty);
 				setText(bEmpty || spot == null ? null
-						: spot.bActive ? spot.sFile : spot.sFile + " (" + Language.getText("sponsor_inaktiv") + ")");
+						: spot.bActive ? spot.getFileName()
+								: spot.getFileName() + " (" + Language.getText("sponsor_inaktiv") + ")");
 			}
 		});
 		btnAddSpots = new Button(Language.getText("vollbild_hinzufuegen"));
@@ -207,8 +209,7 @@ class AdvertisingFrameSponsors extends AdvertisingTab {
 		for (int i = 2; getConfig().hasSponsor(sName); i++)
 			sName = sBase + " " + i;
 
-		Sponsor sponsor = new Sponsor(sName, null, true);
-		getConfig().lSponsors.add(sponsor);
+		Sponsor sponsor = advertising.addSponsor(sName);
 		lvSponsors.getItems().add(sponsor);
 		lvSponsors.getSelectionModel().select(sponsor);
 		changed();
@@ -228,7 +229,7 @@ class AdvertisingFrameSponsors extends AdvertisingTab {
 		if (fLogo == null)
 			return;
 		try {
-			sponsor.sLogoFile = Advertising.importFile(fLogo, advertising.getLogoFolder());
+			advertising.setLogo(sponsor, fLogo);
 		} catch (IOException e) {
 			ErrorMsg.showErrorMessage(119, e.getMessage());
 			return;
@@ -265,11 +266,18 @@ class AdvertisingFrameSponsors extends AdvertisingTab {
 		Sponsor sponsor = getSelected();
 		if (sponsor == null)
 			return;
-		String sHint = getConfig().isSponsorPlaced(sponsor.sName) ? Language.getText("sponsor_loeschen_hinweis")
-				: null;
+		File fFolder = advertising.getSponsorFolder(sponsor);
+		String sHint = Language.getText("sponsor_loeschen_dateien")
+				.replace("%s", Advertising.S_SPONSOR_FOLDER + "/" + sponsor.sFolder);
+		if (getConfig().isSponsorPlaced(sponsor.sName))
+			sHint += "\n\n" + Language.getText("sponsor_loeschen_hinweis");
 		if (!Message.confirmDelete("sponsor_loeschen_frage", sHint))
 			return;
-		// The files stay in the folder, they might belong to a contract that is renewed later
+		// The trash keeps the files, so a sponsor that comes back can be restored
+		if (!Trash.moveToTrash(fFolder)) {
+			ErrorMsg.showErrorMessage(122, fFolder.getPath());
+			return;
+		}
 		getConfig().removeSponsor(sponsor);
 		lvSponsors.getItems().remove(sponsor);
 		changed();

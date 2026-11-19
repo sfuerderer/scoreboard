@@ -42,6 +42,8 @@ public class ErrorMsg {
 		ERRORS.put(118, "Die Werbe-Einstellungen (advertisment/advertising.json) konnten nicht geladen werden. Es werden alle Dateien aus dem Ordner \"advertisment\" gezeigt.");
 		ERRORS.put(119, "Die Datei konnte nicht in den Ordner \"advertisment\" kopiert werden.");
 		ERRORS.put(120, "Die Werbe-Einstellungen konnten nicht gespeichert werden.");
+		ERRORS.put(121, "Eine Werbe-Datei konnte nicht in den Ordner des Sponsors verschoben werden.");
+		ERRORS.put(122, "Die Datei oder der Ordner konnte nicht in den Papierkorb verschoben werden.");
 		ERRORS.put(200, "Es muss eine Liga ausgewählt sein.");
 		ERRORS.put(201, "Es muss eine Zahl als Rückenummer angegeben werden.");
 		ERRORS.put(202, "Es wurde keine Mannschaft ausgewählt.");

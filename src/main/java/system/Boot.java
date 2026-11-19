@@ -1,5 +1,6 @@
 package system;
 
+import advertising.Advertising;
 import exceptions.FileNotCreatedException;
 import exceptions.LanguageNotLoadedException;
 import gui.GUIControlling;
@@ -23,6 +24,8 @@ public class Boot {
             Language.init(settings);
 
             Cleanup.getCleanup().cleanFolderStructure();
+            // Loads the advertising at the start, so older folders are sorted into sponsor folders once
+            Advertising.getAdvertising();
 
             GUIControlling gui = new GUIControlling();
             gui.setSettings(settings);

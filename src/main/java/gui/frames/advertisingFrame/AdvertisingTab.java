@@ -65,10 +65,7 @@ abstract class AdvertisingTab extends BorderPane {
 			if (!FullscreenSpot.isSupported(file.getName()))
 				continue;
 			try {
-				String sName = Advertising.importFile(file, advertising.getFolder());
-				FullscreenSpot spot = new FullscreenSpot(sName, true, 0, sSponsor);
-				advertising.getConfig().lFullscreenSpots.add(spot);
-				lNewSpots.add(spot);
+				lNewSpots.add(advertising.addSpot(file, sSponsor));
 			} catch (IOException e) {
 				ErrorMsg.showErrorMessage(119, e.getMessage());
 			}

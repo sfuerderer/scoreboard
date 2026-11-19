@@ -37,7 +37,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import language.Language;
+import gui.Message;
 import message.ErrorMsg;
+import system.Trash;
 import system.settings.Settings;
 
 /**
@@ -58,6 +60,7 @@ class AdvertisingFrameFullscreen extends AdvertisingTab {
 	private final ComboBox<String> cbSponsor;
 	private final Button btnUp;
 	private final Button btnDown;
+	private final Button btnDelete;
 	private boolean bShowing;
 
 	AdvertisingFrameFullscreen(Advertising advertising, Runnable onChange, Settings sSettings) {
@@ -77,9 +80,11 @@ class AdvertisingFrameFullscreen extends AdvertisingTab {
 		btnUp.setOnAction(event -> move(-1));
 		btnDown = new Button("▼");
 		btnDown.setOnAction(event -> move(1));
+		btnDelete = new Button(Language.getText("loeschen"));
+		btnDelete.setOnAction(event -> deleteSpot());
 		btnAdd.setMaxWidth(Double.MAX_VALUE);
 		HBox.setHgrow(btnAdd, Priority.ALWAYS);
-		HBox listButtons = new HBox(10, btnAdd, btnUp, btnDown);
+		HBox listButtons = new HBox(10, btnAdd, btnUp, btnDown, btnDelete);
 		VBox left = new VBox(10, lvSpots, listButtons);
 		VBox.setVgrow(lvSpots, Priority.ALWAYS);
 
@@ -168,6 +173,7 @@ class AdvertisingFrameFullscreen extends AdvertisingTab {
 		int iIndex = lvSpots.getSelectionModel().getSelectedIndex();
 		btnUp.setDisable(bEmpty || iIndex <= 0);
 		btnDown.setDisable(bEmpty || iIndex >= lvSpots.getItems().size() - 1);
+		btnDelete.setDisable(bEmpty);
 		spDuration.getValueFactory().setValue(bEmpty ? 0 : spot.iDurationInSeconds);
 		boolean bVideo = !bEmpty && spot.isVideo();
 		// Videos always run as long as they are
@@ -219,6 +225,22 @@ class AdvertisingFrameFullscreen extends AdvertisingTab {
 		lvSpots.getSelectionModel().select(lNewSpots.get(lNewSpots.size() - 1));
 	}
 
+	private void deleteSpot() {
+		FullscreenSpot spot = getSelected();
+		if (spot == null || !Message.confirmDelete("vollbild_loeschen_frage", spot.getFileName()))
+			return;
+		File file = advertising.getSpotFile(spot);
+		if (!Trash.moveToTrash(file)) {
+			ErrorMsg.showErrorMessage(122, file.getPath());
+			return;
+		}
+		int iIndex = lvSpots.getSelectionModel().getSelectedIndex();
+		getSpots().remove(spot);
+		lvSpots.getItems().setAll(getSpots());
+		lvSpots.getSelectionModel().select(Math.min(iIndex, getSpots().size() - 1));
+		changed();
+	}
+
 	/**
 	 * New spots always belong to an existing sponsor, so the user picks one before choosing the files.
 	 *
@@ -267,7 +289,13 @@ class AdvertisingFrameFullscreen extends AdvertisingTab {
 		String sSponsor = sChoice.equals(NO_SPONSOR) ? null : sChoice;
 		if (Objects.equals(sSponsor, spot.sSponsor))
 			return;
-		spot.sSponsor = sSponsor;
+		try {
+			advertising.moveSpot(spot, sSponsor);
+		} catch (IOException e) {
+			ErrorMsg.showErrorMessage(121, e.getMessage());
+			showSpot(spot);
+			return;
+		}
 		lvSpots.refresh();
 		changed();
 	}
@@ -299,7 +327,7 @@ class AdvertisingFrameFullscreen extends AdvertisingTab {
 				return;
 			}
 			cbActive.setSelected(spot.bActive);
-			lbName.setText(spot.sFile);
+			lbName.setText(spot.getFileName());
 			String sDuration = spot.isVideo() ? Language.getText("vollbild_video")
 					: spot.iDurationInSeconds > 0 ? spot.iDurationInSeconds + " s"
 							: sSettings.iTimeBetweenAdvertisingInMiliseconds / 1000 + " s";
