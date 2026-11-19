@@ -11,7 +11,6 @@ import gui.frames.panes.components.ScoreboardText;
 import gui.frames.panes.components.TeamColumn;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.WeakChangeListener;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
@@ -19,49 +18,29 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.FontWeight;
-import language.Language;
 import system.Main;
 
 /**
- * Main view of the scoreboard: competition and halftime at the top, logos and result in the middle, clock at
- * the bottom.
+ * Main view of the scoreboard: logos and result in the middle, clock at the bottom.
  */
 public class PaneMain extends PaneMainScoreboard {
-	private static final double TOP_BAR_HEIGHT = 30;
 	private static final double CLOCK_BAR_HEIGHT = 64;
-	// Largest result that still fits between the top bar and the clock bar in 280 pixels
+	// Large result that fits above the clock bar in 280 pixels
 	private static final int RESULT_SIZE = 140;
 
 	private final Match match;
 	private final FixedDigitsLabel lbGoalsHome;
 	private final FixedDigitsLabel lbGoalsGuest;
-	private final Label lbHalftime;
 
-	// Kept as fields: the match and the playtime live longer than this pane, so they only hold weak references
+	// Kept as a field: the match lives longer than this pane, so it only holds a weak reference
 	private final ChangeListener<String> resultListener = (observable, oldValue, newValue) -> showResult();
-	private final ChangeListener<String> clockListener = (observable, oldValue, newValue) -> showHalftime();
 
 	public PaneMain(Pane rootPane, ControlFrame controlFrame) {
 		super(ScoreboardBackground.crestDiagonal(), rootPane);
 		match = Main.getMatch();
-
-		// Top: competition and halftime
-		Label lbCompetition = ScoreboardText.label(match.getsCompetition(), FontWeight.SEMI_BOLD, 15,
-				ScoreboardColors.TEXT_DIM);
-		lbHalftime = ScoreboardText.label("", FontWeight.BOLD, 15, ScoreboardColors.TEXT);
-		lbHalftime.setPadding(new Insets(1, 9, 0, 9));
-		lbHalftime.setBackground(new Background(new BackgroundFill(ScoreboardColors.ACCENT, null, null)));
-		Region rTopSpacer = new Region();
-		HBox.setHgrow(rTopSpacer, Priority.ALWAYS);
-		HBox topBar = new HBox(lbCompetition, rTopSpacer, lbHalftime);
-		topBar.setAlignment(Pos.CENTER_LEFT);
-		topBar.setPadding(new Insets(0, 16, 0, 16));
-		topBar.setMinHeight(TOP_BAR_HEIGHT);
-		topBar.setPrefHeight(TOP_BAR_HEIGHT);
 
 		// Middle: teams and result
 		lbGoalsHome = new FixedDigitsLabel("0", Main.getMainFont(FontWeight.BOLD, RESULT_SIZE), ScoreboardColors.TEXT);
@@ -84,7 +63,7 @@ public class PaneMain extends PaneMainScoreboard {
 		clockBar.setMinHeight(CLOCK_BAR_HEIGHT);
 		clockBar.setPrefHeight(CLOCK_BAR_HEIGHT);
 
-		VBox layout = new VBox(topBar, middle, clockBar);
+		VBox layout = new VBox(middle, clockBar);
 		layout.prefWidthProperty().bind(widthProperty());
 		layout.prefHeightProperty().bind(heightProperty());
 		getChildren().add(layout);
@@ -92,17 +71,10 @@ public class PaneMain extends PaneMainScoreboard {
 		showResult();
 		match.sResult.addListener(new WeakChangeListener<String>(resultListener));
 		lbClock.textProperty().bind(Main.getServicePlaytime().messageProperty());
-		// The halftime changes with the clock, so the label is updated on every tick
-		Main.getServicePlaytime().messageProperty().addListener(new WeakChangeListener<String>(clockListener));
-		showHalftime();
 	}
 
 	private void showResult() {
 		lbGoalsHome.setText(String.valueOf(match.getiGoalsHome()));
 		lbGoalsGuest.setText(String.valueOf(match.getiGoalsGuest()));
-	}
-
-	private void showHalftime() {
-		lbHalftime.setText(ScoreboardText.upper(Language.getText(match.geteWhichHalftime().getsLanguageKey())));
 	}
 }
