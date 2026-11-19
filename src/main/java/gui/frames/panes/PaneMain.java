@@ -6,6 +6,7 @@ package gui.frames.panes;
 
 import football.match.Match;
 import gui.frames.ControlFrame;
+import gui.frames.panes.components.ClockBar;
 import gui.frames.panes.components.FixedDigitsLabel;
 import gui.frames.panes.components.ScoreboardText;
 import gui.frames.panes.components.TeamColumn;
@@ -13,12 +14,9 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.WeakChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.FontWeight;
 import system.Main;
@@ -34,6 +32,7 @@ public class PaneMain extends PaneMainScoreboard {
 	private final Match match;
 	private final FixedDigitsLabel lbGoalsHome;
 	private final FixedDigitsLabel lbGoalsGuest;
+	private final ClockBar clockBar;
 
 	// Kept as a field: the match lives longer than this pane, so it only holds a weak reference
 	private final ChangeListener<String> resultListener = (observable, oldValue, newValue) -> showResult();
@@ -58,10 +57,8 @@ public class PaneMain extends PaneMainScoreboard {
 		// Bottom: clock
 		FixedDigitsLabel lbClock = new FixedDigitsLabel("00:00", Main.getMainFont(FontWeight.BOLD, 50),
 				ScoreboardColors.TEXT);
-		StackPane clockBar = new StackPane(lbClock);
-		clockBar.setBackground(new Background(new BackgroundFill(ScoreboardColors.PANEL, null, null)));
-		clockBar.setMinHeight(CLOCK_BAR_HEIGHT);
-		clockBar.setPrefHeight(CLOCK_BAR_HEIGHT);
+		// Shows the sponsor logos of the main view next to the clock, if there are any
+		clockBar = new ClockBar(lbClock, CLOCK_BAR_HEIGHT);
 
 		VBox layout = new VBox(middle, clockBar);
 		layout.prefWidthProperty().bind(widthProperty());
@@ -71,6 +68,18 @@ public class PaneMain extends PaneMainScoreboard {
 		showResult();
 		match.sResult.addListener(new WeakChangeListener<String>(resultListener));
 		lbClock.textProperty().bind(Main.getServicePlaytime().messageProperty());
+	}
+
+	@Override
+	public void paneDidAppear() {
+		super.paneDidAppear();
+		clockBar.start();
+	}
+
+	@Override
+	public void paneDidDisappear() {
+		super.paneDidDisappear();
+		clockBar.stop();
 	}
 
 	private void showResult() {

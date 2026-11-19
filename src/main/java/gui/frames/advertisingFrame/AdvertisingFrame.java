@@ -38,7 +38,8 @@ public class AdvertisingFrame extends BasicFrame {
 		TabPane tabPane = new TabPane();
 		tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 		for (AdvertisingTab tab : new AdvertisingTab[] { new AdvertisingFrameSponsors(advertising, onChange),
-				new AdvertisingFrameFullscreen(advertising, onChange, sSettings) })
+				new AdvertisingFrameFullscreen(advertising, onChange, sSettings),
+				new AdvertisingFrameMainView(advertising, onChange) })
 			tabPane.getTabs().add(new Tab(Language.getText(tab.getTitleKey()), tab));
 		tabPane.getSelectionModel().selectedItemProperty().addListener((observable, oldTab, newTab) -> {
 			if (newTab != null)

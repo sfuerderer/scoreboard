@@ -43,6 +43,13 @@ public final class MainViewRotation {
 		return lPage;
 	}
 
+	/**
+	 * @return how many logos of a page are shown left of the clock; the others are shown right of it
+	 */
+	public static int getLeftCount(int iLogos) {
+		return (iLogos + 1) / 2;
+	}
+
 	private static int gcd(int a, int b) {
 		return b == 0 ? a : gcd(b, a % b);
 	}
