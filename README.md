@@ -11,21 +11,29 @@ One operator works in a **control window** on a laptop. The app shows the conten
 **scoreboard windows** on the LED wall: the main scoreboard with score and match time, plus extra
 displays such as date and time.
 
+<p align="center">
+  <img src="docs/screenshots/main.png" alt="Main view with both crests, the score 2:1 and the match time 67:12" width="49%">
+  <img src="docs/screenshots/goal.png" alt="Goal view with the scorer's number, name and minute above the score bar" width="49%">
+  <img src="docs/screenshots/lineup.png" alt="Starting eleven with shirt numbers, names and the coach" width="49%">
+  <img src="docs/screenshots/statistic.png" alt="Statistics with corners, yellow cards and the number of visitors" width="49%">
+</p>
+
+<sub>The LED wall has 514 × 280 pixels. Screenshots rendered at three times that size with fictional teams.</sub>
+
 ## Features
 
 - **Score and match time**: running clock for up to four halves (including extra time), goals for
   home and guest
 - **Teams and line-ups**: leagues, teams, players and coaches with photos; starting line-up and
-  substitutes are introduced on the wall
-- **Match events**: goals with goal animation, yellow, yellow-red and red cards, substitutions
-- **Advertising**: rotating sponsor images and videos between the match phases
+  substitutes are introduced on the wall, players with cut-out photos
+- **Match events**: goals with goal animation, yellow, yellow-red and red cards, substitutions,
+  half-time result with scorers and match statistics
+- **Sponsors**: sponsor logos next to the clock, "presented by" badges in the event views and a
+  playlist of full screen ads, managed in their own window
 - **Media**: welcome screen, pictures, videos (e.g. anthem, trailer), black screen
 - **Settings**: themes, goal animation, transition animations, scaling of the scoreboard to the
   resolution of the LED wall
 - **Languages**: German and English user interface
-
-Version 2 with a new wall design, cut-out player photos and sponsor placements is available as a
-[pre-release](https://github.com/sfuerderer/scoreboard/releases) and is being tested on the wall.
 
 ## Requirements
 
