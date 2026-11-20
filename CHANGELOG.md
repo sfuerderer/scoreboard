@@ -1,3 +1,14 @@
+## v2.0.0-beta.2 (2026-11-20)
+
+### Feat
+
+- show "presented by" sponsors in the event views (#30)
+- show sponsor logos next to the clock in the main view (#29)
+- store every sponsor in its own folder (#28)
+- add advertising window for sponsors and full screen ads (#27)
+- add sponsor and advertising model (#26)
+- remove competition and halftime from the main view
+
 ## v2.0.0-beta.1 (2026-11-06)
 
 ### Feat
