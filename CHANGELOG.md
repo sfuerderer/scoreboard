@@ -1,3 +1,10 @@
+## v2.0.0-beta.4 (2026-11-20)
+
+### Feat
+
+- add custom app icon (#36)
+- add custom app icon for windows and the macOS Dock
+
 ## v2.0.0-beta.3 (2026-11-20)
 
 ### Fix

@@ -12,7 +12,7 @@ public class Main {
     private static AdvertismentThread adThread;
     private static ConcreteSubject subject;
     private static ServicePlaytime servicePlaytime;
-    public static final String VERSION = "2.0.0-beta.3";
+    public static final String VERSION = "2.0.0-beta.4";
 
     public static void main(String[] args) {
         new Main(args);
