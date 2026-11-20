@@ -9,12 +9,14 @@ import gui.animation.IAnimation;
 import gui.frames.panes.PaneAbout;
 import gui.frames.panes.PaneMainScoreboard;
 import javafx.animation.Animation;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import system.Main;
 import system.settings.Frame;
 import system.settings.Settings;
 
@@ -23,6 +25,7 @@ public class MainScoreboard extends Stage{
 	private Settings settings;
 	private StackPane rootPane;
 	private ScaledPane windowPane;
+	private ScoreBar scoreBar;
 	private PaneMainScoreboard currentPane;
 	private Animation runningAnimation;
 	private Runnable finishAnimation;
@@ -32,7 +35,13 @@ public class MainScoreboard extends Stage{
 		
 		rootPane = new StackPane();
 
-		windowPane = new ScaledPane(rootPane);
+		// The score bar is a layer above the panes, so it stays in place while the panes change
+		scoreBar = new ScoreBar();
+		scoreBar.setVisible(false);
+		StackPane layers = new StackPane(rootPane, scoreBar);
+		StackPane.setAlignment(scoreBar, Pos.BOTTOM_CENTER);
+
+		windowPane = new ScaledPane(layers);
 		applyScaling(mainFrame);
 
 		initStyle(StageStyle.UNDECORATED);
@@ -71,6 +80,7 @@ public class MainScoreboard extends Stage{
 		finishRunningAnimation();
 
 		PaneMainScoreboard oldPane = currentPane;
+		showScoreBarFor(newPane);
 		IAnimation animation = settings.animation.getAnimation();
 		oldPane.paneWillDisappear();
 		newPane.paneWillAppear();
@@ -86,6 +96,13 @@ public class MainScoreboard extends Stage{
 		runningAnimation.setOnFinished(evt -> finishRunningAnimation());
 		currentPane = newPane;
 		runningAnimation.play();
+	}
+
+	private void showScoreBarFor(PaneMainScoreboard pane) {
+		boolean bShow = pane.showsScoreBar() && Main.getMatch() != null && Main.getServicePlaytime() != null;
+		if (bShow)
+			scoreBar.showMatch(Main.getMatch(), Main.getServicePlaytime());
+		scoreBar.setVisible(bShow);
 	}
 
 	private void finishRunningAnimation() {

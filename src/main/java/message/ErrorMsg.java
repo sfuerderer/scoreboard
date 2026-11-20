@@ -39,6 +39,11 @@ public class ErrorMsg {
 		ERRORS.put(115, "Beim starten der Software sind schwerwiegende Fehler aufgetreten. Falls ein neustart nicht hilft, die jar Datei in einen neuen Ordner ziehen und versuchen erneut zu starten.");
 		ERRORS.put(116, "Ein Thread wurde unerwartet unterbrochen. Bitte die Software neu starten.");
 		ERRORS.put(117, "Die Liga oder das Team konnte nicht gelöscht werden.");
+		ERRORS.put(118, "Die Werbe-Einstellungen (advertisment/advertising.json) konnten nicht geladen werden. Es werden alle Dateien aus dem Ordner \"advertisment\" gezeigt.");
+		ERRORS.put(119, "Die Datei konnte nicht in den Ordner \"advertisment\" kopiert werden.");
+		ERRORS.put(120, "Die Werbe-Einstellungen konnten nicht gespeichert werden.");
+		ERRORS.put(121, "Eine Werbe-Datei konnte nicht in den Ordner des Sponsors verschoben werden.");
+		ERRORS.put(122, "Die Datei oder der Ordner konnte nicht in den Papierkorb verschoben werden.");
 		ERRORS.put(200, "Es muss eine Liga ausgewählt sein.");
 		ERRORS.put(201, "Es muss eine Zahl als Rückenummer angegeben werden.");
 		ERRORS.put(202, "Es wurde keine Mannschaft ausgewählt.");
@@ -51,7 +56,9 @@ public class ErrorMsg {
 		ERRORS.put(209, "Es wurde kein Spieler oder keine Karte ausgewählt.");
 		ERRORS.put(210, "Zu dieser Mannschaft wurde noch kein Trainer angelegt.");
 		ERRORS.put(211, "Du kannst nur einen Haupttrainer anlegen.");
-		ERRORS.put(212, "Im Ordner \"advertisment\" wurden keine Bilder (jpg, png) oder Videos (mp4) gefunden.");
+		ERRORS.put(212, "Im Ordner \"advertisment\" wurden keine aktiven Bilder (jpg, png) oder Videos (mp4) gefunden.");
+		ERRORS.put(215, "Es gibt noch keinen Sponsor mit Werbemitteln. Lege zuerst im Tab \"Sponsoren\" Bilder oder Videos bei einem Sponsor an.");
+		ERRORS.put(214, "Der Name des Sponsors darf nicht leer sein und muss eindeutig sein.");
 		ERRORS.put(213, "Die Liga oder das Team wird im aktuellen Spiel verwendet und kann nicht gelöscht werden.");
 	}
 

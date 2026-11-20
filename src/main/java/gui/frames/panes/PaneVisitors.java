@@ -4,40 +4,36 @@
  ************************************************/
 package gui.frames.panes;
 
+import advertising.AdPlacement;
+import java.util.Locale;
+
+import gui.frames.panes.components.ScoreboardText;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import system.Images;
+import javafx.scene.text.FontWeight;
+import language.Language;
 import system.Main;
 
+/**
+ * Number of spectators, e.g. "1.248 ZUSCHAUER".
+ */
 public class PaneVisitors extends PaneMainScoreboard {
 
 	public PaneVisitors(Pane rootPane) {
-		super(Images.getImages().loadImageFromResource("background1", "jpg"), rootPane);
+		super(ScoreboardBackground.crestDiagonal(), rootPane);
 
-		BorderPane paneMain = new BorderPane();
-		paneMain.prefWidthProperty().bind(this.widthProperty());
-		paneMain.prefHeightProperty().bind(this.heightProperty());
+		Label lbVisitors = ScoreboardText.label(String.format(Locale.GERMAN, "%,d", Main.getMatch().getiVisitors()),
+				FontWeight.EXTRA_BOLD, 130, ScoreboardColors.TEXT);
+		Label lbTitle = ScoreboardText.label(Language.getText("zuschauer"), FontWeight.SEMI_BOLD, 34,
+				ScoreboardColors.TEXT_DIM);
 
-		VBox content = new VBox();
+		VBox content = new VBox(-6, lbVisitors, lbTitle);
 		content.setAlignment(Pos.CENTER);
-		content.setSpacing(10);
-
-		ImageView ivVisitors = new ImageView(Images.getImages().loadImageFromResource("Zuschauer2", "png"));
-		ivVisitors.setFitHeight(150);
-		ivVisitors.setPreserveRatio(true);
-
-		Label lbVisitors = new Label(Main.getMatch().getiVisitors() + "");
-		lbVisitors.setFont(Main.getMainFont(100));
-		lbVisitors.setTextFill(Color.web("#ffffff"));
-
-		content.getChildren().addAll(lbVisitors, ivVisitors);
-		paneMain.setCenter(content);
-
-		getChildren().add(paneMain);
+		content.prefWidthProperty().bind(widthProperty());
+		content.prefHeightProperty().bind(heightProperty());
+		getChildren().add(content);
+		showPresentedBy(AdPlacement.VISITORS);
 	}
 }

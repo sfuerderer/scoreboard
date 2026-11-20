@@ -5,9 +5,11 @@
 package football.match;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import football.person.Player;
+import football.person.Position;
 
 public class Lineup {
 	private List<Player> lHomePlayersOnField;
@@ -122,6 +124,31 @@ public class Lineup {
 		return false;
 	}
 	
+	/**
+	 * Order for the scoreboard: goalkeepers first, then by shirt number; players without number at the end.
+	 */
+	public static List<Player> sortedForScoreboard(List<Player> lPlayers) {
+		List<Player> lSorted = new ArrayList<Player>(lPlayers);
+		lSorted.sort(Comparator
+				.comparing((Player player) -> player.getePosition() != Position.GOALKEEPER)
+				.thenComparing(player -> player.getiNumber() < 0)
+				.thenComparingInt(Player::getiNumber));
+		return lSorted;
+	}
+
+	/**
+	 * Finds the team of a player in the lineup (on the field or on the bench).
+	 *
+	 * @return the team, null if the player is not in the lineup
+	 */
+	public Teams teamOf(Player player) {
+		if (lHomePlayersOnField.contains(player) || lHomePlayersOnExchange.contains(player))
+			return Teams.HOME;
+		if (lGuestPlayersOnField.contains(player) || lGuestPlayersOnExchange.contains(player))
+			return Teams.GUEST;
+		return null;
+	}
+
 	public int countOnField(Teams team) {
 		switch (team) {
 		case HOME:

@@ -14,7 +14,7 @@ import language.Language;
 
 public class ControlMenuBar extends MenuBar implements EventHandler<ActionEvent> {
     private Menu mFile, mFootball, mMatch;
-    private final MenuItem menuItemSettings, menuItemLeagues, menuItemLineup, menuItemResult, menuItemTime;
+    private final MenuItem menuItemSettings, menuItemAdvertising, menuItemLeagues, menuItemLineup, menuItemResult, menuItemTime;
     private ControlFrame controlFrame;
 
     public ControlMenuBar(ControlFrame controlFrame) {
@@ -26,6 +26,9 @@ public class ControlMenuBar extends MenuBar implements EventHandler<ActionEvent>
 
         menuItemSettings = new MenuItem(Language.getText("einstellungen"));
         menuItemSettings.setOnAction(this);
+
+        menuItemAdvertising = new MenuItem(Language.getText("werbung"));
+        menuItemAdvertising.setOnAction(this);
 
         menuItemLeagues = new MenuItem(Language.getText("ligen"));
         menuItemLeagues.setOnAction(this);
@@ -39,7 +42,7 @@ public class ControlMenuBar extends MenuBar implements EventHandler<ActionEvent>
         menuItemTime = new MenuItem(Language.getText("zeit"));
         menuItemTime.setOnAction(this);
 
-        mFile.getItems().addAll(menuItemSettings);
+        mFile.getItems().addAll(menuItemSettings, menuItemAdvertising);
         mFootball.getItems().addAll(menuItemLeagues);
         mMatch.getItems().addAll(menuItemLineup, menuItemResult, menuItemTime);
 
@@ -50,6 +53,8 @@ public class ControlMenuBar extends MenuBar implements EventHandler<ActionEvent>
     public void handle(ActionEvent event) {
         if (event.getSource() == menuItemSettings) {
             controlFrame.menuClicked(Menus.FILE_SETTINGS);
+        } else if (event.getSource() == menuItemAdvertising) {
+            controlFrame.menuClicked(Menus.FILE_ADVERTISING);
         } else if (event.getSource() == menuItemLeagues) {
             controlFrame.menuClicked(Menus.FOOTBALL_LEAGUES);
         } else if (event.getSource() == menuItemLineup) {

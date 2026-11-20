@@ -6,11 +6,11 @@ package gui.frames.control.buttons;
 
 import java.util.Optional;
 
+import football.match.MatchMinute;
 import football.match.Teams;
 import football.person.Player;
 import gui.frames.ControlFrame;
-import gui.frames.panes.PanePlayer;
-import gui.frames.panes.PanePersonIcons;
+import gui.frames.panes.PaneGoal;
 import javafx.event.ActionEvent;
 import javafx.scene.control.ChoiceDialog;
 import language.Language;
@@ -24,7 +24,10 @@ public class ButtonGoalGuest extends ControlButton{
 	@Override
 	public void handle(ActionEvent event) {
 		if(event.getSource() == this) {
-			Main.getMatch().addGoal(Teams.GUEST);
+			// Taken now: choosing the scorer can take a while
+			String sClock = Main.getServicePlaytime().getMessage();
+			String sMinute = MatchMinute.format(sClock);
+			Main.getMatch().addGoal(Teams.GUEST, MatchMinute.of(sClock));
 			if (Main.getMatch().getlLineup().getlGuestPlayersOnField().size() > 0) {
 				ChoiceDialog<Player> dialog = new ChoiceDialog<Player>(
 						Main.getMatch().getlLineup().getlGuestPlayersOnField().get(0),
@@ -37,8 +40,9 @@ public class ButtonGoalGuest extends ControlButton{
 				Optional<Player> result = dialog.showAndWait();
 
 				result.ifPresent(player -> {
+					Main.getMatch().setScorerOfLastGoal(Teams.GUEST, player);
 					controlFrame.changeMainScoreboardPane(
-							new PanePlayer(controlFrame.getRootPaneMainScoreboard(), PanePersonIcons.BALL, player));
+							new PaneGoal(controlFrame.getRootPaneMainScoreboard(), player, sMinute));
 				});
 			}
 		}

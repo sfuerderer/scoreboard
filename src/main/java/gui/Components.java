@@ -1,5 +1,7 @@
 package gui;
 
+import java.util.Locale;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -72,8 +74,11 @@ public class Components {
 		return getLabel(text, -1, color);
 	}
 	
+	/**
+	 * Label for the scoreboards: scoreboard font, upper case like on TV graphics.
+	 */
 	public static Label getLabel(String text, int fontSize, Color color) {
-		Label label = new Label(text);
+		Label label = new Label(text == null ? "" : text.toUpperCase(Locale.GERMAN));
 		
 		if (fontSize > -1)
 			label.setFont(Main.getMainFont(fontSize));

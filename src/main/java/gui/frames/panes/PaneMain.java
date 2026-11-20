@@ -6,76 +6,84 @@ package gui.frames.panes;
 
 import football.match.Match;
 import gui.frames.ControlFrame;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
+import gui.frames.panes.components.ClockBar;
+import gui.frames.panes.components.FixedDigitsLabel;
+import gui.frames.panes.components.ScoreboardText;
+import gui.frames.panes.components.TeamColumn;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.WeakChangeListener;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import message.ErrorMsg;
-import system.Images;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.FontWeight;
 import system.Main;
 
-import java.net.MalformedURLException;
-
+/**
+ * Main view of the scoreboard: logos and result in the middle, clock at the bottom.
+ */
 public class PaneMain extends PaneMainScoreboard {
+	private static final double CLOCK_BAR_HEIGHT = 64;
+	// Large result that fits above the clock bar in 280 pixels
+	private static final int RESULT_SIZE = 140;
 
-    public PaneMain(Pane rootPane, ControlFrame controlFrame) {
-        super(Images.getImages().loadImageFromResource("background1", "jpg"), rootPane);
-        Match match = Main.getMatch();
-//		ServicePlaytime servicePlaytime = new ServicePlaytime(controlFrame);
+	private final Match match;
+	private final FixedDigitsLabel lbGoalsHome;
+	private final FixedDigitsLabel lbGoalsGuest;
+	private final ClockBar clockBar;
 
-        GridPane paneMain = new GridPane();
-        paneMain.prefWidthProperty().bind(this.widthProperty());
-        paneMain.prefHeightProperty().bind(this.heightProperty());
-        paneMain.setPadding(new Insets(20));
-        paneMain.setMaxWidth(Double.MAX_VALUE);
+	// Kept as a field: the match lives longer than this pane, so it only holds a weak reference
+	private final ChangeListener<String> resultListener = (observable, oldValue, newValue) -> showResult();
 
-        ColumnConstraints bottomPaneCol1 = new ColumnConstraints();
-        bottomPaneCol1.setPercentWidth(25);
-        ColumnConstraints bottomPaneCol2 = new ColumnConstraints();
-        bottomPaneCol2.setPercentWidth(50);
-        bottomPaneCol2.setHalignment(HPos.CENTER);
-        ColumnConstraints bottomPaneCol3 = new ColumnConstraints();
-        bottomPaneCol3.setPercentWidth(25);
-        bottomPaneCol3.setHalignment(HPos.RIGHT);
-        paneMain.getColumnConstraints().addAll(bottomPaneCol1, bottomPaneCol2, bottomPaneCol3);
+	public PaneMain(Pane rootPane, ControlFrame controlFrame) {
+		super(ScoreboardBackground.crestDiagonal(), rootPane);
+		match = Main.getMatch();
 
-        ImageView ivLogoHome;
-        ImageView ivLogoGuest;
-        try {
-            ivLogoHome = new ImageView(Images.getImages().loadImageFromPath(match.gettTeamHome().getsPathToLogo()));
-            ivLogoGuest = new ImageView(Images.getImages().loadImageFromPath(match.gettTeamGuest().getsPathToLogo()));
-        } catch (MalformedURLException e) {
-            ErrorMsg.showErrorMessage(111);
-            ivLogoHome = new ImageView(Images.getImages().loadImageFromResource("no-image", "png"));
-            ivLogoGuest = new ImageView(Images.getImages().loadImageFromResource("no-image", "png"));
-        }
+		// Middle: teams and result
+		lbGoalsHome = new FixedDigitsLabel("0", Main.getMainFont(FontWeight.BOLD, RESULT_SIZE), ScoreboardColors.TEXT);
+		lbGoalsGuest = new FixedDigitsLabel("0", Main.getMainFont(FontWeight.BOLD, RESULT_SIZE), ScoreboardColors.TEXT);
+		Label lbColon = ScoreboardText.label(":", FontWeight.MEDIUM, 100, ScoreboardColors.TEXT_DIM);
+		lbColon.setTranslateY(-8);
+		HBox result = new HBox(6, lbGoalsHome, lbColon, lbGoalsGuest);
+		result.setAlignment(Pos.CENTER);
+		HBox.setHgrow(result, Priority.ALWAYS);
 
-        ivLogoHome.setFitHeight(100);
-        ivLogoHome.setPreserveRatio(true);
-        ivLogoGuest.setFitHeight(100);
-        ivLogoGuest.setPreserveRatio(true);
+		HBox middle = new HBox(TeamColumn.create(match.gettTeamHome()), result, TeamColumn.create(match.gettTeamGuest()));
+		middle.setAlignment(Pos.CENTER);
+		VBox.setVgrow(middle, Priority.ALWAYS);
 
-        Label lbTime = new Label("00:00");
-        lbTime.setFont(Main.getMainFont());
-        lbTime.setTextFill(Color.web("#ffffff"));
-        lbTime.textProperty().bind(Main.getServicePlaytime().messageProperty());
+		// Bottom: clock
+		FixedDigitsLabel lbClock = new FixedDigitsLabel("00:00", Main.getMainFont(FontWeight.BOLD, 50),
+				ScoreboardColors.TEXT);
+		// Shows the sponsor logos of the main view next to the clock, if there are any
+		clockBar = new ClockBar(lbClock, CLOCK_BAR_HEIGHT);
 
-        Label lbResult = new Label("0:0");
-        lbResult.setFont(Main.getMainFont(150));
-        lbResult.setTextFill(Color.web("#ffffff"));
-        GridPane.setHalignment(lbResult, HPos.CENTER);
-        lbResult.textProperty().bind(Main.getMatch().sResult);
+		VBox layout = new VBox(middle, clockBar);
+		layout.prefWidthProperty().bind(widthProperty());
+		layout.prefHeightProperty().bind(heightProperty());
+		getChildren().add(layout);
 
-        paneMain.add(ivLogoHome, 0, 0);
-        paneMain.add(lbTime, 1, 0);
-        paneMain.add(ivLogoGuest, 2, 0);
-        paneMain.add(lbResult, 0, 1, 3, 1);
+		showResult();
+		match.sResult.addListener(new WeakChangeListener<String>(resultListener));
+		lbClock.textProperty().bind(Main.getServicePlaytime().messageProperty());
+	}
 
+	@Override
+	public void paneDidAppear() {
+		super.paneDidAppear();
+		clockBar.start();
+	}
 
-        getChildren().add(paneMain);
-    }
+	@Override
+	public void paneDidDisappear() {
+		super.paneDidDisappear();
+		clockBar.stop();
+	}
+
+	private void showResult() {
+		lbGoalsHome.setText(String.valueOf(match.getiGoalsHome()));
+		lbGoalsGuest.setText(String.valueOf(match.getiGoalsGuest()));
+	}
 }

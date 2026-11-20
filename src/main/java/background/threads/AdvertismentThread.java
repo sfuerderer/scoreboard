@@ -6,9 +6,10 @@ package background.threads;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.List;
 
+import advertising.Advertising;
+import advertising.FullscreenSpot;
 import gui.frames.ControlFrame;
 import gui.frames.panes.PaneImage;
 import gui.frames.panes.PaneMain;
@@ -22,7 +23,8 @@ import system.settings.Settings;
 @SuppressWarnings("restriction")
 public class AdvertismentThread extends Thread {
 	private volatile boolean laeuft = true;
-	private ArrayList<String> filenames = new ArrayList<String>();
+	private final Advertising advertising;
+	private final List<FullscreenSpot> lSpots;
 	private ControlFrame controlFrame;
 	private Settings sSettings;
 
@@ -30,48 +32,22 @@ public class AdvertismentThread extends Thread {
 		this.controlFrame = controlFrame;
 		this.sSettings = sSettings;
 		setDaemon(true);
-		File dir = new File("advertisment");
-
-		String[] children = dir.list();
-		if (children != null) {
-			for (int i = 0; i < children.length; i++) {
-				String name = children[i];
-				// Only supported files, otherwise the loop below would run without any pause
-				if (name.charAt(0) != '.' && (isVideo(name) || isImage(name)))
-					filenames.add(name);
-			}
-		}
-
-		Collections.sort(filenames);
+		advertising = Advertising.getAdvertising();
+		advertising.syncWithFolder();
+		lSpots = advertising.getActiveFullscreenSpots();
 	}
 
 	/**
 	 * @return true if there is at least one image or video to show
 	 */
 	public boolean hasAdvertisments() {
-		return !filenames.isEmpty();
+		return !lSpots.isEmpty();
 	}
 
 	public void stopThread() {
 		laeuft = false;
 		interrupt();
 		controlFrame.changeMainScoreboardPane(new PaneMain(controlFrame.getRootPaneMainScoreboard(), controlFrame));
-	}
-
-	private static String getFileExtension(String fileName) {
-		if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
-			return fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-		else
-			return "";
-	}
-
-	private static boolean isVideo(String fileName) {
-		return getFileExtension(fileName).equals("mp4");
-	}
-
-	private static boolean isImage(String fileName) {
-		String extension = getFileExtension(fileName);
-		return extension.equals("jpg") || extension.equals("png");
 	}
 
 	/**
@@ -85,26 +61,28 @@ public class AdvertismentThread extends Thread {
 	}
 
 	public void run() {
-		if (filenames.isEmpty())
+		if (lSpots.isEmpty())
 			return;
 		int i = 0;
 		try {
 			while (laeuft) {
-				File file = new File("advertisment/" + filenames.get(i));
-				if (isVideo(file.getName())) {
+				FullscreenSpot spot = lSpots.get(i);
+				File file = advertising.getSpotFile(spot);
+				long lDuration = spot.iDurationInSeconds > 0 ? spot.iDurationInSeconds * 1000L
+						: sSettings.iTimeBetweenAdvertisingInMiliseconds;
+				if (spot.isVideo()) {
 					Media video = Medias.loadMediaFromPath(file.getAbsolutePath());
 					PaneVideo videoPane = new PaneVideo(controlFrame.getRootPaneMainScoreboard(), video);
 					showPane(() -> controlFrame.changeMainScoreboardPane(videoPane));
 					double duration = video.getDuration().toMillis();
 					// The duration is unknown if the video could not be loaded
-					Thread.sleep(Double.isNaN(duration) || duration <= 0 ? sSettings.iTimeBetweenAdvertisingInMiliseconds
-							: (long) duration);
+					Thread.sleep(Double.isNaN(duration) || duration <= 0 ? lDuration : (long) duration);
 				} else {
 					showPane(() -> controlFrame.changeMainScoreboardPane(
 							new PaneImage(controlFrame.getRootPaneMainScoreboard(), file.getAbsolutePath())));
-					Thread.sleep(sSettings.iTimeBetweenAdvertisingInMiliseconds);
+					Thread.sleep(lDuration);
 				}
-				i = ++i % filenames.size();
+				i = ++i % lSpots.size();
 
 			}
 		} catch (InterruptedException ie) {

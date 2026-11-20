@@ -40,6 +40,10 @@ public class Defaults {
     public static final Animations ANIMATION = Animations.FADE;
     public static final String ANIMATION_WIPE_COLOR = "#0057b8";
     public static final ScalingMode SCALING_MODE = ScalingMode.FILL;
+    // Team color on the scoreboard for teams without their own color (light grey, readable on club blue)
+    public static final String TEAM_COLOR = "#d8dbe6";
+    // Longest short name that still fits next to the logo on the scoreboard
+    public static final int TEAM_SHORT_NAME_MAX_LENGTH = 14;
 
     public static final boolean OTHER_FRAME_1_ACTIVATED = true;
     public static final int OTHER_FRAME_1_WIDTH = 65;

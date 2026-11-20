@@ -4,93 +4,120 @@
  ************************************************/
 package gui.frames.panes;
 
-import java.net.MalformedURLException;
+import advertising.AdPlacement;
 import java.util.List;
 
+import football.Team;
+import football.match.Lineup;
 import football.person.Coach;
 import football.person.Player;
-import gui.Components;
+import football.person.Position;
+import gui.frames.panes.components.ScoreboardText;
+import gui.frames.panes.components.TeamCrest;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.FontWeight;
 import language.Language;
-import message.ErrorMsg;
-import system.Images;
 
+/**
+ * Starting eleven of a team in two columns: logo, title and coach in the header, below each player with
+ * her shirt number in a box (goalkeeper in yellow), initial of the first name and last name.
+ */
 public class PaneLineupComplete extends PaneMainScoreboard {
+	private static final double HEADER_HEIGHT = 46;
+	private static final double COLUMN_GAP = 18;
+	private static final double NUMBER_WIDTH = 34;
 
-	public PaneLineupComplete(Pane rootPane, List<Player> playersToShow, String pathToLogo, Coach coach) {
-		super(Images.getImages().loadImageFromResource("background1", "jpg"), rootPane);
+	/**
+	 * @param coach head coach shown in the header, may be null
+	 */
+	public PaneLineupComplete(Pane rootPane, List<Player> playersToShow, Team team, Coach coach) {
+		super(ScoreboardBackground.crestDiagonal(), rootPane);
 
-		BorderPane paneLineup = new BorderPane();
-		paneLineup.prefWidthProperty().bind(this.widthProperty());
-		paneLineup.prefHeightProperty().bind(this.heightProperty());
-		paneLineup.setPadding(new Insets(I_PADDING));
-
-		VBox lineupBox = new VBox();
-		lineupBox.setAlignment(Pos.CENTER_LEFT);
-		lineupBox.setSpacing(2);
-
-		VBox coachBox = new VBox();
-		coachBox.setAlignment(Pos.CENTER_RIGHT);
-		coachBox.setSpacing(2);
-
-		ImageView ivLogo;
-		try {
-			ivLogo = new ImageView(Images.getImages().loadImageFromPath(pathToLogo));
-		} catch (MalformedURLException e) {
-			ErrorMsg.showErrorMessage(111);
-			ivLogo = new ImageView(Images.getImages().loadImageFromResource("no-image", "png"));
-		}
-
-		ivLogo.setFitHeight(100);
-		ivLogo.setPreserveRatio(true);
-
-		for (Player player : playersToShow)
-			lineupBox.getChildren().add(getPlayerLine(player));
-
+		// Header
+		Label lbTitle = ScoreboardText.label(Language.getText("startelf"), FontWeight.EXTRA_BOLD, 28,
+				ScoreboardColors.TEXT);
+		Region rSpacer = new Region();
+		HBox.setHgrow(rSpacer, Priority.ALWAYS);
+		HBox header = new HBox(10, TeamCrest.of(team, 34), lbTitle, rSpacer);
 		if (coach != null) {
-			Label lbCoachHeadline = Components.getLabel(Language.getText("trainer"));
-			Label lbCoachFirstname = Components.getLabel(coach.getsFirstname());
-			Label lbCoachLastname = Components.getLabel(coach.getsLastname());
-
-			coachBox.getChildren().addAll(lbCoachHeadline, lbCoachFirstname, lbCoachLastname);
+			Label lbCoachTitle = ScoreboardText.label(Language.getText("trainer"), FontWeight.SEMI_BOLD, 14,
+					ScoreboardColors.TEXT_DIM);
+			String sFirstname = coach.getsFirstname();
+			String sCoachName = sFirstname == null || sFirstname.isEmpty() ? coach.getsLastname()
+					: sFirstname.charAt(0) + ". " + coach.getsLastname();
+			Label lbCoachName = ScoreboardText.label(sCoachName, FontWeight.BOLD, 16, ScoreboardColors.TEXT);
+			VBox coachBox = new VBox(-2, lbCoachTitle, lbCoachName);
+			coachBox.setAlignment(Pos.CENTER_RIGHT);
+			header.getChildren().add(coachBox);
 		}
+		header.setAlignment(Pos.CENTER_LEFT);
+		header.setPadding(new Insets(0, 14, 0, 14));
+		header.setMinHeight(HEADER_HEIGHT);
+		header.setPrefHeight(HEADER_HEIGHT);
+		header.setBackground(new Background(new BackgroundFill(ScoreboardColors.PANEL, null, null)));
 
-		BorderPane.setAlignment(ivLogo, Pos.CENTER_LEFT);
-		paneLineup.setLeft(ivLogo);
-		paneLineup.setCenter(lineupBox);
-		paneLineup.setRight(coachBox);
+		// Players: first column top to bottom, then the second column
+		List<Player> lPlayers = Lineup.sortedForScoreboard(playersToShow);
+		int iRows = Math.max(1, (lPlayers.size() + 1) / 2);
+		GridPane grid = new GridPane();
+		grid.setHgap(COLUMN_GAP);
+		grid.setVgap(4);
+		grid.setPadding(new Insets(8, 14, 8, 14));
+		for (int i = 0; i < 2; i++) {
+			ColumnConstraints column = new ColumnConstraints();
+			column.setPercentWidth(50);
+			grid.getColumnConstraints().add(column);
+		}
+		for (int i = 0; i < iRows; i++) {
+			RowConstraints row = new RowConstraints();
+			row.setPercentHeight(100.0 / iRows);
+			grid.getRowConstraints().add(row);
+		}
+		for (int i = 0; i < lPlayers.size(); i++)
+			grid.add(playerLine(lPlayers.get(i), iRows), i / iRows, i % iRows);
+		VBox.setVgrow(grid, Priority.ALWAYS);
 
-		getChildren().add(paneLineup);
+		VBox layout = new VBox(header, grid);
+		layout.prefWidthProperty().bind(widthProperty());
+		layout.prefHeightProperty().bind(heightProperty());
+		getChildren().add(layout);
+		showPresentedBy(AdPlacement.LINEUP);
 	}
 
-	private Pane getPlayerLine(Player player) {
-		GridPane panePlayerLine = new GridPane();
-		panePlayerLine.setPadding(new Insets(0, 0, 0, 40));
-		panePlayerLine.setMaxWidth(Double.MAX_VALUE);
+	private static HBox playerLine(Player player, int iRows) {
+		// More than six rows (e.g. with substitutes) get a smaller font, so every name stays on the wall
+		int iSize = iRows <= 6 ? 21 : 16;
+		Label lbNumber = ScoreboardText.label(player.getiNumber() < 0 ? "" : String.valueOf(player.getiNumber()),
+				FontWeight.EXTRA_BOLD, iSize - 1, Color.BLACK);
+		lbNumber.setAlignment(Pos.CENTER);
+		lbNumber.setMinWidth(NUMBER_WIDTH);
+		lbNumber.setPrefWidth(NUMBER_WIDTH);
+		lbNumber.setBackground(new Background(new BackgroundFill(
+				player.getePosition() == Position.GOALKEEPER ? ScoreboardColors.CARD_YELLOW : ScoreboardColors.TEXT,
+				null, null)));
 
-		ColumnConstraints bottomPaneCol1 = new ColumnConstraints();
-		bottomPaneCol1.setPercentWidth(10);
-		ColumnConstraints bottomPaneCol2 = new ColumnConstraints();
-		bottomPaneCol2.setPercentWidth(90);
+		String sInitial = player.getsFirstname() == null || player.getsFirstname().isEmpty() ? ""
+				: player.getsFirstname().charAt(0) + ".";
+		Label lbInitial = ScoreboardText.label(sInitial, FontWeight.MEDIUM, iSize - 4, ScoreboardColors.TEXT_DIM);
+		Label lbLastname = ScoreboardText.label(player.getsLastname(), FontWeight.BOLD, iSize, ScoreboardColors.TEXT);
+		lbLastname.setMinWidth(0);
 
-		panePlayerLine.getColumnConstraints().addAll(bottomPaneCol1, bottomPaneCol2);
-
-		Label lbNumber = Components.getLabel(player.getiNumber() + "");
-
-		Label lbPlayerName = Components.getLabel(player.getsFirstname() + " " + player.getsLastname());
-
-		panePlayerLine.add(lbNumber, 0, 0);
-		panePlayerLine.add(lbPlayerName, 1, 0);
-
-		return panePlayerLine;
+		HBox line = new HBox(9, lbNumber, lbInitial, lbLastname);
+		HBox.setMargin(lbInitial, new Insets(0, -5, 0, 0));
+		line.setAlignment(Pos.CENTER_LEFT);
+		return line;
 	}
-
 }

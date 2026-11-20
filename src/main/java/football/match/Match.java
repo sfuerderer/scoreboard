@@ -5,7 +5,9 @@
 package football.match;
 
 import exceptions.FileDidNotExistException;
+import football.Cards;
 import football.Team;
+import football.person.Player;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import message.ErrorMsg;
@@ -13,6 +15,8 @@ import system.FileHandling;
 import system.observer.Observer;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Match implements Observer {
     private Team tTeamHome;
@@ -34,6 +38,10 @@ public class Match implements Observer {
     public StringProperty sResult;
     public StringProperty sCorners;
     private volatile boolean bPlaytimeRunning;
+    // Competition shown on the scoreboard (name of the league), null if unknown
+    private String sCompetition;
+    // Goals and cards in the order they happened
+    private final List<MatchEvent> lEvents = new ArrayList<MatchEvent>();
 
     public Match(Team tTeamHome, Team tTeamGuest, int iHalftime1Length, int iHalftime2Length, int iHalftime3Length,
                  int iHalftime4Length) {
@@ -56,7 +64,17 @@ public class Match implements Observer {
         bPlaytimeRunning = false;
     }
 
+    /**
+     * Goal without known minute, e.g. a correction of the result.
+     */
     public void addGoal(Teams team) {
+        addGoal(team, 0);
+    }
+
+    /**
+     * @param iMinute minute as counted in football, 0 if unknown
+     */
+    public void addGoal(Teams team, int iMinute) {
         switch (team) {
             case HOME:
                 iGoalsHome++;
@@ -65,21 +83,96 @@ public class Match implements Observer {
                 iGoalsGuest++;
                 break;
         }
+        lEvents.add(MatchEvent.goal(team, iMinute));
         sResult.set(iGoalsHome + " : " + iGoalsGuest);
     }
 
+    /**
+     * Sets the scorer of the latest goal of the team, chosen by the operator after the goal.
+     */
+    public void setScorerOfLastGoal(Teams team, Player scorer) {
+        MatchEvent goal = findLastGoal(team);
+        if (goal != null)
+            goal.setPlayer(scorer);
+    }
+
     public void removeGoal(Teams team) {
+        boolean bRemoved = false;
         switch (team) {
             case HOME:
-                if (iGoalsHome > 0)
+                if (iGoalsHome > 0) {
                     iGoalsHome--;
+                    bRemoved = true;
+                }
                 break;
             case GUEST:
-                if (iGoalsGuest > 0)
+                if (iGoalsGuest > 0) {
                     iGoalsGuest--;
+                    bRemoved = true;
+                }
                 break;
         }
+        // The latest goal is taken back, so its scorer no longer shows up at half-time
+        if (bRemoved)
+            lEvents.remove(findLastGoal(team));
         sResult.set(iGoalsHome + " : " + iGoalsGuest);
+    }
+
+    private MatchEvent findLastGoal(Teams team) {
+        for (int i = lEvents.size() - 1; i >= 0; i--) {
+            MatchEvent event = lEvents.get(i);
+            if (event.geteType() == MatchEvent.Type.GOAL && event.geteTeam() == team)
+                return event;
+        }
+        return null;
+    }
+
+    /**
+     * @param iMinute minute as counted in football, 0 if unknown
+     */
+    public void addCard(Teams team, Player player, Cards card, int iMinute) {
+        lEvents.add(MatchEvent.card(team, player, card, iMinute));
+    }
+
+    /**
+     * Goals of the team in the order they were scored.
+     */
+    public List<MatchEvent> getGoals(Teams team) {
+        List<MatchEvent> lGoals = new ArrayList<MatchEvent>();
+        for (MatchEvent event : lEvents)
+            if (event.geteType() == MatchEvent.Type.GOAL && event.geteTeam() == team)
+                lGoals.add(event);
+        return lGoals;
+    }
+
+    /**
+     * Yellow cards of the team; a yellow-red card counts as the second yellow card.
+     */
+    public int countYellowCards(Teams team) {
+        return countCards(team, Cards.YELLOW) + countCards(team, Cards.YELLOW_RED);
+    }
+
+    /**
+     * Sendings-off of the team, by red or yellow-red card.
+     */
+    public int countRedCards(Teams team) {
+        return countCards(team, Cards.RED) + countCards(team, Cards.YELLOW_RED);
+    }
+
+    private int countCards(Teams team, Cards card) {
+        int iCount = 0;
+        for (MatchEvent event : lEvents)
+            if (event.geteType() == MatchEvent.Type.CARD && event.geteTeam() == team && event.geteCard() == card)
+                iCount++;
+        return iCount;
+    }
+
+    /**
+     * Text key of the title for the result view: "Halbzeit" in the break after the first half, otherwise
+     * "Spielstand".
+     */
+    public String getResultTitleKey() {
+        return eWhichHalftime == Halftime.SECOND && !bPlaytimeRunning ? "halbzeit_anzeige" : "spielstand";
     }
 
     public void addCorner(Teams team) {
@@ -417,6 +510,14 @@ public class Match implements Observer {
             default:
                 break;
         }
+    }
+
+    public String getsCompetition() {
+        return sCompetition;
+    }
+
+    public void setsCompetition(String sCompetition) {
+        this.sCompetition = sCompetition;
     }
 
     public void start() {

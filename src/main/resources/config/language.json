@@ -187,6 +187,102 @@
         "GERMAN": "Logo"
       }
     },
+    "kurzname": {
+      "hmText": {
+        "ENGLISH": "Short name",
+        "GERMAN": "Kurzname"
+      }
+    },
+    "kurzname_hinweis": {
+      "hmText": {
+        "ENGLISH": "Shown on the scoreboard, e.g. Potsdam. Empty: full name",
+        "GERMAN": "Wird auf der Anzeigetafel gezeigt, z. B. Potsdam. Leer: voller Name"
+      }
+    },
+    "teamfarbe": {
+      "hmText": {
+        "ENGLISH": "Team color",
+        "GERMAN": "Teamfarbe"
+      }
+    },
+    "halbzeit_1": {
+      "hmText": {
+        "ENGLISH": "1st half",
+        "GERMAN": "1. HZ"
+      }
+    },
+    "halbzeit_2": {
+      "hmText": {
+        "ENGLISH": "2nd half",
+        "GERMAN": "2. HZ"
+      }
+    },
+    "halbzeit_3": {
+      "hmText": {
+        "ENGLISH": "Extra time 1",
+        "GERMAN": "1. VL"
+      }
+    },
+    "halbzeit_4": {
+      "hmText": {
+        "ENGLISH": "Extra time 2",
+        "GERMAN": "2. VL"
+      }
+    },
+    "tor_anzeige": {
+      "hmText": {
+        "ENGLISH": "Goal",
+        "GERMAN": "Tor"
+      }
+    },
+    "wechsel_anzeige": {
+      "hmText": {
+        "ENGLISH": "Substitution",
+        "GERMAN": "Wechsel"
+      }
+    },
+    "startelf": {
+      "hmText": {
+        "ENGLISH": "Starting XI",
+        "GERMAN": "Startelf"
+      }
+    },
+    "halbzeit_anzeige": {
+      "hmText": {
+        "ENGLISH": "Half-time",
+        "GERMAN": "Halbzeit"
+      }
+    },
+    "spielstand": {
+      "hmText": {
+        "ENGLISH": "Score",
+        "GERMAN": "Spielstand"
+      }
+    },
+    "gelbe_karten": {
+      "hmText": {
+        "ENGLISH": "Yellow cards",
+        "GERMAN": "Gelbe Karten"
+      }
+    },
+    "rote_karten": {
+      "hmText": {
+        "ENGLISH": "Red cards",
+        "GERMAN": "Rote Karten"
+      }
+    },
+    "spielstand_anzeigen": {
+      "hmText": {
+        "ENGLISH": "Show score with scorers",
+        "GERMAN": "Spielstand mit Torschützinnen anzeigen"
+      }
+    },
+    "statistik_anzeigen": {
+      "hmText": {
+        "ENGLISH": "Show statistic",
+        "GERMAN": "Statistik anzeigen"
+      }
+    },
     "neues_spiel": {
       "hmText": {
         "ENGLISH": "New Match",
@@ -419,6 +515,12 @@
       "hmText": {
         "ENGLISH": "at SC Sand",
         "GERMAN": "beim SC Sand"
+      }
+    },
+    "spiel_gestartet": {
+      "hmText": {
+        "ENGLISH": "Match started",
+        "GERMAN": "Spiel wurde gestartet"
       }
     },
     "zeit": {
@@ -665,6 +767,330 @@
       "hmText": {
         "ENGLISH": "All players, coaches and images of this team will be deleted as well.",
         "GERMAN": "Alle Spieler, Trainer und Bilder dieses Teams werden ebenfalls gelöscht."
+      }
+    },
+    "sponsoren": {
+      "hmText": {
+        "ENGLISH": "Sponsors",
+        "GERMAN": "Sponsoren"
+      }
+    },
+    "neuer_sponsor": {
+      "hmText": {
+        "ENGLISH": "New sponsor",
+        "GERMAN": "Neuer Sponsor"
+      }
+    },
+    "sponsor_name": {
+      "hmText": {
+        "ENGLISH": "Name",
+        "GERMAN": "Name"
+      }
+    },
+    "sponsor_aktiv": {
+      "hmText": {
+        "ENGLISH": "Is shown (active)",
+        "GERMAN": "Wird angezeigt (aktiv)"
+      }
+    },
+    "sponsor_inaktiv": {
+      "hmText": {
+        "ENGLISH": "inactive",
+        "GERMAN": "inaktiv"
+      }
+    },
+    "bilder": {
+      "hmText": {
+        "ENGLISH": "Images",
+        "GERMAN": "Bilder"
+      }
+    },
+    "sponsor_hinweis": {
+      "hmText": {
+        "ENGLISH": "Logos with a transparent background (PNG) look best on the wall. Media are the sponsor's images and videos; the advertising places decide which of them run. An inactive sponsor is shown nowhere.",
+        "GERMAN": "Logos mit transparentem Hintergrund (PNG) wirken auf der Wand am besten. Werbemittel sind die Bilder und Videos des Sponsors; was davon läuft, legst du in den Werbeplätzen fest. Ein inaktiver Sponsor wird nirgends angezeigt."
+      }
+    },
+    "sponsor_loeschen_frage": {
+      "hmText": {
+        "ENGLISH": "Do you really want to delete this sponsor?",
+        "GERMAN": "Soll der Sponsor wirklich gelöscht werden?"
+      }
+    },
+    "sponsor_loeschen_hinweis": {
+      "hmText": {
+        "ENGLISH": "The sponsor is also assigned to advertising places and will be removed there.",
+        "GERMAN": "Der Sponsor ist außerdem Werbeplätzen zugeordnet und wird dort entfernt."
+      }
+    },
+    "vollbild": {
+      "hmText": {
+        "ENGLISH": "Full screen ads",
+        "GERMAN": "Vollbild-Werbung"
+      }
+    },
+    "vollbild_video": {
+      "hmText": {
+        "ENGLISH": "Video",
+        "GERMAN": "Video"
+      }
+    },
+    "vollbild_dauer": {
+      "hmText": {
+        "ENGLISH": "Duration (s)",
+        "GERMAN": "Anzeigedauer (s)"
+      }
+    },
+    "vollbild_dauer_hinweis": {
+      "hmText": {
+        "ENGLISH": "0 = default from the settings (%s s). Videos always play in full length.",
+        "GERMAN": "0 = Standard aus den Einstellungen (%s s). Videos laufen immer in voller Länge."
+      }
+    },
+    "vollbild_hinweis": {
+      "hmText": {
+        "ENGLISH": "The full screen ads show the checked entries in this order. Media come from the “Sponsors” tab; “Remove” only takes an entry out of this list.",
+        "GERMAN": "Die Vollbild-Werbung zeigt die angehakten Einträge in dieser Reihenfolge. Werbemittel kommen aus dem Tab „Sponsoren“; „Entfernen“ nimmt einen Eintrag nur aus dieser Liste."
+      }
+    },
+    "vollbild_dateien": {
+      "hmText": {
+        "ENGLISH": "Images and videos",
+        "GERMAN": "Bilder und Videos"
+      }
+    },
+    "vorschau": {
+      "hmText": {
+        "ENGLISH": "Preview",
+        "GERMAN": "Vorschau"
+      }
+    },
+    "neuer_sponsor_name": {
+      "hmText": {
+        "ENGLISH": "New sponsor",
+        "GERMAN": "Neuer Sponsor"
+      }
+    },
+    "logo_waehlen": {
+      "hmText": {
+        "ENGLISH": "Choose logo …",
+        "GERMAN": "Logo wählen …"
+      }
+    },
+    "sponsor_kein_logo": {
+      "hmText": {
+        "ENGLISH": "No logo – the sponsor only appears in the full screen ads.",
+        "GERMAN": "Kein Logo – der Sponsor erscheint nur in der Vollbild-Werbung."
+      }
+    },
+    "sponsor": {
+      "hmText": {
+        "ENGLISH": "Sponsor",
+        "GERMAN": "Sponsor"
+      }
+    },
+    "vollbild_hinzufuegen": {
+      "hmText": {
+        "ENGLISH": "Add …",
+        "GERMAN": "Hinzufügen …"
+      }
+    },
+    "sponsor_loeschen_dateien": {
+      "hmText": {
+        "ENGLISH": "The folder \"%s\" with logo and full screen ads is moved to the trash.",
+        "GERMAN": "Der Ordner \"%s\" mit Logo und Vollbild-Werbung wird in den Papierkorb verschoben."
+      }
+    },
+    "werbemittel": {
+      "hmText": {
+        "ENGLISH": "Media",
+        "GERMAN": "Werbemittel"
+      }
+    },
+    "werbemittel_hinzufuegen": {
+      "hmText": {
+        "ENGLISH": "Add media …",
+        "GERMAN": "Werbemittel hinzufügen …"
+      }
+    },
+    "werbemittel_loeschen_frage": {
+      "hmText": {
+        "ENGLISH": "Do you want to delete this medium? The file is moved to the trash.",
+        "GERMAN": "Soll dieses Werbemittel gelöscht werden? Die Datei wird in den Papierkorb verschoben."
+      }
+    },
+    "werbemittel_loeschen_hinweis": {
+      "hmText": {
+        "ENGLISH": "It runs in the full screen ads and will be removed there as well.",
+        "GERMAN": "Es läuft in der Vollbild-Werbung und wird dort ebenfalls entfernt."
+      }
+    },
+    "im_vollbild": {
+      "hmText": {
+        "ENGLISH": "in full screen",
+        "GERMAN": "im Vollbild"
+      }
+    },
+    "vollbild_entfernen": {
+      "hmText": {
+        "ENGLISH": "Remove",
+        "GERMAN": "Entfernen"
+      }
+    },
+    "vollbild_auswahl": {
+      "hmText": {
+        "ENGLISH": "Which media should be added to the full screen ads?",
+        "GERMAN": "Welche Werbemittel sollen in die Vollbild-Werbung?"
+      }
+    },
+    "bereits_enthalten": {
+      "hmText": {
+        "ENGLISH": "already added",
+        "GERMAN": "bereits enthalten"
+      }
+    },
+    "ohne_sponsor": {
+      "hmText": {
+        "ENGLISH": "Without sponsor",
+        "GERMAN": "Ohne Sponsor"
+      }
+    },
+    "sponsor_zuordnen": {
+      "hmText": {
+        "ENGLISH": "Assign",
+        "GERMAN": "Zuordnen"
+      }
+    },
+    "sponsor_waehlen": {
+      "hmText": {
+        "ENGLISH": "Choose sponsor …",
+        "GERMAN": "Sponsor wählen …"
+      }
+    },
+    "hauptansicht": {
+      "hmText": {
+        "ENGLISH": "Main view",
+        "GERMAN": "Hauptansicht"
+      }
+    },
+    "hauptansicht_max_logos": {
+      "hmText": {
+        "ENGLISH": "Logos at the same time",
+        "GERMAN": "Logos gleichzeitig"
+      }
+    },
+    "hauptansicht_wechsel": {
+      "hmText": {
+        "ENGLISH": "Change every (s)",
+        "GERMAN": "Wechsel alle (s)"
+      }
+    },
+    "hauptansicht_info_leer": {
+      "hmText": {
+        "ENGLISH": "No sponsor chosen – the clock bar looks as before.",
+        "GERMAN": "Kein Sponsor gewählt – die Uhrleiste sieht aus wie bisher."
+      }
+    },
+    "hauptansicht_info_fest": {
+      "hmText": {
+        "ENGLISH": "All logos are shown all the time.",
+        "GERMAN": "Alle Logos sind dauerhaft zu sehen."
+      }
+    },
+    "hauptansicht_info_wechsel": {
+      "hmText": {
+        "ENGLISH": "The logos change page by page; after %d s every sponsor has been shown equally often.",
+        "GERMAN": "Die Logos wechseln seitenweise; nach %d s ist jeder Sponsor gleich oft gezeigt worden."
+      }
+    },
+    "hauptansicht_hinweis": {
+      "hmText": {
+        "ENGLISH": "The logos are shown left and right of the clock. Only sponsors with a logo can be chosen; inactive sponsors are skipped. Logos with a transparent background (PNG) look best on the dark bar.",
+        "GERMAN": "Die Logos stehen links und rechts neben der Uhr. Nur Sponsoren mit Logo können gewählt werden; inaktive Sponsoren werden übersprungen. Logos mit transparentem Hintergrund (PNG) wirken auf dem dunklen Balken am besten."
+      }
+    },
+    "hauptansicht_auswahl": {
+      "hmText": {
+        "ENGLISH": "Which sponsors should appear in the clock bar?",
+        "GERMAN": "Welche Sponsoren sollen in der Uhrleiste erscheinen?"
+      }
+    },
+    "hauptansicht_alle_gewaehlt": {
+      "hmText": {
+        "ENGLISH": "All sponsors are already chosen.",
+        "GERMAN": "Alle Sponsoren sind bereits gewählt."
+      }
+    },
+    "ohne_logo": {
+      "hmText": {
+        "ENGLISH": "no logo",
+        "GERMAN": "kein Logo"
+      }
+    },
+    "praesentiert_von": {
+      "hmText": {
+        "ENGLISH": "presented by",
+        "GERMAN": "präsentiert von"
+      }
+    },
+    "praesentiert_von_tab": {
+      "hmText": {
+        "ENGLISH": "Presented by",
+        "GERMAN": "Präsentiert von"
+      }
+    },
+    "praesentiert_von_hinweis": {
+      "hmText": {
+        "ENGLISH": "The chosen sponsor appears with “presented by” and its logo in the bottom right corner of the view. Without a sponsor (“—”) the view stays unchanged; an inactive sponsor is not shown. The lineup shows the sponsor on the overview, not when single players are introduced.",
+        "GERMAN": "Der gewählte Sponsor erscheint mit „präsentiert von“ und seinem Logo unten rechts in der jeweiligen Ansicht. Ohne Sponsor („—“) bleibt die Ansicht unverändert; ein inaktiver Sponsor wird nicht gezeigt. Die Aufstellung erscheint mit Sponsor auf der Übersicht, nicht bei der Vorstellung einzelner Spielerinnen."
+      }
+    },
+    "werbeplatz_tor": {
+      "hmText": {
+        "ENGLISH": "Goal",
+        "GERMAN": "Tor"
+      }
+    },
+    "werbeplatz_karte": {
+      "hmText": {
+        "ENGLISH": "Card",
+        "GERMAN": "Karte"
+      }
+    },
+    "werbeplatz_wechsel": {
+      "hmText": {
+        "ENGLISH": "Substitution",
+        "GERMAN": "Wechsel"
+      }
+    },
+    "werbeplatz_aufstellung": {
+      "hmText": {
+        "ENGLISH": "Lineup",
+        "GERMAN": "Aufstellung"
+      }
+    },
+    "werbeplatz_halbzeit": {
+      "hmText": {
+        "ENGLISH": "Score",
+        "GERMAN": "Spielstand"
+      }
+    },
+    "werbeplatz_statistik": {
+      "hmText": {
+        "ENGLISH": "Statistics",
+        "GERMAN": "Statistik"
+      }
+    },
+    "werbeplatz_ecken": {
+      "hmText": {
+        "ENGLISH": "Corners",
+        "GERMAN": "Ecken"
+      }
+    },
+    "werbeplatz_zuschauer": {
+      "hmText": {
+        "ENGLISH": "Visitors",
+        "GERMAN": "Zuschauer"
       }
     }
   }
