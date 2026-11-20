@@ -1,3 +1,10 @@
+## v2.0.0-beta.3 (2026-11-20)
+
+### Fix
+
+- return the text key when the language is not loaded yet (#34)
+- update Gson to 2.15.0 (#32)
+
 ## v2.0.0-beta.2 (2026-11-20)
 
 ### Feat
