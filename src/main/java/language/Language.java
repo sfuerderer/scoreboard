@@ -38,9 +38,14 @@ public class Language {
 	 * Gets the text to the given key.
 	 * 
 	 * @param sKey The text key.
-	 * @return The translated text.
+	 * @return The translated text, or the key itself if the language is not loaded yet.
 	 */
 	public static String getText(String sKey) {
+		// Gson calls toString() of enums such as CoachType and Cards when it creates their
+		// adapter, which can happen before init() (e.g. in tests or early loading).
+		if (tTexts == null || sSettings == null) {
+			return sKey;
+		}
 		try {
 			return tTexts.getTextInLanguage(sSettings.sSystemLanguage, sKey);
 		} catch (TextNotFoundException e) {
