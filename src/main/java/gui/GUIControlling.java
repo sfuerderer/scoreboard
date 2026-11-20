@@ -32,6 +32,7 @@ import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import message.ErrorMsg;
 import message.InfoMsg;
+import system.AppIcon;
 import system.Main;
 import system.settings.Frame;
 import system.settings.Settings;
@@ -51,6 +52,7 @@ public class GUIControlling extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        AppIcon.applyToAllWindows();
         keepDialogsInFront();
 
         controlFrame = new ControlFrame(sSettings, this);
@@ -227,6 +229,7 @@ public class GUIControlling extends Application {
     }
 
     public void start() {
+        AppIcon.setTaskbarIcon();
         launch();
     }
 
